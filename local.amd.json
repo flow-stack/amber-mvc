@@ -1,0 +1,13 @@
+{
+    "paths": {
+        "amber-mvc": "src"
+    },
+	"shim": {
+		"amber-mvc": {
+		  "deps": [
+		    "bootstrap",
+		    "amber-dom-events"
+		  ]
+		}
+	}        
+}
