@@ -1,0 +1,12 @@
+{
+    "paths": {
+        "rivets": "dist/rivets"
+    },
+	"shim": {
+		"rivets": {
+		  "deps": [
+		    "sightglass"
+		  ]
+		}
+	}    
+}
