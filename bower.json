@@ -1,6 +1,6 @@
 {
   "name": "mvc",
-  "description": "This is an Amber MVC implementation",
+  "description": "This is a MVC implementation for Amber",
   "version": "0.1.0",
   "ignore": [
     "**/.*",
@@ -16,7 +16,7 @@
       "email": "sebastian@flowingconcept.com"
     }
   ],
-  "homepage": "https://github.com/sebastian/amber-mvc",
+  "homepage": "https://github.com/flow-stack/amber-mvc",
   "keywords": [
     "Amber",
     "Smalltalk"
