@@ -6,7 +6,8 @@
 		"amber-mvc": {
 		  "deps": [
 		    "bootstrap",
-		    "amber-dom-events"
+		    "amber-dom-events",
+		    "rivets"
 		  ]
 		}
 	}        
