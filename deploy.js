@@ -1,6 +1,7 @@
 define([
     'amber/deploy',
     // --- packages to be deployed begin here ---
+    'bootstrap',
     'text',
     'sightglass',
     'rivets',    

@@ -18,6 +18,7 @@ require.config({
     "sightglass": "bower_components/sightglass/index",
     "rlite": "bower_components/rlite/rlite.min",
     "rivets": "bower_components/rivets/dist/rivets",
+    "bootstrap": "bower_components/bootstrap/dist/js/bootstrap.min",
     "helios": "bower_components/helios/src",
     "helios/resources": "bower_components/helios/resources",
     "helios/index": "bower_components/helios/index",
@@ -56,14 +57,13 @@ require.config({
         "sightglass"
       ]
     },
+    "bootstrap": {
+      "deps": [
+        "jquery"
+      ]
+    },
     "ensure-console": {
       "exports": "console"
-    },
-    "amber-mvc": {
-      "deps": [
-        "bootstrap",
-        "amber-dom-events"
-      ]
     }
   },
   "map": {
