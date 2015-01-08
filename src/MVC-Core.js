@@ -3715,4 +3715,194 @@ messageSends: ["at:put:", "new", "basicAt:", "reversed", "sorted", "size", "roun
 }),
 $globals.RivetsJS.klass);
 
+
+$core.addClass('Router', $globals.Object, [], 'MVC-Core');
+//>>excludeStart("ide", pragmas.excludeIdeData);
+$globals.Router.comment="This is a simple Router based on [rlite](https://github.com/chrisdavies/rlite)\x0a\x0a##Example\x0a\x0a```\x0aApp class>>setupRoutes\x0a\x0a\x09Router rlite \x0a\x09\x09add: '' do: [ :r | Router set: '#/home' ];\x0a\x09\x09add: '#' do: [ :r | Router set: '#/home' ];\x0a\x09\x09add: '#/' do: [ :r | Router set: '#/home' ];\x0a\x09\x09add: '/' do: [ :r | Router set: '#/home' ];\x0a\x09\x09add: 'home' do: [ :r | App home ];\x0a\x09\x09add: 'users' do: [ :r | App users ];\x0a\x09\x09add: 'users/:id' do: [ :r | App showUserAt: r params id ];\x0a\x09\x09add: 'articles/:articleid?query=thisthing' do: [ :r | App showArticleAt: r params articleid searching: r params query ];\x0a\x09\x09add: 'profile' do: [ :r | console log: 'view / edit profile requested' ];\x0a\x09\x09add: 'settings' do: [ :r | console log: 'view edit settings requested' ];\x0a\x09\x09add: 'system' do: [ :r | console log: 'view edit system requested' ];\x0a\x09\x09add: 'account' do: [ :r | console log: 'view edit account requested' ];\x0a\x09\x09add: 'signout' do: [ :r | console log: 'sign out requested' ];\x0a\x09\x09yourself\x0a```";
+//>>excludeEnd("ide");
+
+$globals.Router.klass.iVarNames = ['rlite'];
+$core.addMethod(
+$core.method({
+selector: "go:",
+protocol: 'actions',
+fn: function (aURI){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=$recv(aURI)._includes_("#");
+if($core.assert($2)){
+$3=self._rlite();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["rlite"]=1;
+//>>excludeEnd("ctx");
+$1=$recv($3)._run_($recv(aURI)._allButFirst());
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["run:"]=1;
+//>>excludeEnd("ctx");
+} else {
+$1=$recv(self._rlite())._run_(aURI);
+};
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"go:",{aURI:aURI},$globals.Router.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aURI"],
+source: "go: aURI\x0a\x09\x22Evaluates the predefined callback for the route defined by aURI.\x0a\x09Returns false if no callback was found for it.\x22\x0a\x0a\x09^ (aURI includes: '#')\x0a\x09\x09ifTrue: [ self rlite run: aURI allButFirst ]\x0a\x09\x09ifFalse: [ self rlite run: aURI ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["ifTrue:ifFalse:", "includes:", "run:", "rlite", "allButFirst"]
+}),
+$globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+self._observeHash();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.Router.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "initialize\x0a\x09\x0a\x09self observeHash",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["observeHash"]
+}),
+$globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "observeHash",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv(window)._addEventListener_do_("hashchange",(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._processHash();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+$recv($recv(jQuery)._value_(window))._unload_((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv(window)._removeEventListener_("hashchange");
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"observeHash",{},$globals.Router.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "observeHash\x0a\x0a\x09window \x0a\x09\x09addEventListener: #hashchange \x0a\x09\x09do: [ self processHash ].\x0a\x09\x09\x0a\x09(jQuery value: window) unload: [ window removeEventListener: #hashchange ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["addEventListener:do:", "processHash", "unload:", "value:", "removeEventListener:"]
+}),
+$globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "processHash",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=self._go_($recv($recv(window)._location())._hash());
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"processHash",{},$globals.Router.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "processHash\x0a\x09\x22Evaluates the predefined callback for the route defined by the current hash.\x0a\x09Returns false if no callback was found for it.\x22\x0a\x0a    ^ self go: window location hash",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["go:", "hash", "location"]
+}),
+$globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "rlite",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $Rlite(){return $globals.Rlite||(typeof Rlite=="undefined"?nil:Rlite)}
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$1,$receiver;
+$2=self["@rlite"];
+if(($receiver = $2) == null || $receiver.isNil){
+self["@rlite"]=$recv($Rlite())._new();
+$1=self["@rlite"];
+} else {
+$1=$2;
+};
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"rlite",{},$globals.Router.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "rlite\x0a\x0a\x09^ rlite ifNil: [ rlite := Rlite new ]",
+referencedClasses: ["Rlite"],
+//>>excludeEnd("ide");
+messageSends: ["ifNil:", "new"]
+}),
+$globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "set:",
+protocol: 'actions',
+fn: function (aURI){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv($recv(window)._location())._at_put_("hash",aURI);
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"set:",{aURI:aURI},$globals.Router.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aURI"],
+source: "set: aURI\x0a\x09\x22Sets the URI of the web browser to aRUI.\x22\x0a\x09\x0a\x09window location at: #hash put: aURI",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["at:put:", "location"]
+}),
+$globals.Router.klass);
+
 });

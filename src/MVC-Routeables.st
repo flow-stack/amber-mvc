@@ -1,4 +1,83 @@
 Smalltalk createPackage: 'MVC-Routeables'!
+Object subclass: #FullPageRouter
+	instanceVariableNames: ''
+	package: 'MVC-Routeables'!
+!FullPageRouter commentStamp!
+This router observes changes in the URI and reacts accordingly.
+
+The strategy is to ignore what should be rote where in advance by collaborating intensively with controllers that understands #isValidFor: 
+That way this router will flexibly route thigs with a pontentially complex URI!
+
+FullPageRouter class instanceVariableNames: 'active'!
+
+!FullPageRouter class methodsFor: 'accessing'!
+
+active
+
+	^ active
+!
+
+parameterAt: aKey
+	"Answers the value found in the parameter aKey found in the current URL.
+	Returns nil if there is no parameter at aKey."
+	
+	^  self parameterAt: aKey in: window location href
+!
+
+parameterAt: aKey in: anURL
+	"Answers the value found in the parameter aKey found in anURL.
+	Returns nil if there is no parameter at aKey."
+
+	<var re = new RegExp('.*[?&]' + aKey + '=([^&]+)(&|$)');
+    var match = anURL.match(re);
+    return(match ? decodeURIComponent(match[1]) : nil);>
+!
+
+route
+	"Answers the current route."
+	
+	^ self uri replace: '^#/' with: ''
+!
+
+uri
+
+	^ window location hash
+! !
+
+!FullPageRouter class methodsFor: 'actions'!
+
+goBack
+	"Makes the browser go back one page in its navigation history.
+	Same effect as user pressing back button"
+
+	window history go: -1
+!
+
+observeHash
+
+	window onhashchange:[ self onHashChanged ]
+!
+
+refresh
+	
+	self trigger: #beforeRouting.
+	
+	active ifNotNil:[ active remove ].
+	active := RouteableController routeFor: self route.
+
+	active refresh.
+	
+	self trigger: #afterRouting.
+! !
+
+!FullPageRouter class methodsFor: 'reactions'!
+
+onHashChanged
+	
+	active ifNotNil:[ active destroy ].	
+	self refresh
+! !
+
 Controller subclass: #RouteableController
 	instanceVariableNames: ''
 	package: 'MVC-Routeables'!
@@ -85,83 +164,4 @@ isValidFor: anURI
 RouteableController subclass: #NotFoundController
 	instanceVariableNames: ''
 	package: 'MVC-Routeables'!
-
-Object subclass: #Router
-	instanceVariableNames: ''
-	package: 'MVC-Routeables'!
-!Router commentStamp!
-This router observes changes in the URI and reacts accordingly.
-
-The strategy is to ignore what should be rote where in advance by collaborating intensively with controllers that understands #isValidFor: 
-That way this router will flexibly route thigs with a pontentially complex URI!
-
-Router class instanceVariableNames: 'active'!
-
-!Router class methodsFor: 'accessing'!
-
-active
-
-	^ active
-!
-
-parameterAt: aKey
-	"Answers the value found in the parameter aKey found in the current URL.
-	Returns nil if there is no parameter at aKey."
-	
-	^  self parameterAt: aKey in: window location href
-!
-
-parameterAt: aKey in: anURL
-	"Answers the value found in the parameter aKey found in anURL.
-	Returns nil if there is no parameter at aKey."
-
-	<var re = new RegExp('.*[?&]' + aKey + '=([^&]+)(&|$)');
-    var match = anURL.match(re);
-    return(match ? decodeURIComponent(match[1]) : nil);>
-!
-
-route
-	"Answers the current route."
-	
-	^ self uri replace: '^#/' with: ''
-!
-
-uri
-
-	^ window location hash
-! !
-
-!Router class methodsFor: 'actions'!
-
-goBack
-	"Makes the browser go back one page in its navigation history.
-	Same effect as user pressing back button"
-
-	window history go: -1
-!
-
-observeHash
-
-	window onhashchange:[ self onHashChanged ]
-!
-
-refresh
-	
-	self trigger: #beforeRouting.
-	
-	active ifNotNil:[ active remove ].
-	active := RouteableController routeFor: self route.
-
-	active refresh.
-	
-	self trigger: #afterRouting.
-! !
-
-!Router class methodsFor: 'reactions'!
-
-onHashChanged
-	
-	active ifNotNil:[ active destroy ].	
-	self refresh
-! !
 

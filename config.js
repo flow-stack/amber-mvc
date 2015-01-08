@@ -16,6 +16,7 @@ require.config({
     "amber_lib/es5-shim": "bower_components/es5-shim",
     "text": "bower_components/text/text",
     "sightglass": "bower_components/sightglass/index",
+    "rlite": "bower_components/rlite/rlite.min",
     "rivets": "bower_components/rivets/dist/rivets",
     "helios": "bower_components/helios/src",
     "helios/resources": "bower_components/helios/resources",

@@ -1042,3 +1042,80 @@ initialize
 	self installBinders.
 ! !
 
+Object subclass: #Router
+	instanceVariableNames: ''
+	package: 'MVC-Core'!
+!Router commentStamp!
+This is a simple Router based on [rlite](https://github.com/chrisdavies/rlite)
+
+##Example
+
+```
+App class>>setupRoutes
+
+	Router rlite 
+		add: '' do: [ :r | Router set: '#/home' ];
+		add: '#' do: [ :r | Router set: '#/home' ];
+		add: '#/' do: [ :r | Router set: '#/home' ];
+		add: '/' do: [ :r | Router set: '#/home' ];
+		add: 'home' do: [ :r | App home ];
+		add: 'users' do: [ :r | App users ];
+		add: 'users/:id' do: [ :r | App showUserAt: r params id ];
+		add: 'articles/:articleid?query=thisthing' do: [ :r | App showArticleAt: r params articleid searching: r params query ];
+		add: 'profile' do: [ :r | console log: 'view / edit profile requested' ];
+		add: 'settings' do: [ :r | console log: 'view edit settings requested' ];
+		add: 'system' do: [ :r | console log: 'view edit system requested' ];
+		add: 'account' do: [ :r | console log: 'view edit account requested' ];
+		add: 'signout' do: [ :r | console log: 'sign out requested' ];
+		yourself
+```!
+
+Router class instanceVariableNames: 'rlite'!
+
+!Router class methodsFor: 'accessing'!
+
+rlite
+
+	^ rlite ifNil: [ rlite := Rlite new ]
+! !
+
+!Router class methodsFor: 'actions'!
+
+go: aURI
+	"Evaluates the predefined callback for the route defined by aURI.
+	Returns false if no callback was found for it."
+
+	^ (aURI includes: '#')
+		ifTrue: [ self rlite run: aURI allButFirst ]
+		ifFalse: [ self rlite run: aURI ]
+!
+
+observeHash
+
+	window 
+		addEventListener: #hashchange 
+		do: [ self processHash ].
+		
+	(jQuery value: window) unload: [ window removeEventListener: #hashchange ]
+!
+
+processHash
+	"Evaluates the predefined callback for the route defined by the current hash.
+	Returns false if no callback was found for it."
+
+    ^ self go: window location hash
+!
+
+set: aURI
+	"Sets the URI of the web browser to aRUI."
+	
+	window location at: #hash put: aURI
+! !
+
+!Router class methodsFor: 'initialization'!
+
+initialize
+	
+	self observeHash
+! !
+

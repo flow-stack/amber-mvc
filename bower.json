@@ -1,7 +1,7 @@
 {
   "name": "mvc",
   "description": "This is a MVC implementation for Amber",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -30,7 +30,8 @@
     "text": "requirejs/text#~2.0.12",
     "rivets": "~0.7.2",
     "amber-dom-events": "~0.1.3",
-    "bootstrap": "~3.3.1"
+    "bootstrap": "~3.3.1",
+    "rlite": "git@github.com:flow-stack/rlite.git"  
   },
   "devDependencies": {
     "amber-ide-starter-dialog": "^0.1.0",
