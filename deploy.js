@@ -4,6 +4,7 @@ define([
     'text',
     'sightglass',
     'rivets',    
+    'rlite',
     'domevents/DOMEvents',
     'amber-mvc/MVC-Core',
     'amber-mvc/MVC-Iterables',
