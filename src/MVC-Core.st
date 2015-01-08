@@ -282,6 +282,15 @@ defaultHtmlElement
 defaultModel
 
 	^ nil
+!
+
+keyword
+	"Answers the name of the class in lowercase without 
+	the 'Controller' sufix so it can, for example, be used for friendly URI.
+	Subclasses are expected to follow the naming convention *Controller like
+	ThisNameController, ThatOtherNameController, AnyNameController, etc"
+
+	^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed
 ! !
 
 !Controller class methodsFor: 'actions'!
