@@ -1,9 +1,9 @@
-define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects"], function($boot){
+define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "amber_core/Kernel-Infrastructure"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('MVC-Core');
 $core.packages["MVC-Core"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
 
-$core.addClass('Controller', $globals.Widget, ['controllers', 'model', 'view', 'parent', 'parentElement'], 'MVC-Core');
+$core.addClass('Controller', $globals.Widget, ['controllers', 'model', 'view', 'parent', 'parentElement', 'deferred'], 'MVC-Core');
 //>>excludeStart("ide", pragmas.excludeIdeData);
 $globals.Controller.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.\x0a\x0aA typical controller might have:\x0a\x0a1. a model\x0a2. some (sub)controllers\x0a3. minimal common behavior";
 //>>excludeEnd("ide");
@@ -274,6 +274,36 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
+selector: "deferred",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$1,$receiver;
+$2=self["@deferred"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeDeferred();
+} else {
+$1=$2;
+};
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"deferred",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "deferred\x0a\x0a\x09^ deferred ifNil: [ self initializeDeferred ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["ifNil:", "initializeDeferred"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
 selector: "destroy",
 protocol: 'actions',
 fn: function (){
@@ -293,6 +323,31 @@ source: "destroy\x0a\x0a\x09self remove",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["remove"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "hasDeferred",
+protocol: 'testing',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=$recv(self["@deferred"])._notNil();
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"hasDeferred",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "hasDeferred\x0a\x09\x22Answers true if this controller has a deferred object.\x22\x0a\x09\x0a\x09^ deferred notNil",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["notNil"]
 }),
 $globals.Controller);
 
@@ -499,6 +554,32 @@ source: "initializeControllers\x0a\x09\x0a\x09^ controllers := Dictionary new",
 referencedClasses: ["Dictionary"],
 //>>excludeEnd("ide");
 messageSends: ["new"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "initializeDeferred",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+self["@deferred"]=$recv($recv(jQuery)._Deferred())._value();
+$1=self["@deferred"];
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"initializeDeferred",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "initializeDeferred\x0a\x09\x22Sets the promise used by this controller.\x0a\x09http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ deferred := jQuery Deferred value ",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["value", "Deferred"]
 }),
 $globals.Controller);
 
@@ -976,16 +1057,26 @@ selector: "silentView:",
 protocol: 'accessing',
 fn: function (aHtmlElement){
 var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
 self["@view"]=aHtmlElement;
+$1=self._hasDeferred();
+if($core.assert($1)){
+$recv(self["@deferred"])._resolve_(self);
+};
 return self;
-
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"silentView:",{aHtmlElement:aHtmlElement},$globals.Controller)});
+//>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aHtmlElement"],
-source: "silentView: aHtmlElement\x0a\x09\x22Sets the instance of the element considered the view of this controller.\x22\x0a\x09view := aHtmlElement",
+source: "silentView: aHtmlElement\x0a\x09\x22Sets the instance of the element considered the view of this controller.\x22\x0a\x09view := aHtmlElement.\x0a\x09\x0a\x09self hasDeferred ifTrue: [\x0a\x09\x09deferred resolve: self ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: []
+messageSends: ["ifTrue:", "hasDeferred", "resolve:"]
 }),
 $globals.Controller);
 
@@ -3943,5 +4034,41 @@ referencedClasses: [],
 messageSends: ["at:put:", "location"]
 }),
 $globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "isNil",
+protocol: '*MVC-Core',
+fn: function (){
+var self=this;
+return false;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "isNil\x0a\x0a\x09^ false",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.JSObjectProxy);
+
+$core.addMethod(
+$core.method({
+selector: "notNil",
+protocol: '*MVC-Core',
+fn: function (){
+var self=this;
+return true;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "notNil\x0a\x0a\x09^ true",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.JSObjectProxy);
 
 });

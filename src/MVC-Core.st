@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'MVC-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model view parent parentElement'
+	instanceVariableNames: 'controllers model view parent parentElement deferred'
 	package: 'MVC-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -79,6 +79,11 @@ controllers
 	^ controllers ifNil:[ self initializeControllers ]
 !
 
+deferred
+
+	^ deferred ifNil: [ self initializeDeferred ]
+!
+
 model
 	
 	^ model
@@ -118,7 +123,10 @@ parentElement: aHtmlElement
 
 silentView: aHtmlElement
 	"Sets the instance of the element considered the view of this controller."
-	view := aHtmlElement
+	view := aHtmlElement.
+	
+	self hasDeferred ifTrue: [
+		deferred resolve: self ]
 !
 
 view
@@ -256,9 +264,22 @@ silentRenderOn: html
 initializeControllers
 	
 	^ controllers := Dictionary new
+!
+
+initializeDeferred
+	"Sets the promise used by this controller.
+	http://api.jquery.com/category/deferred-object/"
+	
+	^ deferred := jQuery Deferred value
 ! !
 
 !Controller methodsFor: 'testing'!
+
+hasDeferred
+	"Answers true if this controller has a deferred object."
+	
+	^ deferred notNil
+!
 
 hasModel
 	"Answers true if this controller has a model"
@@ -1126,5 +1147,17 @@ set: aURI
 initialize
 	
 	self observeHash
+! !
+
+!JSObjectProxy methodsFor: '*MVC-Core'!
+
+isNil
+
+	^ false
+!
+
+notNil
+
+	^ true
 ! !
 
