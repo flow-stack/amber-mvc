@@ -20,6 +20,8 @@ require.config({
     "helios/resources": "bower_components/helios/resources",
     "helios/index": "bower_components/helios/index",
     "domevents": "bower_components/amber-dom-events/src",
+    "amber-attic": "bower_components/amber-attic/src",
+    "amber-attic/resources": "bower_components/amber-attic/resources",
     "amber": "bower_components/amber/support",
     "amber_core": "bower_components/amber/src",
     "amber-mvc": "src"
@@ -36,11 +38,13 @@ require.config({
   "shim": {
     "jquery-ui": {
       "deps": [
+        "jquery",
         "jquery"
       ]
     },
     "codemirror/lib/codemirror": {
       "deps": [
+        "css!codemirror/lib/codemirror",
         "css!codemirror/lib/codemirror"
       ]
     },
@@ -58,6 +62,18 @@ require.config({
     "bootstrap": {
       "deps": [
         "jquery"
+      ]
+    },
+    "amber-attic/IDE": {
+      "deps": [
+        "codemirror/lib/codemirror",
+        "codemirror/mode/smalltalk/smalltalk",
+        "codemirror/addon/hint/show-hint",
+        "css!codemirror/theme/ambiance",
+        "css!codemirror/lib/codemirror",
+        "css!codemirror/addon/hint/show-hint",
+        "jquery-ui",
+        "css!./resources/amber"
       ]
     },
     "ensure-console": {

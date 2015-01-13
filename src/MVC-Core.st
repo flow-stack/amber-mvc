@@ -619,7 +619,7 @@ asBindArgument
 	"Answers the model and this controller as rivets like it for binding."
 
 	^ #{
-	'model' -> self getModelAsArgument.
+	'model' -> self getBindableModel.
 	'controller' -> self
 	}
 !
@@ -652,6 +652,13 @@ configureAndBind
 	self bind.
 !
 
+getBindableModel
+	"Returns the model in a way that is appropiate for binding (usable by rivets).
+	By default BindingController assumes you are using a plain javascript object as model
+	but subclasses might differ if they please to do so."
+	^ model
+!
+
 getConfiguration
 
 	^ #{ #handler -> self getHandler }
@@ -666,13 +673,6 @@ getHandler
 	<return function( target, event, binding ){
 		this.call(binding.model);
 	}>
-!
-
-getModelAsArgument
-	"Returns the model in a way that is appropiate for binding (usable by rivets).
-	By default BindingController assumes you are using a plain javascript object as model
-	but subclasses might differ if they please to do so."
-	^ model
 !
 
 rebind
@@ -757,7 +757,7 @@ close
 createModal
 	"Creates the bootstrap modal on the view of this controller."
 
-	(jQuery value: view) modal: self modalOptions
+	view asJQuery modal: self modalOptions
 !
 
 open
@@ -1169,5 +1169,26 @@ isNil
 notNil
 
 	^ true
+! !
+
+!Object methodsFor: '*MVC-Core'!
+
+changed
+
+	self triggerEvent: #changed
+! !
+
+!SequenceableCollection methodsFor: '*MVC-Core'!
+
+shuffled
+	"Answers a copy of this collection with the same elements but randomly positioned."
+	
+	| shaked source | 
+	
+	shaked := self class new.
+	source := self copy.
+	
+	1 to: self size do: [ :i | 
+		shaked add: (source remove: source atRandom) ].
 ! !
 

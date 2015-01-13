@@ -69,14 +69,10 @@ initialize
 initializeMain
 
 	^ main := MainController 
-				for: AppVisitor new
+				for: ExampleModel new
 				on: nil
 				appendingTo: '#main-wrapper' asJQuery
 ! !
-
-Object subclass: #AppVisitor
-	instanceVariableNames: ''
-	package: 'App'!
 
 ConfirmController subclass: #ConfirmNameController
 	instanceVariableNames: ''
@@ -146,14 +142,32 @@ BindingController subclass: #Example2Controller
 
 The AppController is the main/root controller of your flow-based application.!
 
+!Example2Controller methodsFor: 'accessing'!
+
+nameModal
+
+	^ self ifAbsentAt: #nameModal put: [
+		(ConfirmNameController 
+			for: ExampleModel new
+			on: self
+			appendingTo: '#confirmName' asJQuery)
+				acceptBlock: [ 
+					model at: #isConfirmed put: true.
+					(self controllerAt: #nameModal) close ];
+				rejectBlock: [ 
+					model at: #isConfirmed put: false.
+					(self controllerAt: #nameModal) close ];
+				yourself ]
+! !
+
 !Example2Controller methodsFor: 'actions'!
 
 confirm
 	"Sets a fresh message and opens the modal"
 
-	(self controllerAt: #nameModal) 
-		message: (model firstName asString,' are you sure you can handle this?');
-		open
+	self nameModal
+		message: ((model at: #firstName) asString,' are you sure you can handle this?');
+		showThen: [ :c | c open ]
 !
 
 confirmAgain
@@ -162,24 +176,6 @@ confirmAgain
 	model isConfirmed: false.
 	
 	self  updateCanConfirm
-!
-
-ensureModal
-
-	self ifAbsentAt: #nameModal put: [
-		ConfirmNameController 
-			for: Flow session visitor
-			on: self
-			appendingTo: '#confirmName' asJQuery ].
-			
-	(self controllerAt: #nameModal) 
-		acceptBlock: [ 
-			model isConfirmed: true.
-			(self controllerAt: #nameModal) close ];
-		rejectBlock: [ 
-			model isConfirmed: false.
-			(self controllerAt: #nameModal) close ];
-		refresh
 !
 
 observeEvents
@@ -199,8 +195,8 @@ updateCanConfirm
 	
 	self 
 		basicAt: #canConfirm 
-		put: (model firstName notNil and: [
-				model firstName notEmpty ])
+		put: ((model at: #firstName) notNil and: [
+				(model at: #firstName) notEmpty ])
 ! !
 
 !Example2Controller methodsFor: 'initialization'!
@@ -213,7 +209,6 @@ initialize
 		when: #onAfterView 
 		do: [ 
 			self updateCanConfirm.
-			self ensureModal.
 			self observeEvents ]
 ! !
 
@@ -243,24 +238,29 @@ TemplateController subclass: #Example3Controller
 
 The AppController is the main/root controller of your flow-based application.!
 
-!Example3Controller methodsFor: 'actions'!
+!Example3Controller methodsFor: 'accessing'!
 
-ensureSubControllers
+example1
 
-	self ifAbsentAt: #subexample put: [
+	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
 			for: nil "We don't need to set any particular model for it"
 			on: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
-			appendingTo: '#subexample-wrapper' asJQuery ].
-			
-	(self controllerAt: #subexample) refresh
-!
+			appendingTo: '#subexample-wrapper' asJQuery ]
+! !
+
+!Example3Controller methodsFor: 'actions'!
 
 observeEvents
 
 	(view asJQuery find: 'a#inspect-this') 
 		on: #click
 		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
+!
+
+showSubController
+	
+	self example1 show
 ! !
 
 !Example3Controller methodsFor: 'initialization'!
@@ -272,7 +272,7 @@ initialize
 	self 
 		when: #onAfterView 
 		do: [ 
-			self ensureSubControllers.
+			self showSubController.
 			self observeEvents ]
 ! !
 
@@ -309,60 +309,44 @@ potentialNames
 	DeBroglie
 	Feynman
 	)
+!
+
+things 
+	
+	^ self ifAbsentAt: #things put: [
+		(ListController 
+			on: self
+			appendingTo: '#things-wrapper' asJQuery)
+			newItemControllerBlock: [ :item | 
+				self newItemControllerFor: item for: (self controllerAt: #things) ];
+			model: self getListModel;
+			yourself ]
 ! !
 
 !Example4Controller methodsFor: 'actions'!
 
 addThing
 
-	(self controllerAt: #things) model add: (Thing new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
+	self things model add: (ThingModel new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
 	
 	self updateNotEmpty
 !
 
-ensureDetails
-	"Makes sure we have a controller for #details and 
-	make it fresh and visible with a refresh"
+details
 	
-	self ifAbsentAt: #details put: [
+	^ self ifAbsentAt: #details put: [
 		ThingDetailsController
 			on: self
-			appendingTo: '#details-wrapper' asJQuery ].
-	
-	(self controllerAt: #details) refresh
-!
-
-ensureList
-	"Makes sure we have a controller for #things and 
-	make it fresh and visible with a refresh"
-	
-	self ifAbsentAt: #things put: [
-		ListController 
-			on: self
-			appendingTo: '#things-wrapper' asJQuery ].
-	
-	(self controllerAt: #things) 
-		newItemControllerBlock: [ :item | 
-			self newItemControllerFor: item for: (self controllerAt: #things) ];
-		model: self getListModel;
-		refresh
+			appendingTo: '#details-wrapper' asJQuery ]
 !
 
 getListModel
-	"Answers the list model of things"
-
-	| things |
-	 
-	"Load them from the local storage"
-	things := ListModel localFindCid: 'samples'.
+	"Answers a newly created list model of things (Thing sample instances)."
 	
-	things ifNil: [ 
-		"Oh, not found? then create and save some..."
-		things := self newListModel.
-		things do: [ :e | e localSave ].
-		things localSave ].
-	
-	^ things
+	^ ListModel new
+		list: (self potentialNames shuffled collect: [ :aName |  
+				#{ #name -> aName } ]);
+		yourself
 !
 
 newItemControllerFor: aModel for: aListController
@@ -383,17 +367,6 @@ newItemControllerFor: aModel for: aListController
 	^ row
 !
 
-newListModel
-	"Answers a newly created list model of things (Thing sample instances)."
-	
-	^ ListModel new
-		list: (self potentialNames shuffled collect: [ :aName |  
-				Thing new 
-					name: aName;
-					yourself ]);
-		yourself
-!
-
 observeEvents
 
 	'#inspect-this' asJQuery 
@@ -403,7 +376,7 @@ observeEvents
 
 removeThing
 
-	(self controllerAt: #things) model removeLast.
+	self things model removeLast.
 	
 	self updateNotEmpty
 !
@@ -412,7 +385,7 @@ updateNotEmpty
 
 	self 
 		basicAt: #notEmpty 
-		put: (self controllerAt: #things) model notEmpty
+		put: self things model notEmpty
 ! !
 
 !Example4Controller methodsFor: 'initialization'!
@@ -424,8 +397,7 @@ initialize
 	self basicAt: #hasDetails put: false.
 	
 	self when: #onAfterView do: [ 
-		self ensureDetails.
-		self ensureList.
+		self things show.
 		self updateNotEmpty.
 		self observeEvents ]
 ! !
@@ -436,12 +408,12 @@ onDetails: aThing
 
 	self basicAt: #hasDetails put: true.
 	
-	(self controllerAt: #details) model: aThing; refresh
+	self details model: aThing; refresh
 !
 
 onRemove: aThing
 
-	(self controllerAt: #things) model remove: aThing.
+	self things model remove: aThing.
 
 	self updateNotEmpty
 ! !
@@ -541,7 +513,7 @@ newItems
 	"Answers a newly created collection of items to be used as models in the ItemsController."
 	
 	^ self potentialNames shuffled collect: [ :aName |  
-		Thing new 
+		ThingModel new 
 			name: aName;
 			yourself ]
 !
@@ -610,6 +582,22 @@ defaultModel
 	^ AppVisitor new
 ! !
 
+Object subclass: #ExampleModel
+	instanceVariableNames: 'name'
+	package: 'App'!
+
+!ExampleModel methodsFor: 'accessing'!
+
+name
+
+	^ name
+!
+
+name: aString
+
+	name := aString
+! !
+
 TemplateController subclass: #MainController
 	instanceVariableNames: ''
 	package: 'App'!
@@ -624,7 +612,7 @@ example1
 
 	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
-			for: self model
+			for: model
 			on: self
 			appendingTo: '#example1-wrapper' asJQuery ]
 !
@@ -633,7 +621,12 @@ example2
 
 	^ self ifAbsentAt: #example2 put: [
 		Example2Controller 
-			for: (JSObjectProxy on: #{}) "It's a binding controller, so we send a plain js object as model"
+			for: #{ 
+					#firstName -> 'Dude'.					
+					#someNumbers -> #( 3 6 2 8 1 ).
+					#someFloatValue -> 33.33333333
+	
+				}  "It's a binding controller, so we send a plain js object as model"
 			on: self
 			appendingTo: '#example2-wrapper' asJQuery ]
 !
@@ -642,7 +635,7 @@ example3
 
 	^ self ifAbsentAt: #example3 put: [
 		Example3Controller 
-			for:self model
+			for: model
 			on: self
 			appendingTo: '#example3-wrapper' asJQuery ]
 !
@@ -651,7 +644,7 @@ example4
 
 	^ self ifAbsentAt: #example4 put: [
 		Example4Controller 
-			for: (JSObjectProxy on: #{}) "It's a binding controller, so we send a plain js object as model"
+			for: #{} "It's a binding controller, so we send a plain js object as model"
 			on: self
 			appendingTo: '#example4-wrapper' asJQuery ]
 !
@@ -660,7 +653,7 @@ example5
 
 	^ self ifAbsentAt: #example5 put: [
 		Example5Controller 
-			for: (JSObjectProxy on: #{}) "It's a binding controller, so we send a plain js object as model"
+			for: #{} "It's a binding controller, so we send a plain js object as model"
 			on: self
 			appendingTo: '#example5-wrapper' asJQuery ]
 ! !
@@ -757,6 +750,22 @@ initialize
 BindingController subclass: #ThingDetailsController
 	instanceVariableNames: ''
 	package: 'App'!
+
+Object subclass: #ThingModel
+	instanceVariableNames: 'name'
+	package: 'App'!
+
+!ThingModel methodsFor: 'accessing'!
+
+name
+
+	^ name
+!
+
+name: aString
+
+	name := aString
+! !
 
 BindingController subclass: #ThingRowController
 	instanceVariableNames: ''

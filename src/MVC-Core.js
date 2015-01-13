@@ -1,4 +1,4 @@
-define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "amber_core/Kernel-Infrastructure"], function($boot){
+define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('MVC-Core');
 $core.packages["MVC-Core"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
@@ -2194,7 +2194,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=$globals.HashedCollection._newFromPairs_(["model",self._getModelAsArgument(),"controller",self]);
+$1=$globals.HashedCollection._newFromPairs_(["model",self._getBindableModel(),"controller",self]);
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"asBindArgument",{},$globals.BindingController)});
@@ -2202,10 +2202,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "asBindArgument\x0a\x09\x22Answers the model and this controller as rivets like it for binding.\x22\x0a\x0a\x09^ #{\x0a\x09'model' -> self getModelAsArgument.\x0a\x09'controller' -> self\x0a\x09}",
+source: "asBindArgument\x0a\x09\x22Answers the model and this controller as rivets like it for binding.\x22\x0a\x0a\x09^ #{\x0a\x09'model' -> self getBindableModel.\x0a\x09'controller' -> self\x0a\x09}",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["getModelAsArgument"]
+messageSends: ["getBindableModel"]
 }),
 $globals.BindingController);
 
@@ -2305,6 +2305,26 @@ $globals.BindingController);
 
 $core.addMethod(
 $core.method({
+selector: "getBindableModel",
+protocol: 'actions',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@model"];
+return $1;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "getBindableModel\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using a plain javascript object as model\x0a\x09but subclasses might differ if they please to do so.\x22\x0a\x09^ model",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.BindingController);
+
+$core.addMethod(
+$core.method({
 selector: "getConfiguration",
 protocol: 'actions',
 fn: function (){
@@ -2348,26 +2368,6 @@ return self;
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
 source: "getHandler\x0a\x09\x22Answers the custom handler of flow controllers for rivets.\x0a\x09We need it to be call on binding.model otherwhise \x0a\x09rivets would send the html element (target of the event)\x0a\x09screwing the self instance of this controller\x22\x0a\x0a\x09<return function( target, event, binding ){\x0a\x09\x09this.call(binding.model);\x0a\x09}>",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: []
-}),
-$globals.BindingController);
-
-$core.addMethod(
-$core.method({
-selector: "getModelAsArgument",
-protocol: 'actions',
-fn: function (){
-var self=this;
-var $1;
-$1=self["@model"];
-return $1;
-
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using a plain javascript object as model\x0a\x09but subclasses might differ if they please to do so.\x22\x0a\x09^ model",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: []
@@ -2627,7 +2627,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv($recv(jQuery)._value_(self["@view"]))._modal_(self._modalOptions());
+$recv($recv(self["@view"])._asJQuery())._modal_(self._modalOptions());
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"createModal",{},$globals.ModalController)});
@@ -2635,10 +2635,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "createModal\x0a\x09\x22Creates the bootstrap modal on the view of this controller.\x22\x0a\x0a\x09(jQuery value: view) modal: self modalOptions",
+source: "createModal\x0a\x09\x22Creates the bootstrap modal on the view of this controller.\x22\x0a\x0a\x09view asJQuery modal: self modalOptions",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["modal:", "value:", "modalOptions"]
+messageSends: ["modal:", "asJQuery", "modalOptions"]
 }),
 $globals.ModalController);
 
@@ -4093,5 +4093,64 @@ referencedClasses: [],
 messageSends: []
 }),
 $globals.JSObjectProxy);
+
+$core.addMethod(
+$core.method({
+selector: "changed",
+protocol: '*MVC-Core',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+self._triggerEvent_("changed");
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"changed",{},$globals.Object)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "changed\x0a\x0a\x09self triggerEvent: #changed",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["triggerEvent:"]
+}),
+$globals.Object);
+
+$core.addMethod(
+$core.method({
+selector: "shuffled",
+protocol: '*MVC-Core',
+fn: function (){
+var self=this;
+var shaked,source;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+shaked=$recv(self._class())._new();
+source=self._copy();
+(1)._to_do_(self._size(),(function(i){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv(shaked)._add_($recv(source)._remove_($recv(source)._atRandom()));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"shuffled",{shaked:shaked,source:source},$globals.SequenceableCollection)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "shuffled\x0a\x09\x22Answers a copy of this collection with the same elements but randomly positioned.\x22\x0a\x09\x0a\x09| shaked source | \x0a\x09\x0a\x09shaked := self class new.\x0a\x09source := self copy.\x0a\x09\x0a\x091 to: self size do: [ :i | \x0a\x09\x09shaked add: (source remove: source atRandom) ].",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["new", "class", "copy", "to:do:", "size", "add:", "remove:", "atRandom"]
+}),
+$globals.SequenceableCollection);
 
 });
