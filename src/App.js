@@ -15,7 +15,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("App>>home");
 $recv(self._main())._reset();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -24,10 +23,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "home\x0a\x09console log: 'App>>home'.\x0a\x09\x0a\x09self main reset",
+source: "home\x0a\x0a\x09self main reset",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "reset", "main"]
+messageSends: ["reset", "main"]
 }),
 $globals.App.klass);
 
@@ -76,7 +75,7 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initializeMain\x0a\x0a\x09^ main := MainController \x0a\x09\x09\x09\x09for: ExampleModel new\x0a\x09\x09\x09\x09on: nil\x0a\x09\x09\x09\x09appendingTo: '#main-wrapper' asJQuery",
+source: "initializeMain\x0a\x0a\x09^ main := MainController \x0a\x09\x09\x09\x09\x09for: ExampleModel new\x0a\x09\x09\x09\x09\x09on: nil\x0a\x09\x09\x09\x09\x09appendingTo: '#main-wrapper' asJQuery",
 referencedClasses: ["MainController", "ExampleModel"],
 //>>excludeEnd("ide");
 messageSends: ["for:on:appendingTo:", "new", "asJQuery"]
@@ -115,69 +114,6 @@ $globals.App.klass);
 
 $core.addMethod(
 $core.method({
-selector: "publishObjects",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $Flow(){return $globals.Flow||(typeof Flow=="undefined"?nil:Flow)}
-function $Transcript(){return $globals.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1,$2;
-$1=$recv($recv($recv($Flow())._session())._api())._ws();
-$recv($1)._publish_at_($recv($Flow())._app(),"app");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["publish:at:"]=1;
-//>>excludeEnd("ctx");
-$recv($1)._publish_at_($recv($Transcript())._current(),"Transcript");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["publish:at:"]=2;
-//>>excludeEnd("ctx");
-$recv($1)._publish_at_(console,"console");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["publish:at:"]=3;
-//>>excludeEnd("ctx");
-$recv($1)._publish_at_((function(sent){
-return sent;
-
-}),"echo");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["publish:at:"]=4;
-//>>excludeEnd("ctx");
-$recv($1)._publish_at_((function(ping){
-return "pong";
-
-}),"ping");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["publish:at:"]=5;
-//>>excludeEnd("ctx");
-$recv($1)._publish_at_((function(a,b){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv(a).__plus(b);
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({a:a,b:b},$ctx1,3)});
-//>>excludeEnd("ctx");
-}),"sum");
-$2=$recv($1)._yourself();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"publishObjects",{},$globals.App.klass)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "publishObjects\x0a\x0a\x09Flow session api ws\x0a\x09\x09publish: Flow app at: 'app';\x0a\x09\x09publish: Transcript current at: 'Transcript';\x0a\x09\x09publish: console at: 'console';\x0a\x09\x09publish: [ :sent | sent ] at: 'echo';\x0a\x09\x09publish: [ :ping | #pong ] at: 'ping';\x09\x09\x0a\x09\x09publish: [ :a :b | a + b ] at: 'sum';\x09\x0a\x09\x09yourself",
-referencedClasses: ["Flow", "Transcript"],
-//>>excludeEnd("ide");
-messageSends: ["publish:at:", "ws", "api", "session", "app", "current", "+", "yourself"]
-}),
-$globals.App.klass);
-
-$core.addMethod(
-$core.method({
 selector: "setupRoutes",
 protocol: 'actions',
 fn: function (){
@@ -192,10 +128,6 @@ $1=$recv($Router())._rlite();
 $recv($1)._add_do_("",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-$recv(console)._log_("process \x22\x22");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["log:"]=1;
 //>>excludeEnd("ctx");
 return $recv($Router())._set_("/home");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -212,10 +144,6 @@ $recv($1)._add_do_("/",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("process \x22/\x22");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["log:"]=2;
-//>>excludeEnd("ctx");
 return $recv($Router())._set_("/home");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx2.sendIdx["set:"]=2;
@@ -230,10 +158,6 @@ $ctx1.sendIdx["add:do:"]=2;
 $recv($1)._add_do_("/#",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-$recv(console)._log_("process \x22/#\x22");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["log:"]=3;
 //>>excludeEnd("ctx");
 return $recv($Router())._set_("/home");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -250,10 +174,6 @@ $recv($1)._add_do_("/home",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("process \x22/home\x22");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["log:"]=4;
-//>>excludeEnd("ctx");
 return $recv($Router())._set_("/home");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx2.sendIdx["set:"]=4;
@@ -269,10 +189,6 @@ $recv($1)._add_do_("/#/home",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("process \x22/#/home\x22");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["log:"]=5;
-//>>excludeEnd("ctx");
 return $recv($Router())._set_("/home");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({r:r},$ctx1,5)});
@@ -285,7 +201,6 @@ $recv($1)._add_do_("home",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("process \x22home\x22");
 return $recv($App())._home();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({r:r},$ctx1,6)});
@@ -375,10 +290,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "setupRoutes\x0a\x0a\x09Router rlite \x0a\x09\x09add: '' do: [ :r | console log: 'process \x22\x22'. Router set: '/home' ];\x0a\x09\x09add: '/' do: [ :r | console log: 'process \x22/\x22'. Router set: '/home' ];\x0a\x09\x09add: '/#' do: [ :r | console log: 'process \x22/#\x22'. Router set: '/home' ];\x0a\x09\x09add: '/home' do: [ :r | console log: 'process \x22/home\x22'. Router set: '/home' ];\x0a\x09\x09add: '/#/home' do: [ :r | console log: 'process \x22/#/home\x22'. Router set: '/home' ];\x0a\x0a\x09\x09add: 'home' do: [ :r | console log: 'process \x22home\x22'. App home ];\x0a\x09\x09add: 'example1' do: [ :r | App main showExample1 ];\x0a\x09\x09add: 'example2' do: [ :r | App main showExample2 ];\x0a\x09\x09add: 'example3' do: [ :r | App main showExample3 ];\x0a\x09\x09add: 'example4' do: [ :r | App main showExample4 ];\x0a\x09\x09add: 'example5' do: [ :r | App main showExample5 ];\x0a\x09\x09yourself",
+source: "setupRoutes\x0a\x0a\x09Router rlite \x0a\x09\x09\x22Normalize the home URI\x22\x0a\x09\x09add: '' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/#' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/home' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/#/home' do: [ :r | Router set: '/home' ];\x0a\x0a\x09\x09\x22Setup the actual routes\x22\x0a\x09\x09add: 'home' do: [ :r | App home ];\x0a\x09\x09add: 'example1' do: [ :r | App main showExample1 ];\x0a\x09\x09add: 'example2' do: [ :r | App main showExample2 ];\x0a\x09\x09add: 'example3' do: [ :r | App main showExample3 ];\x0a\x09\x09add: 'example4' do: [ :r | App main showExample4 ];\x0a\x09\x09add: 'example5' do: [ :r | App main showExample5 ];\x0a\x09\x09yourself",
 referencedClasses: ["Router", "App"],
 //>>excludeEnd("ide");
-messageSends: ["add:do:", "rlite", "log:", "set:", "home", "showExample1", "main", "showExample2", "showExample3", "showExample4", "showExample5", "yourself"]
+messageSends: ["add:do:", "rlite", "set:", "home", "showExample1", "main", "showExample2", "showExample3", "showExample4", "showExample5", "yourself"]
 }),
 $globals.App.klass);
 
@@ -1212,51 +1127,6 @@ $globals.Example4Controller);
 
 $core.addMethod(
 $core.method({
-selector: "asBindArgument",
-protocol: 'actions',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1,$2,$3;
-$1=console;
-$2=(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.Example4Controller.superclass.fn.prototype._asBindArgument.apply($recv(self), []));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["asBindArgument"]=1;
-//>>excludeEnd("ctx");
-$recv($1)._log_($2);
-$3=(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.Example4Controller.superclass.fn.prototype._asBindArgument.apply($recv(self), []));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-return $3;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"asBindArgument",{},$globals.Example4Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "asBindArgument\x0a\x0a\x09console log: super asBindArgument.\x0a\x09\x0a\x09^ super asBindArgument",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["log:", "asBindArgument"]
-}),
-$globals.Example4Controller);
-
-$core.addMethod(
-$core.method({
 selector: "details",
 protocol: 'actions',
 fn: function (){
@@ -1564,7 +1434,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("clicked works");
 $recv($recv(self._things())._model())._removeLast();
 self._updateNotEmpty();
 return self;
@@ -1574,10 +1443,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeThing\x0aconsole log: 'clicked works'.\x0a\x09self things model removeLast.\x0a\x09\x0a\x09self updateNotEmpty",
+source: "removeThing\x0a\x0a\x09self things model removeLast.\x0a\x09\x0a\x09self updateNotEmpty",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "removeLast", "model", "things", "updateNotEmpty"]
+messageSends: ["removeLast", "model", "things", "updateNotEmpty"]
 }),
 $globals.Example4Controller);
 
@@ -2559,7 +2428,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("MainController>>reset");
 self._hideAll();
 self._showThen_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -2577,10 +2445,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "reset\x0a\x09\x22Hides all subcontrollers and shows the welcome message\x22\x0a\x0a\x09console log: 'MainController>>reset'.\x0a\x0a\x09self hideAll.\x0a\x09\x0a\x09self showThen: [ '#welcome' asJQuery show ]",
+source: "reset\x0a\x09\x22Hides all subcontrollers and shows the welcome message\x22\x0a\x0a\x09self hideAll.\x0a\x09\x0a\x09self showThen: [ '#welcome' asJQuery show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "hideAll", "showThen:", "show", "asJQuery"]
+messageSends: ["hideAll", "showThen:", "show", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -2593,7 +2461,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("showExample1");
 self._showThen_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -2611,10 +2478,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample1\x0a\x0a\x09console log: 'showExample1'.\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example1 show ]",
+source: "showExample1\x0a\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example1 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "showThen:", "hideAll", "show", "example1"]
+messageSends: ["showThen:", "hideAll", "show", "example1"]
 }),
 $globals.MainController);
 
@@ -2627,7 +2494,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("showExample2");
 self._showThen_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -2645,10 +2511,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample2\x0a\x0a\x09console log: 'showExample2'.\x0a\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example2 show ]",
+source: "showExample2\x0a\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example2 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "showThen:", "hideAll", "show", "example2"]
+messageSends: ["showThen:", "hideAll", "show", "example2"]
 }),
 $globals.MainController);
 
@@ -2661,7 +2527,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("showExample3");
 self._showThen_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -2679,10 +2544,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample3\x0a\x0a\x09console log: 'showExample3'.\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example3 show ]",
+source: "showExample3\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example3 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "showThen:", "hideAll", "show", "example3"]
+messageSends: ["showThen:", "hideAll", "show", "example3"]
 }),
 $globals.MainController);
 
@@ -2695,7 +2560,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("showExample4");
 self._showThen_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -2713,10 +2577,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample4\x0a\x0a\x09console log: 'showExample4'.\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example4 show ]",
+source: "showExample4\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example4 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "showThen:", "hideAll", "show", "example4"]
+messageSends: ["showThen:", "hideAll", "show", "example4"]
 }),
 $globals.MainController);
 
@@ -2729,7 +2593,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("showExample5");
 self._showThen_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -2747,10 +2610,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample5\x0a\x0a\x09console log: 'showExample5'.\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example5 show ]",
+source: "showExample5\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example5 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "showThen:", "hideAll", "show", "example5"]
+messageSends: ["showThen:", "hideAll", "show", "example5"]
 }),
 $globals.MainController);
 

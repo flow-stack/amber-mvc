@@ -17,33 +17,22 @@ main
 !App class methodsFor: 'actions'!
 
 home
-	console log: 'App>>home'.
-	
+
 	self main reset
-!
-
-publishObjects
-
-	Flow session api ws
-		publish: Flow app at: 'app';
-		publish: Transcript current at: 'Transcript';
-		publish: console at: 'console';
-		publish: [ :sent | sent ] at: 'echo';
-		publish: [ :ping | #pong ] at: 'ping';		
-		publish: [ :a :b | a + b ] at: 'sum';	
-		yourself
 !
 
 setupRoutes
 
 	Router rlite 
-		add: '' do: [ :r | console log: 'process ""'. Router set: '/home' ];
-		add: '/' do: [ :r | console log: 'process "/"'. Router set: '/home' ];
-		add: '/#' do: [ :r | console log: 'process "/#"'. Router set: '/home' ];
-		add: '/home' do: [ :r | console log: 'process "/home"'. Router set: '/home' ];
-		add: '/#/home' do: [ :r | console log: 'process "/#/home"'. Router set: '/home' ];
+		"Normalize the home URI"
+		add: '' do: [ :r | Router set: '/home' ];
+		add: '/' do: [ :r | Router set: '/home' ];
+		add: '/#' do: [ :r | Router set: '/home' ];
+		add: '/home' do: [ :r | Router set: '/home' ];
+		add: '/#/home' do: [ :r | Router set: '/home' ];
 
-		add: 'home' do: [ :r | console log: 'process "home"'. App home ];
+		"Setup the actual routes"
+		add: 'home' do: [ :r | App home ];
 		add: 'example1' do: [ :r | App main showExample1 ];
 		add: 'example2' do: [ :r | App main showExample2 ];
 		add: 'example3' do: [ :r | App main showExample3 ];
@@ -69,9 +58,9 @@ initialize
 initializeMain
 
 	^ main := MainController 
-				for: ExampleModel new
-				on: nil
-				appendingTo: '#main-wrapper' asJQuery
+					for: ExampleModel new
+					on: nil
+					appendingTo: '#main-wrapper' asJQuery
 ! !
 
 ConfirmController subclass: #ConfirmNameController
@@ -330,13 +319,6 @@ addThing
 	self updateNotEmpty
 !
 
-asBindArgument
-
-	console log: super asBindArgument.
-	
-	^ super asBindArgument
-!
-
 details
 	
 	^ self ifAbsentAt: #details put: [
@@ -382,7 +364,7 @@ observeEvents
 !
 
 removeThing
-console log: 'clicked works'.
+
 	self things model removeLast.
 	
 	self updateNotEmpty
@@ -684,8 +666,6 @@ observeEvents
 reset
 	"Hides all subcontrollers and shows the welcome message"
 
-	console log: 'MainController>>reset'.
-
 	self hideAll.
 	
 	self showThen: [ '#welcome' asJQuery show ]
@@ -693,8 +673,6 @@ reset
 
 showExample1
 
-	console log: 'showExample1'.
-	
 	self showThen: [
 		self hideAll.
 		self example1 show ]
@@ -702,16 +680,12 @@ showExample1
 
 showExample2
 
-	console log: 'showExample2'.
-
 	self showThen: [
 		self hideAll.
 		self example2 show ]
 !
 
 showExample3
-
-	console log: 'showExample3'.
 	
 	self showThen: [
 		self hideAll.
@@ -719,8 +693,6 @@ showExample3
 !
 
 showExample4
-
-	console log: 'showExample4'.
 	
 	self showThen: [
 		self hideAll.
@@ -728,8 +700,6 @@ showExample4
 !
 
 showExample5
-
-	console log: 'showExample5'.
 	
 	self showThen: [
 		self hideAll.

@@ -3,6 +3,11 @@ Today - Unreleased
 
 * nothing at the moment
 
+January 13, 2015 - Release 0.1.11
+===================================
+
+* Fixes all the examples except Example5 which is work in progress.
+* Adds MiniMapless as dependency. Mapless objects are a good fit to allow you to have Amber objects as models of your application while the Mapless data plain JavasScript object is binded by RivetJS so you win all its features. It's the current State of the Art to currently get the best of both worlds.
 
 January 13, 2015 - Release 0.1.10
 ===================================
