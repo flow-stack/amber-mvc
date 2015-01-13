@@ -7,9 +7,7 @@ define([
     'rivets',    
     'rlite',
     'domevents/DOMEvents',
-    'amber-mvc/MVC-Core',
-    'amber-mvc/MVC-Iterables',
-    'amber-mvc/MVC-Routeables'
+    'amber-mvc/MVC-Core'
     // --- packages to be deployed end here ---
 ], function (amber) {
     return amber;

@@ -1,0 +1,41 @@
+<div id="example5">
+	<h1>Example 5 - ItemsControllers</h1>
+	<p>This is the Example5Controller.</p>
+	<p>The Example5Controller has an ItemsController that is a special kind of BindingController. </p>
+	<p>The ItemsController combines RivetsJS' capability to iterate creating children controllers when having a list as model with flow's capability of having composable controllers.</p>
+	
+	<a id="inspect-this" class="btn btn-info">Inspect this controller</a>
+
+	<div id="details-wrapper"
+		rv-show="controller.hasDetails"></div>
+		
+	<div id="things-wrapper"></div>
+
+	<button class="btn btn-success"
+		rv-on-click="controller._addThing">Add one Thing</button>
+
+	<button class="btn btn-danger"
+		rv-show="controller.notEmpty"
+		rv-on-click="controller._removeThing">Remove last Thing</button>
+
+	<div class="well">
+		<p>Find other users in the <a href="https://gitter.im/flow-stack/flow" target="_blank()">chat group of flow</a></p>
+
+		<p>Or here for <a href="https://medium.com/@sebastianconcpt" target="_blank()">some news about the project</a></p>
+
+		<a href="#/example1"
+			class="btn btn-default">Example 1</a>
+		<a href="#/example2"
+			class="btn btn-default">Example 2</a>
+		<a href="#/example3"
+			class="btn btn-default">Example 3</a>
+		<a href="#/example4"
+			class="btn btn-default">Example 4</a>
+		<a href="#/example5"
+			class="btn btn-default">Example 5</a>
+
+		<p>Click in the button below to return to Home</p>
+		<a href="#/" 
+			class="btn btn-default">Home</a>
+	</div>
+</div>

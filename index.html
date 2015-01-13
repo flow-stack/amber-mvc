@@ -2,15 +2,20 @@
 <html>
 
   <head>
-    <title>MVC</title>
+    <title>Amber MVC</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Sebastian Sastre" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <script type='text/javascript' src='the.js'></script>
   </head>
 
   <body>
-  <h1>This is an MVC library for Amber</h1>
-  <a href="https://github.com/flow-stack/amber-mvc">amber-mvc</a>
+  
+  <div id="main-wrapper"></div>
+
+  <a 
+    href="https://github.com/flow-stack/amber-mvc"
+    style="position: fixed; bottom: 0; left: 0; opacity: 0.5">amber-mvc on github</a>
 
 
   <a id="legacy"
@@ -27,6 +32,7 @@
             //used for all new packages in IDE
             'transport.defaultAmdNamespace': "amber-mvc"
           });
+          amber.globals.App._start();
       });
   </script>
   </body>
