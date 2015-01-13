@@ -3931,7 +3931,10 @@ return self._processHash();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
 }));
-$recv($recv(jQuery)._value_(window))._unload_((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["addEventListener:do:"]=1;
+//>>excludeEnd("ctx");
+$recv(window)._addEventListener_do_("unload",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -3947,10 +3950,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeHash\x0a\x0a\x09window \x0a\x09\x09addEventListener: #hashchange \x0a\x09\x09do: [ self processHash ].\x0a\x09\x09\x0a\x09(jQuery value: window) unload: [ window removeEventListener: #hashchange ]",
+source: "observeHash\x0a\x0a\x09window \x0a\x09\x09addEventListener: #hashchange \x0a\x09\x09do: [ self processHash ].\x0a\x09\x09\x0a\x09window \x0a\x09\x09addEventListener: #unload\x0a\x09\x09do: [ window removeEventListener: #hashchange ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["addEventListener:do:", "processHash", "unload:", "value:", "removeEventListener:"]
+messageSends: ["addEventListener:do:", "processHash", "removeEventListener:"]
 }),
 $globals.Router.klass);
 

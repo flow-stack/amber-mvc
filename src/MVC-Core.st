@@ -1126,7 +1126,9 @@ observeHash
 		addEventListener: #hashchange 
 		do: [ self processHash ].
 		
-	(jQuery value: window) unload: [ window removeEventListener: #hashchange ]
+	window 
+		addEventListener: #unload
+		do: [ window removeEventListener: #hashchange ]
 !
 
 processHash
