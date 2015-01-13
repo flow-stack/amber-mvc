@@ -576,7 +576,7 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initializeDeferred\x0a\x09\x22Sets the promise used by this controller.\x0a\x09http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ deferred := jQuery Deferred value ",
+source: "initializeDeferred\x0a\x09\x22Sets the promise used by this controller.\x0a\x09http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ deferred := jQuery Deferred value",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["value", "Deferred"]

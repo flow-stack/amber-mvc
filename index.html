@@ -12,6 +12,15 @@
   <h1>This is an MVC library for Amber</h1>
   <a href="https://github.com/flow-stack/amber-mvc">amber-mvc</a>
 
+
+  <a id="legacy"
+      onclick="require('amber/helpers').globals.Browser._open()"
+      style="position: fixed; bottom: 0; right: 0; opacity: 0.35">Legacy IDE</a>
+
+  <a id="helios"
+    onclick="require('amber/helpers').popupHelios()"
+    style="position: fixed; bottom: 0; right: 120px">Helios</a>
+    
   <script type='text/javascript'>
       require(['app'], function (amber) {
           amber.initialize({

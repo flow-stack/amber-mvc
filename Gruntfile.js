@@ -39,7 +39,7 @@ module.exports = function (grunt) {
                 ],
                 amd_namespace: 'amber-mvc',
                 libraries: [ 'SUnit', 'Web', 'DOMEvents' ],
-                 options: {
+                options: {
                    library_dirs: [
                         'bower_components/amber-dom-events/src' ], 
                    verbose: true
