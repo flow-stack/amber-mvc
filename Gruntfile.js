@@ -39,10 +39,13 @@ module.exports = function (grunt) {
                     'src/MVC-Routeables.st'
                 ],
                 amd_namespace: 'amber-mvc',
-                libraries: [ 'SUnit', 'Web', 'DOMEvents' ],
+                libraries: [ 'SUnit', 'Web', 
+                    'DOMEvents',
+                    'MiniMapless' ],
                 options: {
                    library_dirs: [
-                        'bower_components/amber-dom-events/src' ], 
+                       'bower_components/amber-dom-events/src',
+                        'bower_components/minimapless/src' ], 
                    verbose: true
                  }                
             },

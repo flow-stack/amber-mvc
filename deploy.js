@@ -7,6 +7,7 @@ define([
     'rivets',    
     'rlite',
     'domevents/DOMEvents',
+    'minimapless/MiniMapless',   
     'amber-mvc/MVC-Core'
     // --- packages to be deployed end here ---
 ], function (amber) {

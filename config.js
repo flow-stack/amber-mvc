@@ -16,6 +16,7 @@ require.config({
     "rlite": "bower_components/rlite/rlite.min",
     "rivets": "bower_components/rivets/dist/rivets",
     "bootstrap": "bower_components/bootstrap/dist/js/bootstrap.min",
+    "minimapless": "bower_components/minimapless/src",
     "helios": "bower_components/helios/src",
     "helios/resources": "bower_components/helios/resources",
     "helios/index": "bower_components/helios/index",

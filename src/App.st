@@ -131,7 +131,7 @@ initialize
 
 defaultModel
 
-	^ Flow session
+	^ ExampleModel new
 ! !
 
 BindingController subclass: #Example2Controller
@@ -148,15 +148,15 @@ nameModal
 
 	^ self ifAbsentAt: #nameModal put: [
 		(ConfirmNameController 
-			for: ExampleModel new
+			for: model
 			on: self
 			appendingTo: '#confirmName' asJQuery)
 				acceptBlock: [ 
-					model at: #isConfirmed put: true.
-					(self controllerAt: #nameModal) close ];
+					model isConfirmed: true.
+					self nameModal close ];
 				rejectBlock: [ 
-					model at: #isConfirmed put: false.
-					(self controllerAt: #nameModal) close ];
+					model isConfirmed: false.
+					self nameModal close ];
 				yourself ]
 ! !
 
@@ -166,7 +166,7 @@ confirm
 	"Sets a fresh message and opens the modal"
 
 	self nameModal
-		message: ((model at: #firstName) asString,' are you sure you can handle this?');
+		message: (model firstName asString,' are you sure you can handle this?');
 		showThen: [ :c | c open ]
 !
 
@@ -194,9 +194,9 @@ updateCanConfirm
 	self hasModel ifFalse: [ ^ self ].
 	
 	self 
-		basicAt: #canConfirm 
-		put: ((model at: #firstName) notNil and: [
-				(model at: #firstName) notEmpty ])
+		basicAt: #canConfirm
+		put: (model firstName notNil and: [
+				model firstName notEmpty ])
 ! !
 
 !Example2Controller methodsFor: 'initialization'!
@@ -223,7 +223,7 @@ onFirstNameKeyUp
 
 defaultModel
 
-	^ Dictionary new 
+	^ ThingModel new 
 		firstName: 'Dude';
 		someNumbers: #( 3 6 2 8 1 );
 		someFloatValue: 33.33333333;
@@ -280,9 +280,7 @@ initialize
 
 defaultModel
 
-	^ Dictionary new 
-		firstName: 'Visitor';
-		yourself
+	^ ExampleModel new
 ! !
 
 BindingController subclass: #Example4Controller
@@ -318,7 +316,7 @@ things
 			on: self
 			appendingTo: '#things-wrapper' asJQuery)
 			newItemControllerBlock: [ :item | 
-				self newItemControllerFor: item for: (self controllerAt: #things) ];
+				self newItemControllerFor: item for: self things ];
 			model: self getListModel;
 			yourself ]
 ! !
@@ -330,6 +328,13 @@ addThing
 	self things model add: (ThingModel new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
 	
 	self updateNotEmpty
+!
+
+asBindArgument
+
+	console log: super asBindArgument.
+	
+	^ super asBindArgument
 !
 
 details
@@ -345,7 +350,9 @@ getListModel
 	
 	^ ListModel new
 		list: (self potentialNames shuffled collect: [ :aName |  
-				#{ #name -> aName } ]);
+				ThingModel new 
+					name: aName;
+					yourself ]);
 		yourself
 !
 
@@ -375,7 +382,7 @@ observeEvents
 !
 
 removeThing
-
+console log: 'clicked works'.
 	self things model removeLast.
 	
 	self updateNotEmpty
@@ -422,7 +429,7 @@ onRemove: aThing
 
 defaultModel
 
-	^ AppVisitor new
+	^ ExampleModel new
 ! !
 
 BindingController subclass: #Example5Controller
@@ -434,6 +441,16 @@ BindingController subclass: #Example5Controller
 The AppController is the main/root controller of your flow-based application.!
 
 !Example5Controller methodsFor: 'accessing'!
+
+details
+	"Makes sure we have a controller for #details and 
+	make it fresh and visible with a refresh"
+	
+	6  self ifAbsentAt: #details put: [
+		ThingDetailsController
+			on: self
+			appendingTo: '#details-wrapper' asJQuery ]
+!
 
 potentialNames
 
@@ -449,6 +466,23 @@ potentialNames
 	DeBroglie
 	Feynman
 	)
+!
+
+things
+	"Makes sure we have a controller for #things and 
+	make it fresh and visible with a refresh"
+	
+	^ self ifAbsentAt: #things put: [
+		(ItemsController 
+			for: model
+			on: self
+			appendingTo: '#things-wrapper' asJQuery)
+				getItemsBlock: [ :m | m things ];
+				rivetsAccessor: #thing;
+				newItemControllerBlock: [ :v :m :itemsController | 
+					self newItemControllerForModel: m view: v parent: itemsController ];
+				model: model;
+				yourself ]
 ! !
 
 !Example5Controller methodsFor: 'actions'!
@@ -458,37 +492,6 @@ addThing
 	model things add: (Thing new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
 	
 	self updateNotEmpty
-!
-
-ensureDetails
-	"Makes sure we have a controller for #details and 
-	make it fresh and visible with a refresh"
-	
-	self ifAbsentAt: #details put: [
-		ThingDetailsController
-			on: self
-			appendingTo: '#details-wrapper' asJQuery ].
-	
-	(self controllerAt: #details) refresh
-!
-
-ensureList
-	"Makes sure we have a controller for #things and 
-	make it fresh and visible with a refresh"
-	
-	self ifAbsentAt: #things put: [
-		ItemsController 
-			for: model
-			on: self
-			appendingTo: '#things-wrapper' asJQuery ].
-	
-	(self controllerAt: #things) 
-		getItemsBlock: [ :m | m things ];
-		rivetsAccessor: #thing;
-		newItemControllerBlock: [ :v :m :itemsController | 
-			self newItemControllerForModel: m view: v parent: itemsController ];
-		model: model;
-		refresh
 !
 
 newItemControllerForModel: aModel view: aView parent: anItemsController
@@ -546,8 +549,7 @@ initialize
 	super initialize.
 	
 	self when: #onAfterView do: [ 
-		self ensureDetails.
-		self ensureList.
+		self things show.
 		self updateNotEmpty.
 		self observeEvents ]
 !
@@ -579,7 +581,7 @@ onRemove: aThing
 
 defaultModel
 
-	^ AppVisitor new
+	^ ExampleModel new
 ! !
 
 Object subclass: #ExampleModel
@@ -621,12 +623,11 @@ example2
 
 	^ self ifAbsentAt: #example2 put: [
 		Example2Controller 
-			for: #{ 
-					#firstName -> 'Dude'.					
-					#someNumbers -> #( 3 6 2 8 1 ).
-					#someFloatValue -> 33.33333333
-	
-				}  "It's a binding controller, so we send a plain js object as model"
+			for: (ThingModel new
+					firstName: 'Dude';
+					someNumbers: #( 3 6 2 8 1 );
+					someFloatValue: 33.33333333;
+					yourself)
 			on: self
 			appendingTo: '#example2-wrapper' asJQuery ]
 !
@@ -644,7 +645,7 @@ example4
 
 	^ self ifAbsentAt: #example4 put: [
 		Example4Controller 
-			for: #{} "It's a binding controller, so we send a plain js object as model"
+			for: ThingModel new
 			on: self
 			appendingTo: '#example4-wrapper' asJQuery ]
 !
@@ -653,7 +654,7 @@ example5
 
 	^ self ifAbsentAt: #example5 put: [
 		Example5Controller 
-			for: #{} "It's a binding controller, so we send a plain js object as model"
+			for: model
 			on: self
 			appendingTo: '#example5-wrapper' asJQuery ]
 ! !
@@ -751,21 +752,9 @@ BindingController subclass: #ThingDetailsController
 	instanceVariableNames: ''
 	package: 'App'!
 
-Object subclass: #ThingModel
-	instanceVariableNames: 'name'
+MaplessModel subclass: #ThingModel
+	instanceVariableNames: ''
 	package: 'App'!
-
-!ThingModel methodsFor: 'accessing'!
-
-name
-
-	^ name
-!
-
-name: aString
-
-	name := aString
-! !
 
 BindingController subclass: #ThingRowController
 	instanceVariableNames: ''

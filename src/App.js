@@ -1,4 +1,4 @@
-define("amber-mvc/App", ["amber/boot", "amber_core/Kernel-Objects", "amber-mvc/MVC-Core"], function($boot){
+define("amber-mvc/App", ["amber/boot", "amber_core/Kernel-Objects", "amber-mvc/MVC-Core", "minimapless/MiniMapless"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('App');
 $core.packages["App"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
@@ -604,12 +604,12 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Flow(){return $globals.Flow||(typeof Flow=="undefined"?nil:Flow)}
+function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="undefined"?nil:ExampleModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=$recv($Flow())._session();
+$1=$recv($ExampleModel())._new();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"defaultModel",{},$globals.Example1Controller.klass)});
@@ -617,10 +617,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultModel\x0a\x0a\x09^ Flow session",
-referencedClasses: ["Flow"],
+source: "defaultModel\x0a\x0a\x09^ ExampleModel new",
+referencedClasses: ["ExampleModel"],
 //>>excludeEnd("ide");
-messageSends: ["session"]
+messageSends: ["new"]
 }),
 $globals.Example1Controller.klass);
 
@@ -640,7 +640,7 @@ return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1,$2;
 $1=self._nameModal();
-$recv($1)._message_($recv($recv($recv(self["@model"])._at_("firstName"))._asString()).__comma(" are you sure you can handle this?"));
+$recv($1)._message_($recv($recv($recv(self["@model"])._firstName())._asString()).__comma(" are you sure you can handle this?"));
 $2=$recv($1)._showThen_((function(c){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -657,10 +657,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "confirm\x0a\x09\x22Sets a fresh message and opens the modal\x22\x0a\x0a\x09self nameModal\x0a\x09\x09message: ((model at: #firstName) asString,' are you sure you can handle this?');\x0a\x09\x09showThen: [ :c | c open ]",
+source: "confirm\x0a\x09\x22Sets a fresh message and opens the modal\x22\x0a\x0a\x09self nameModal\x0a\x09\x09message: (model firstName asString,' are you sure you can handle this?');\x0a\x09\x09showThen: [ :c | c open ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["message:", "nameModal", ",", "asString", "at:", "showThen:", "open"]
+messageSends: ["message:", "nameModal", ",", "asString", "firstName", "showThen:", "open"]
 }),
 $globals.Example2Controller);
 
@@ -738,7 +738,6 @@ protocol: 'accessing',
 fn: function (){
 var self=this;
 function $ConfirmNameController(){return $globals.ConfirmNameController||(typeof ConfirmNameController=="undefined"?nil:ConfirmNameController)}
-function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="undefined"?nil:ExampleModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
@@ -747,18 +746,18 @@ $1=self._ifAbsentAt_put_("nameModal",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$2=$recv($ConfirmNameController())._for_on_appendingTo_($recv($ExampleModel())._new(),self,"#confirmName"._asJQuery());
+$2=$recv($ConfirmNameController())._for_on_appendingTo_(self["@model"],self,"#confirmName"._asJQuery());
 $recv($2)._acceptBlock_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-$recv(self["@model"])._at_put_("isConfirmed",true);
+$recv(self["@model"])._isConfirmed_(true);
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx3.sendIdx["at:put:"]=1;
+$ctx3.sendIdx["isConfirmed:"]=1;
 //>>excludeEnd("ctx");
-$3=self._controllerAt_("nameModal");
+$3=self._nameModal();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx3.sendIdx["controllerAt:"]=1;
+$ctx3.sendIdx["nameModal"]=1;
 //>>excludeEnd("ctx");
 return $recv($3)._close();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -772,8 +771,8 @@ $recv($2)._rejectBlock_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-$recv(self["@model"])._at_put_("isConfirmed",false);
-return $recv(self._controllerAt_("nameModal"))._close();
+$recv(self["@model"])._isConfirmed_(false);
+return $recv(self._nameModal())._close();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({},$ctx2,3)});
 //>>excludeEnd("ctx");
@@ -791,10 +790,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "nameModal\x0a\x0a\x09^ self ifAbsentAt: #nameModal put: [\x0a\x09\x09(ConfirmNameController \x0a\x09\x09\x09for: ExampleModel new\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#confirmName' asJQuery)\x0a\x09\x09\x09\x09acceptBlock: [ \x0a\x09\x09\x09\x09\x09model at: #isConfirmed put: true.\x0a\x09\x09\x09\x09\x09(self controllerAt: #nameModal) close ];\x0a\x09\x09\x09\x09rejectBlock: [ \x0a\x09\x09\x09\x09\x09model at: #isConfirmed put: false.\x0a\x09\x09\x09\x09\x09(self controllerAt: #nameModal) close ];\x0a\x09\x09\x09\x09yourself ]",
-referencedClasses: ["ConfirmNameController", "ExampleModel"],
+source: "nameModal\x0a\x0a\x09^ self ifAbsentAt: #nameModal put: [\x0a\x09\x09(ConfirmNameController \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#confirmName' asJQuery)\x0a\x09\x09\x09\x09acceptBlock: [ \x0a\x09\x09\x09\x09\x09model isConfirmed: true.\x0a\x09\x09\x09\x09\x09self nameModal close ];\x0a\x09\x09\x09\x09rejectBlock: [ \x0a\x09\x09\x09\x09\x09model isConfirmed: false.\x0a\x09\x09\x09\x09\x09self nameModal close ];\x0a\x09\x09\x09\x09yourself ]",
+referencedClasses: ["ConfirmNameController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "acceptBlock:", "for:on:appendingTo:", "new", "asJQuery", "at:put:", "close", "controllerAt:", "rejectBlock:", "yourself"]
+messageSends: ["ifAbsentAt:put:", "acceptBlock:", "for:on:appendingTo:", "asJQuery", "isConfirmed:", "close", "nameModal", "rejectBlock:", "yourself"]
 }),
 $globals.Example2Controller);
 
@@ -932,16 +931,16 @@ $1=self._hasModel();
 if(!$core.assert($1)){
 return self;
 };
-$4=$recv(self["@model"])._at_("firstName");
+$4=$recv(self["@model"])._firstName();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["at:"]=1;
+$ctx1.sendIdx["firstName"]=1;
 //>>excludeEnd("ctx");
 $3=$recv($4)._notNil();
 $2=$recv($3)._and_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($recv(self["@model"])._at_("firstName"))._notEmpty();
+return $recv($recv(self["@model"])._firstName())._notEmpty();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
 //>>excludeEnd("ctx");
@@ -954,10 +953,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "updateCanConfirm\x0a\x09\x09\x0a\x09self hasModel ifFalse: [ ^ self ].\x0a\x09\x0a\x09self \x0a\x09\x09basicAt: #canConfirm \x0a\x09\x09put: ((model at: #firstName) notNil and: [\x0a\x09\x09\x09\x09(model at: #firstName) notEmpty ])",
+source: "updateCanConfirm\x0a\x09\x09\x0a\x09self hasModel ifFalse: [ ^ self ].\x0a\x09\x0a\x09self \x0a\x09\x09basicAt: #canConfirm\x0a\x09\x09put: (model firstName notNil and: [\x0a\x09\x09\x09\x09model firstName notEmpty ])",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifFalse:", "hasModel", "basicAt:put:", "and:", "notNil", "at:", "notEmpty"]
+messageSends: ["ifFalse:", "hasModel", "basicAt:put:", "and:", "notNil", "firstName", "notEmpty"]
 }),
 $globals.Example2Controller);
 
@@ -968,12 +967,12 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Dictionary(){return $globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+function $ThingModel(){return $globals.ThingModel||(typeof ThingModel=="undefined"?nil:ThingModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
-$2=$recv($Dictionary())._new();
+$2=$recv($ThingModel())._new();
 $recv($2)._firstName_("Dude");
 $recv($2)._someNumbers_([(3), (6), (2), (8), (1)]);
 $recv($2)._someFloatValue_((33.33333333));
@@ -986,8 +985,8 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultModel\x0a\x0a\x09^ Dictionary new \x0a\x09\x09firstName: 'Dude';\x0a\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09yourself",
-referencedClasses: ["Dictionary"],
+source: "defaultModel\x0a\x0a\x09^ ThingModel new \x0a\x09\x09firstName: 'Dude';\x0a\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09yourself",
+referencedClasses: ["ThingModel"],
 //>>excludeEnd("ide");
 messageSends: ["firstName:", "new", "someNumbers:", "someFloatValue:", "yourself"]
 }),
@@ -1156,15 +1155,12 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $Dictionary(){return $globals.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="undefined"?nil:ExampleModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$3,$1;
-$2=$recv($Dictionary())._new();
-$recv($2)._firstName_("Visitor");
-$3=$recv($2)._yourself();
-$1=$3;
+var $1;
+$1=$recv($ExampleModel())._new();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"defaultModel",{},$globals.Example3Controller.klass)});
@@ -1172,10 +1168,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultModel\x0a\x0a\x09^ Dictionary new \x0a\x09\x09firstName: 'Visitor';\x0a\x09\x09yourself",
-referencedClasses: ["Dictionary"],
+source: "defaultModel\x0a\x0a\x09^ ExampleModel new",
+referencedClasses: ["ExampleModel"],
 //>>excludeEnd("ide");
-messageSends: ["firstName:", "new", "yourself"]
+messageSends: ["new"]
 }),
 $globals.Example3Controller.klass);
 
@@ -1211,6 +1207,51 @@ source: "addThing\x0a\x0a\x09self things model add: (ThingModel new name: #( Wav
 referencedClasses: ["ThingModel"],
 //>>excludeEnd("ide");
 messageSends: ["add:", "model", "things", "name:", "new", "atRandom", "yourself", "updateNotEmpty"]
+}),
+$globals.Example4Controller);
+
+$core.addMethod(
+$core.method({
+selector: "asBindArgument",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1,$2,$3;
+$1=console;
+$2=(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.Example4Controller.superclass.fn.prototype._asBindArgument.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["asBindArgument"]=1;
+//>>excludeEnd("ctx");
+$recv($1)._log_($2);
+$3=(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.Example4Controller.superclass.fn.prototype._asBindArgument.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+return $3;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"asBindArgument",{},$globals.Example4Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "asBindArgument\x0a\x0a\x09console log: super asBindArgument.\x0a\x09\x0a\x09^ super asBindArgument",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["log:", "asBindArgument"]
 }),
 $globals.Example4Controller);
 
@@ -1255,17 +1296,32 @@ protocol: 'actions',
 fn: function (){
 var self=this;
 function $ListModel(){return $globals.ListModel||(typeof ListModel=="undefined"?nil:ListModel)}
+function $ThingModel(){return $globals.ThingModel||(typeof ThingModel=="undefined"?nil:ThingModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$3,$1;
+var $2,$3,$4,$5,$1;
 $2=$recv($ListModel())._new();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["new"]=1;
+//>>excludeEnd("ctx");
 $recv($2)._list_($recv($recv(self._potentialNames())._shuffled())._collect_((function(aName){
-return $globals.HashedCollection._newFromPairs_(["name",aName]);
-
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+$3=$recv($ThingModel())._new();
+$recv($3)._name_(aName);
+$4=$recv($3)._yourself();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx2.sendIdx["yourself"]=1;
+//>>excludeEnd("ctx");
+return $4;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({aName:aName},$ctx1,1)});
+//>>excludeEnd("ctx");
 })));
-$3=$recv($2)._yourself();
-$1=$3;
+$5=$recv($2)._yourself();
+$1=$5;
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"getListModel",{},$globals.Example4Controller)});
@@ -1273,10 +1329,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "getListModel\x0a\x09\x22Answers a newly created list model of things (Thing sample instances).\x22\x0a\x09\x0a\x09^ ListModel new\x0a\x09\x09list: (self potentialNames shuffled collect: [ :aName |  \x0a\x09\x09\x09\x09#{ #name -> aName } ]);\x0a\x09\x09yourself",
-referencedClasses: ["ListModel"],
+source: "getListModel\x0a\x09\x22Answers a newly created list model of things (Thing sample instances).\x22\x0a\x09\x0a\x09^ ListModel new\x0a\x09\x09list: (self potentialNames shuffled collect: [ :aName |  \x0a\x09\x09\x09\x09ThingModel new \x0a\x09\x09\x09\x09\x09name: aName;\x0a\x09\x09\x09\x09\x09yourself ]);\x0a\x09\x09yourself",
+referencedClasses: ["ListModel", "ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["list:", "new", "collect:", "shuffled", "potentialNames", "yourself"]
+messageSends: ["list:", "new", "collect:", "shuffled", "potentialNames", "name:", "yourself"]
 }),
 $globals.Example4Controller);
 
@@ -1316,7 +1372,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self basicAt: #hasDetails put: false.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self basicAt: #hasDetails put: false.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ] ",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["initialize", "basicAt:put:", "when:do:", "show", "things", "updateNotEmpty", "observeEvents"]
@@ -1508,6 +1564,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+$recv(console)._log_("clicked works");
 $recv($recv(self._things())._model())._removeLast();
 self._updateNotEmpty();
 return self;
@@ -1517,10 +1574,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeThing\x0a\x0a\x09self things model removeLast.\x0a\x09\x0a\x09self updateNotEmpty",
+source: "removeThing\x0aconsole log: 'clicked works'.\x0a\x09self things model removeLast.\x0a\x09\x0a\x09self updateNotEmpty",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["removeLast", "model", "things", "updateNotEmpty"]
+messageSends: ["log:", "removeLast", "model", "things", "updateNotEmpty"]
 }),
 $globals.Example4Controller);
 
@@ -1544,7 +1601,7 @@ $recv($2)._newItemControllerBlock_((function(item){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return self._newItemControllerFor_for_(item,self._controllerAt_("things"));
+return self._newItemControllerFor_for_(item,self._things());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({item:item},$ctx2,2)});
 //>>excludeEnd("ctx");
@@ -1563,10 +1620,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "things \x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ListController \x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09newItemControllerBlock: [ :item | \x0a\x09\x09\x09\x09self newItemControllerFor: item for: (self controllerAt: #things) ];\x0a\x09\x09\x09model: self getListModel;\x0a\x09\x09\x09yourself ]",
+source: "things \x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ListController \x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09newItemControllerBlock: [ :item | \x0a\x09\x09\x09\x09self newItemControllerFor: item for: self things ];\x0a\x09\x09\x09model: self getListModel;\x0a\x09\x09\x09yourself ]",
 referencedClasses: ["ListController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "newItemControllerBlock:", "on:appendingTo:", "asJQuery", "newItemControllerFor:for:", "controllerAt:", "model:", "getListModel", "yourself"]
+messageSends: ["ifAbsentAt:put:", "newItemControllerBlock:", "on:appendingTo:", "asJQuery", "newItemControllerFor:for:", "things", "model:", "getListModel", "yourself"]
 }),
 $globals.Example4Controller);
 
@@ -1601,12 +1658,12 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $AppVisitor(){return $globals.AppVisitor||(typeof AppVisitor=="undefined"?nil:AppVisitor)}
+function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="undefined"?nil:ExampleModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=$recv($AppVisitor())._new();
+$1=$recv($ExampleModel())._new();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"defaultModel",{},$globals.Example4Controller.klass)});
@@ -1614,8 +1671,8 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultModel\x0a\x0a\x09^ AppVisitor new",
-referencedClasses: ["AppVisitor"],
+source: "defaultModel\x0a\x0a\x09^ ExampleModel new",
+referencedClasses: ["ExampleModel"],
 //>>excludeEnd("ide");
 messageSends: ["new"]
 }),
@@ -1658,15 +1715,15 @@ $globals.Example5Controller);
 
 $core.addMethod(
 $core.method({
-selector: "ensureDetails",
-protocol: 'actions',
+selector: "details",
+protocol: 'accessing',
 fn: function (){
 var self=this;
 function $ThingDetailsController(){return $globals.ThingDetailsController||(typeof ThingDetailsController=="undefined"?nil:ThingDetailsController)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._ifAbsentAt_put_("details",(function(){
+$recv((6)._self())._ifAbsentAt_put_("details",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -1675,74 +1732,17 @@ return $recv($ThingDetailsController())._on_appendingTo_(self,"#details-wrapper"
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
 }));
-$recv(self._controllerAt_("details"))._refresh();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"ensureDetails",{},$globals.Example5Controller)});
+}, function($ctx1) {$ctx1.fill(self,"details",{},$globals.Example5Controller)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "ensureDetails\x0a\x09\x22Makes sure we have a controller for #details and \x0a\x09make it fresh and visible with a refresh\x22\x0a\x09\x0a\x09self ifAbsentAt: #details put: [\x0a\x09\x09ThingDetailsController\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#details-wrapper' asJQuery ].\x0a\x09\x0a\x09(self controllerAt: #details) refresh",
+source: "details\x0a\x09\x22Makes sure we have a controller for #details and \x0a\x09make it fresh and visible with a refresh\x22\x0a\x09\x0a\x096  self ifAbsentAt: #details put: [\x0a\x09\x09ThingDetailsController\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#details-wrapper' asJQuery ]",
 referencedClasses: ["ThingDetailsController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "on:appendingTo:", "asJQuery", "refresh", "controllerAt:"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "ensureList",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $ItemsController(){return $globals.ItemsController||(typeof ItemsController=="undefined"?nil:ItemsController)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1,$2;
-self._ifAbsentAt_put_("things",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv($ItemsController())._for_on_appendingTo_(self["@model"],self,"#things-wrapper"._asJQuery());
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-$1=self._controllerAt_("things");
-$recv($1)._getItemsBlock_((function(m){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv(m)._things();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({m:m},$ctx1,2)});
-//>>excludeEnd("ctx");
-}));
-$recv($1)._rivetsAccessor_("thing");
-$recv($1)._newItemControllerBlock_((function(v,m,itemsController){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._newItemControllerForModel_view_parent_(m,v,itemsController);
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({v:v,m:m,itemsController:itemsController},$ctx1,3)});
-//>>excludeEnd("ctx");
-}));
-$recv($1)._model_(self["@model"]);
-$2=$recv($1)._refresh();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"ensureList",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "ensureList\x0a\x09\x22Makes sure we have a controller for #things and \x0a\x09make it fresh and visible with a refresh\x22\x0a\x09\x0a\x09self ifAbsentAt: #things put: [\x0a\x09\x09ItemsController \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery ].\x0a\x09\x0a\x09(self controllerAt: #things) \x0a\x09\x09getItemsBlock: [ :m | m things ];\x0a\x09\x09rivetsAccessor: #thing;\x0a\x09\x09newItemControllerBlock: [ :v :m :itemsController | \x0a\x09\x09\x09self newItemControllerForModel: m view: v parent: itemsController ];\x0a\x09\x09model: model;\x0a\x09\x09refresh",
-referencedClasses: ["ItemsController"],
-//>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery", "getItemsBlock:", "controllerAt:", "things", "rivetsAccessor:", "newItemControllerBlock:", "newItemControllerForModel:view:parent:", "model:", "refresh"]
+messageSends: ["ifAbsentAt:put:", "self", "on:appendingTo:", "asJQuery"]
 }),
 $globals.Example5Controller);
 
@@ -1767,8 +1767,7 @@ self._when_do_("onAfterView",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-self._ensureDetails();
-self._ensureList();
+$recv(self._things())._show();
 self._updateNotEmpty();
 return self._observeEvents();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1782,10 +1781,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self ensureDetails.\x0a\x09\x09self ensureList.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "ensureDetails", "ensureList", "updateNotEmpty", "observeEvents"]
+messageSends: ["initialize", "when:do:", "show", "things", "updateNotEmpty", "observeEvents"]
 }),
 $globals.Example5Controller);
 
@@ -2072,6 +2071,62 @@ $globals.Example5Controller);
 
 $core.addMethod(
 $core.method({
+selector: "things",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+function $ItemsController(){return $globals.ItemsController||(typeof ItemsController=="undefined"?nil:ItemsController)}
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$1=self._ifAbsentAt_put_("things",(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+$2=$recv($ItemsController())._for_on_appendingTo_(self["@model"],self,"#things-wrapper"._asJQuery());
+$recv($2)._getItemsBlock_((function(m){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx3) {
+//>>excludeEnd("ctx");
+return $recv(m)._things();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx3) {$ctx3.fillBlock({m:m},$ctx2,2)});
+//>>excludeEnd("ctx");
+}));
+$recv($2)._rivetsAccessor_("thing");
+$recv($2)._newItemControllerBlock_((function(v,m,itemsController){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx3) {
+//>>excludeEnd("ctx");
+return self._newItemControllerForModel_view_parent_(m,v,itemsController);
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx3) {$ctx3.fillBlock({v:v,m:m,itemsController:itemsController},$ctx2,3)});
+//>>excludeEnd("ctx");
+}));
+$recv($2)._model_(self["@model"]);
+$3=$recv($2)._yourself();
+return $3;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"things",{},$globals.Example5Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "things\x0a\x09\x22Makes sure we have a controller for #things and \x0a\x09make it fresh and visible with a refresh\x22\x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ItemsController \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09\x09getItemsBlock: [ :m | m things ];\x0a\x09\x09\x09\x09rivetsAccessor: #thing;\x0a\x09\x09\x09\x09newItemControllerBlock: [ :v :m :itemsController | \x0a\x09\x09\x09\x09\x09self newItemControllerForModel: m view: v parent: itemsController ];\x0a\x09\x09\x09\x09model: model;\x0a\x09\x09\x09\x09yourself ]",
+referencedClasses: ["ItemsController"],
+//>>excludeEnd("ide");
+messageSends: ["ifAbsentAt:put:", "getItemsBlock:", "for:on:appendingTo:", "asJQuery", "things", "rivetsAccessor:", "newItemControllerBlock:", "newItemControllerForModel:view:parent:", "model:", "yourself"]
+}),
+$globals.Example5Controller);
+
+$core.addMethod(
+$core.method({
 selector: "updateNotEmpty",
 protocol: 'actions',
 fn: function (){
@@ -2101,12 +2156,12 @@ selector: "defaultModel",
 protocol: 'accessing',
 fn: function (){
 var self=this;
-function $AppVisitor(){return $globals.AppVisitor||(typeof AppVisitor=="undefined"?nil:AppVisitor)}
+function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="undefined"?nil:ExampleModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=$recv($AppVisitor())._new();
+$1=$recv($ExampleModel())._new();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"defaultModel",{},$globals.Example5Controller.klass)});
@@ -2114,8 +2169,8 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultModel\x0a\x0a\x09^ AppVisitor new",
-referencedClasses: ["AppVisitor"],
+source: "defaultModel\x0a\x0a\x09^ ExampleModel new",
+referencedClasses: ["ExampleModel"],
 //>>excludeEnd("ide");
 messageSends: ["new"]
 }),
@@ -2209,15 +2264,21 @@ protocol: 'accessing',
 fn: function (){
 var self=this;
 function $Example2Controller(){return $globals.Example2Controller||(typeof Example2Controller=="undefined"?nil:Example2Controller)}
+function $ThingModel(){return $globals.ThingModel||(typeof ThingModel=="undefined"?nil:ThingModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1;
+var $2,$3,$1;
 $1=self._ifAbsentAt_put_("example2",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example2Controller())._for_on_appendingTo_($globals.HashedCollection._newFromPairs_(["firstName","Dude","someNumbers",[(3), (6), (2), (8), (1)],"someFloatValue",(33.33333333)]),self,"#example2-wrapper"._asJQuery());
+$2=$recv($ThingModel())._new();
+$recv($2)._firstName_("Dude");
+$recv($2)._someNumbers_([(3), (6), (2), (8), (1)]);
+$recv($2)._someFloatValue_((33.33333333));
+$3=$recv($2)._yourself();
+return $recv($Example2Controller())._for_on_appendingTo_($3,self,"#example2-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -2229,10 +2290,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example2\x0a\x0a\x09^ self ifAbsentAt: #example2 put: [\x0a\x09\x09Example2Controller \x0a\x09\x09\x09for: #{ \x0a\x09\x09\x09\x09\x09#firstName -> 'Dude'.\x09\x09\x09\x09\x09\x0a\x09\x09\x09\x09\x09#someNumbers -> #( 3 6 2 8 1 ).\x0a\x09\x09\x09\x09\x09#someFloatValue -> 33.33333333\x0a\x09\x0a\x09\x09\x09\x09}  \x22It's a binding controller, so we send a plain js object as model\x22\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example2-wrapper' asJQuery ]",
-referencedClasses: ["Example2Controller"],
+source: "example2\x0a\x0a\x09^ self ifAbsentAt: #example2 put: [\x0a\x09\x09Example2Controller \x0a\x09\x09\x09for: (ThingModel new\x0a\x09\x09\x09\x09\x09firstName: 'Dude';\x0a\x09\x09\x09\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09\x09\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09\x09\x09\x09yourself)\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example2-wrapper' asJQuery ]",
+referencedClasses: ["Example2Controller", "ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "firstName:", "new", "someNumbers:", "someFloatValue:", "yourself", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -2277,6 +2338,7 @@ protocol: 'accessing',
 fn: function (){
 var self=this;
 function $Example4Controller(){return $globals.Example4Controller||(typeof Example4Controller=="undefined"?nil:Example4Controller)}
+function $ThingModel(){return $globals.ThingModel||(typeof ThingModel=="undefined"?nil:ThingModel)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
@@ -2285,7 +2347,7 @@ $1=self._ifAbsentAt_put_("example4",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example4Controller())._for_on_appendingTo_($globals.HashedCollection._newFromPairs_([]),self,"#example4-wrapper"._asJQuery());
+return $recv($Example4Controller())._for_on_appendingTo_($recv($ThingModel())._new(),self,"#example4-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -2297,10 +2359,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example4\x0a\x0a\x09^ self ifAbsentAt: #example4 put: [\x0a\x09\x09Example4Controller \x0a\x09\x09\x09for: #{} \x22It's a binding controller, so we send a plain js object as model\x22\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example4-wrapper' asJQuery ]",
-referencedClasses: ["Example4Controller"],
+source: "example4\x0a\x0a\x09^ self ifAbsentAt: #example4 put: [\x0a\x09\x09Example4Controller \x0a\x09\x09\x09for: ThingModel new\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example4-wrapper' asJQuery ]",
+referencedClasses: ["Example4Controller", "ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "new", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -2319,7 +2381,7 @@ $1=self._ifAbsentAt_put_("example5",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example5Controller())._for_on_appendingTo_($globals.HashedCollection._newFromPairs_([]),self,"#example5-wrapper"._asJQuery());
+return $recv($Example5Controller())._for_on_appendingTo_(self["@model"],self,"#example5-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -2331,7 +2393,7 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example5\x0a\x0a\x09^ self ifAbsentAt: #example5 put: [\x0a\x09\x09Example5Controller \x0a\x09\x09\x09for: #{} \x22It's a binding controller, so we send a plain js object as model\x22\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example5-wrapper' asJQuery ]",
+source: "example5\x0a\x0a\x09^ self ifAbsentAt: #example5 put: [\x0a\x09\x09Example5Controller \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example5-wrapper' asJQuery ]",
 referencedClasses: ["Example5Controller"],
 //>>excludeEnd("ide");
 messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
@@ -2697,46 +2759,7 @@ $globals.MainController);
 $core.addClass('ThingDetailsController', $globals.BindingController, [], 'App');
 
 
-$core.addClass('ThingModel', $globals.Object, ['name'], 'App');
-$core.addMethod(
-$core.method({
-selector: "name",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-var $1;
-$1=self["@name"];
-return $1;
-
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "name\x0a\x0a\x09^ name",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: []
-}),
-$globals.ThingModel);
-
-$core.addMethod(
-$core.method({
-selector: "name:",
-protocol: 'accessing',
-fn: function (aString){
-var self=this;
-self["@name"]=aString;
-return self;
-
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aString"],
-source: "name: aString\x0a\x0a\x09name := aString",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: []
-}),
-$globals.ThingModel);
-
+$core.addClass('ThingModel', $globals.MaplessModel, [], 'App');
 
 
 $core.addClass('ThingRowController', $globals.BindingController, [], 'App');
