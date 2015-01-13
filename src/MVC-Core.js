@@ -942,6 +942,31 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
+selector: "showThen:",
+protocol: 'actions',
+fn: function (aBlock){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv(self._deferred())._done_(aBlock);
+self._show();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"showThen:",{aBlock:aBlock},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aBlock"],
+source: "showThen: aBlock\x0a\x09\x22Shows this controller and get aBlock executed after its view is set.\x22\x0a\x09\x0a\x09self deferred done: aBlock.\x0a\x09\x0a\x09self show",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["done:", "deferred", "show"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
 selector: "silentRefresh",
 protocol: 'actions',
 fn: function (){
@@ -2335,22 +2360,17 @@ selector: "getModelAsArgument",
 protocol: 'actions',
 fn: function (){
 var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
 var $1;
-$1=$recv(self["@model"])._data();
+$1=self["@model"];
 return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"getModelAsArgument",{},$globals.BindingController)});
-//>>excludeEnd("ctx");
+
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using mapless as the controllers model\x0a\x09so we send their data but subclasses might differ if they please to do so.\x22\x0a\x09^ model data",
+source: "getModelAsArgument\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using a plain javascript object as model\x0a\x09but subclasses might differ if they please to do so.\x22\x0a\x09^ model",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["data"]
+messageSends: []
 }),
 $globals.BindingController);
 

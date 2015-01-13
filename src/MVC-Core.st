@@ -231,6 +231,14 @@ showAll
 	self controllers values do: [ :e | e show ]
 !
 
+showThen: aBlock
+	"Shows this controller and get aBlock executed after its view is set."
+	
+	self deferred done: aBlock.
+	
+	self show
+!
+
 silentRefresh
 
 	self silentRemove; silentRender
@@ -662,9 +670,9 @@ getHandler
 
 getModelAsArgument
 	"Returns the model in a way that is appropiate for binding (usable by rivets).
-	By default BindingController assumes you are using mapless as the controllers model
-	so we send their data but subclasses might differ if they please to do so."
-	^ model data
+	By default BindingController assumes you are using a plain javascript object as model
+	but subclasses might differ if they please to do so."
+	^ model
 !
 
 rebind

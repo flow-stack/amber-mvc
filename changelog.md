@@ -3,6 +3,15 @@ Today - Unreleased
 
 * nothing at the moment
 
+
+January 13, 2015 - Release 0.1.10
+===================================
+
+* Adds the App example application
+* upgrades to Amber 0.14.2
+* upgrades DOMEvents to 0.1.5 which introduces the Pharo API for events
+
+
 January 11, 2015 - Release 0.1.5
 ===================================
 

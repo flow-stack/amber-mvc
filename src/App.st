@@ -111,8 +111,13 @@ The AppController is the main/root controller of your flow-based application.!
 
 observeEvents
 
-	(view asJQuery find: 'a#browse-example1') on: 'click' do: [ Example1Controller browse ].
-	(view asJQuery find: 'a#browse-template') on: 'click' do: [ TemplateController browse ]
+	(view asJQuery find: 'a#browse-example1') 
+		on: #click
+		do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ].
+		
+	(view asJQuery find: 'a#browse-template') 
+		on: #click
+		do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
 ! !
 
 !Example1Controller methodsFor: 'initialization'!
@@ -179,8 +184,13 @@ ensureModal
 
 observeEvents
 
-	(view asJQuery find: 'a#inspect-example2') on: 'click' do: [ self inspect ].
-	(view asJQuery find: 'a#browse-binding') on: 'click' do: [ BindingController browse ]
+	(view asJQuery find: 'a#inspect-example2') 
+		on: 'click' 
+		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ].
+		
+	(view asJQuery find: 'a#browse-binding') 
+		on: 'click' 
+		do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
 !
 
 updateCanConfirm
@@ -218,7 +228,7 @@ onFirstNameKeyUp
 
 defaultModel
 
-	^ Thing new 
+	^ Dictionary new 
 		firstName: 'Dude';
 		someNumbers: #( 3 6 2 8 1 );
 		someFloatValue: 33.33333333;
@@ -248,7 +258,9 @@ ensureSubControllers
 
 observeEvents
 
-	(view asJQuery find: 'a#inspect-this') on: 'click' do: [ self inspect ]
+	(view asJQuery find: 'a#inspect-this') 
+		on: #click
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
 ! !
 
 !Example3Controller methodsFor: 'initialization'!
@@ -268,7 +280,7 @@ initialize
 
 defaultModel
 
-	^ Thing new 
+	^ Dictionary new 
 		firstName: 'Visitor';
 		yourself
 ! !
@@ -384,7 +396,9 @@ newListModel
 
 observeEvents
 
-	'#inspect-this' asJQuery on: 'click' do: [ self inspect ]
+	'#inspect-this' asJQuery 
+		on: #click
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
 !
 
 removeThing
@@ -436,7 +450,7 @@ onRemove: aThing
 
 defaultModel
 
-	^ Flow session
+	^ AppVisitor new
 ! !
 
 BindingController subclass: #Example5Controller
@@ -534,7 +548,9 @@ newItems
 
 observeEvents
 
-	'#inspect-this' asJQuery on: 'click' do: [ self inspect ]
+	'#inspect-this' asJQuery 
+		on: #click
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
 !
 
 removeThing
@@ -591,7 +607,7 @@ onRemove: aThing
 
 defaultModel
 
-	^ Flow session
+	^ AppVisitor new
 ! !
 
 TemplateController subclass: #MainController
@@ -608,7 +624,7 @@ example1
 
 	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
-			for: Example1Controller defaultModel
+			for: self model
 			on: self
 			appendingTo: '#example1-wrapper' asJQuery ]
 !
@@ -617,7 +633,7 @@ example2
 
 	^ self ifAbsentAt: #example2 put: [
 		Example2Controller 
-			for: Example2Controller defaultModel
+			for: (JSObjectProxy on: #{}) "It's a binding controller, so we send a plain js object as model"
 			on: self
 			appendingTo: '#example2-wrapper' asJQuery ]
 !
@@ -626,7 +642,7 @@ example3
 
 	^ self ifAbsentAt: #example3 put: [
 		Example3Controller 
-			for: Example3Controller defaultModel
+			for:self model
 			on: self
 			appendingTo: '#example3-wrapper' asJQuery ]
 !
@@ -635,7 +651,7 @@ example4
 
 	^ self ifAbsentAt: #example4 put: [
 		Example4Controller 
-			for: Example4Controller defaultModel
+			for: (JSObjectProxy on: #{}) "It's a binding controller, so we send a plain js object as model"
 			on: self
 			appendingTo: '#example4-wrapper' asJQuery ]
 !
@@ -644,7 +660,7 @@ example5
 
 	^ self ifAbsentAt: #example5 put: [
 		Example5Controller 
-			for: Example5Controller defaultModel
+			for: (JSObjectProxy on: #{}) "It's a binding controller, so we send a plain js object as model"
 			on: self
 			appendingTo: '#example5-wrapper' asJQuery ]
 ! !
@@ -666,7 +682,9 @@ highlightTitle
 
 observeEvents
 
-	(view asJQuery find: 'a#inspect-main') on: 'click' do: [ self inspect ]
+	(view asJQuery find: 'a#inspect-main') 
+		on: #click 
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
 !
 
 reset
@@ -676,46 +694,52 @@ reset
 
 	self hideAll.
 	
-	self show.
-	
-	'#welcome' asJQuery show.
+	self showThen: [ '#welcome' asJQuery show ]
 !
 
 showExample1
 
-	self show.
-	self hideAll.
-	self example1 show
+	console log: 'showExample1'.
+	
+	self showThen: [
+		self hideAll.
+		self example1 show ]
 !
 
 showExample2
 
 	console log: 'showExample2'.
 
-	self show.
-	self hideAll.
-	self example2 show
+	self showThen: [
+		self hideAll.
+		self example2 show ]
 !
 
 showExample3
 
-	self show.
-	self hideAll.
-	self example3 show
+	console log: 'showExample3'.
+	
+	self showThen: [
+		self hideAll.
+		self example3 show ]
 !
 
 showExample4
 
-	self show.
-	self hideAll.
-	self example4 show
+	console log: 'showExample4'.
+	
+	self showThen: [
+		self hideAll.
+		self example4 show ]
 !
 
 showExample5
 
-	self show.
-	self hideAll.
-	self example5 show
+	console log: 'showExample5'.
+	
+	self showThen: [
+		self hideAll.
+		self example5 show ]
 ! !
 
 !MainController methodsFor: 'initialization'!
