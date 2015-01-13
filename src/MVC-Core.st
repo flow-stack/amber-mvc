@@ -91,9 +91,9 @@ model
 
 model: aModel
 
-	self trigger: #onBeforeModel.
+	self triggerEvent: #onBeforeModel.
 	model := aModel.
-	self trigger: #onAfterModel.
+	self triggerEvent: #onAfterModel.
 !
 
 parent
@@ -104,9 +104,9 @@ parent
 
 parent: aParentControllerOrNil
 
-	self trigger: #onBeforeParent.
+	self triggerEvent: #onBeforeParent.
 	parent := aParentControllerOrNil.
-	self trigger: #onAfterParent.
+	self triggerEvent: #onAfterParent.
 !
 
 parentElement
@@ -116,9 +116,9 @@ parentElement
 
 parentElement: aHtmlElement
 
-	self trigger: #onBeforeParentElement.
+	self triggerEvent: #onBeforeParentElement.
 	parentElement := aHtmlElement.
-	self trigger: #onAfterParentElement.
+	self triggerEvent: #onAfterParentElement.
 !
 
 silentView: aHtmlElement
@@ -136,9 +136,9 @@ view
 
 view: aHtmlElement
 
-	self trigger: #onBeforeView.
+	self triggerEvent: #onBeforeView.
 	self silentView: aHtmlElement.
-	self trigger: #onAfterView.
+	self triggerEvent: #onAfterView.
 ! !
 
 !Controller methodsFor: 'actions'!
@@ -188,11 +188,11 @@ refresh
 
 remove
 	
-	self trigger: #onBeforeRemove.
+	self triggerEvent: #onBeforeRemove.
 
 	self silentRemove.
 	
-	self trigger: #onAfterRemove.
+	self triggerEvent: #onAfterRemove.
 !
 
 removeControllerAt: aKey 
@@ -209,9 +209,9 @@ removeControllerAt: aKey
 
 render
 	
-	self trigger: #onBeforeRender.
+	self triggerEvent: #onBeforeRender.
 	self renderOn: (HTMLCanvas onJQuery: self parentElement).
-	self trigger: #onAfterRender.
+	self triggerEvent: #onAfterRender.
 !
 
 renderOn: html
@@ -403,9 +403,9 @@ listView
 
 listView: aHtmlElement
 
-	self trigger: #onBeforeListView.
+	self triggerEvent: #onBeforeListView.
 	listView := aHtmlElement.
-	self trigger: #onAfterListView.
+	self triggerEvent: #onAfterListView.
 !
 
 newItemControllerBlock
@@ -743,7 +743,7 @@ close
 
 	self view modal: 'hide'.
 	
-	self trigger: #modalClosed
+	self triggerEvent: #modalClosed
 !
 
 createModal
@@ -756,7 +756,7 @@ open
 
 	self view modal: 'show'.
 	
-	self trigger: #modalOpened
+	self triggerEvent: #modalOpened
 !
 
 toggle
@@ -822,7 +822,7 @@ This controller asks the user for confirmation of a given action. It has a rejec
 
 accept
 
-	self trigger: #accept
+	self triggerEvent: #accept
 !
 
 acceptBlock: aBlock
@@ -837,7 +837,7 @@ acceptButtonLabel: aString
 
 reject
 
-	self trigger: #reject
+	self triggerEvent: #reject
 !
 
 rejectBlock: aBlock

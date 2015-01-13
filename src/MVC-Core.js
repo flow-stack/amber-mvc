@@ -612,12 +612,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeModel");
+self._triggerEvent_("onBeforeModel");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self["@model"]=aModel;
-self._trigger_("onAfterModel");
+self._triggerEvent_("onAfterModel");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"model:",{aModel:aModel},$globals.Controller)});
@@ -625,10 +625,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel"],
-source: "model: aModel\x0a\x0a\x09self trigger: #onBeforeModel.\x0a\x09model := aModel.\x0a\x09self trigger: #onAfterModel.",
+source: "model: aModel\x0a\x0a\x09self triggerEvent: #onBeforeModel.\x0a\x09model := aModel.\x0a\x09self triggerEvent: #onAfterModel.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.Controller);
 
@@ -661,12 +661,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeParent");
+self._triggerEvent_("onBeforeParent");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self["@parent"]=aParentControllerOrNil;
-self._trigger_("onAfterParent");
+self._triggerEvent_("onAfterParent");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"parent:",{aParentControllerOrNil:aParentControllerOrNil},$globals.Controller)});
@@ -674,10 +674,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aParentControllerOrNil"],
-source: "parent: aParentControllerOrNil\x0a\x0a\x09self trigger: #onBeforeParent.\x0a\x09parent := aParentControllerOrNil.\x0a\x09self trigger: #onAfterParent.",
+source: "parent: aParentControllerOrNil\x0a\x0a\x09self triggerEvent: #onBeforeParent.\x0a\x09parent := aParentControllerOrNil.\x0a\x09self triggerEvent: #onAfterParent.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.Controller);
 
@@ -710,12 +710,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeParentElement");
+self._triggerEvent_("onBeforeParentElement");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self["@parentElement"]=aHtmlElement;
-self._trigger_("onAfterParentElement");
+self._triggerEvent_("onAfterParentElement");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"parentElement:",{aHtmlElement:aHtmlElement},$globals.Controller)});
@@ -723,10 +723,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aHtmlElement"],
-source: "parentElement: aHtmlElement\x0a\x0a\x09self trigger: #onBeforeParentElement.\x0a\x09parentElement := aHtmlElement.\x0a\x09self trigger: #onAfterParentElement.",
+source: "parentElement: aHtmlElement\x0a\x0a\x09self triggerEvent: #onBeforeParentElement.\x0a\x09parentElement := aHtmlElement.\x0a\x09self triggerEvent: #onAfterParentElement.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.Controller);
 
@@ -765,12 +765,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeRemove");
+self._triggerEvent_("onBeforeRemove");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self._silentRemove();
-self._trigger_("onAfterRemove");
+self._triggerEvent_("onAfterRemove");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"remove",{},$globals.Controller)});
@@ -778,10 +778,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "remove\x0a\x09\x0a\x09self trigger: #onBeforeRemove.\x0a\x0a\x09self silentRemove.\x0a\x09\x0a\x09self trigger: #onAfterRemove.",
+source: "remove\x0a\x09\x0a\x09self triggerEvent: #onBeforeRemove.\x0a\x0a\x09self silentRemove.\x0a\x09\x0a\x09self triggerEvent: #onAfterRemove.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:", "silentRemove"]
+messageSends: ["triggerEvent:", "silentRemove"]
 }),
 $globals.Controller);
 
@@ -834,12 +834,12 @@ function $HTMLCanvas(){return $globals.HTMLCanvas||(typeof HTMLCanvas=="undefine
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeRender");
+self._triggerEvent_("onBeforeRender");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self._renderOn_($recv($HTMLCanvas())._onJQuery_(self._parentElement()));
-self._trigger_("onAfterRender");
+self._triggerEvent_("onAfterRender");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"render",{},$globals.Controller)});
@@ -847,10 +847,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "render\x0a\x09\x0a\x09self trigger: #onBeforeRender.\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement).\x0a\x09self trigger: #onAfterRender.",
+source: "render\x0a\x09\x0a\x09self triggerEvent: #onBeforeRender.\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement).\x0a\x09self triggerEvent: #onAfterRender.",
 referencedClasses: ["HTMLCanvas"],
 //>>excludeEnd("ide");
-messageSends: ["trigger:", "renderOn:", "onJQuery:", "parentElement"]
+messageSends: ["triggerEvent:", "renderOn:", "onJQuery:", "parentElement"]
 }),
 $globals.Controller);
 
@@ -1109,12 +1109,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeView");
+self._triggerEvent_("onBeforeView");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self._silentView_(aHtmlElement);
-self._trigger_("onAfterView");
+self._triggerEvent_("onAfterView");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"view:",{aHtmlElement:aHtmlElement},$globals.Controller)});
@@ -1122,10 +1122,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aHtmlElement"],
-source: "view: aHtmlElement\x0a\x0a\x09self trigger: #onBeforeView.\x0a\x09self silentView: aHtmlElement.\x0a\x09self trigger: #onAfterView.",
+source: "view: aHtmlElement\x0a\x0a\x09self triggerEvent: #onBeforeView.\x0a\x09self silentView: aHtmlElement.\x0a\x09self triggerEvent: #onAfterView.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:", "silentView:"]
+messageSends: ["triggerEvent:", "silentView:"]
 }),
 $globals.Controller);
 
@@ -1547,12 +1547,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("onBeforeListView");
+self._triggerEvent_("onBeforeListView");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 self["@listView"]=aHtmlElement;
-self._trigger_("onAfterListView");
+self._triggerEvent_("onAfterListView");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"listView:",{aHtmlElement:aHtmlElement},$globals.ListController)});
@@ -1560,10 +1560,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aHtmlElement"],
-source: "listView: aHtmlElement\x0a\x0a\x09self trigger: #onBeforeListView.\x0a\x09listView := aHtmlElement.\x0a\x09self trigger: #onAfterListView.",
+source: "listView: aHtmlElement\x0a\x0a\x09self triggerEvent: #onBeforeListView.\x0a\x09listView := aHtmlElement.\x0a\x09self triggerEvent: #onAfterListView.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.ListController);
 
@@ -2583,7 +2583,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 $recv(self._view())._modal_("hide");
-self._trigger_("modalClosed");
+self._triggerEvent_("modalClosed");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"close",{},$globals.ModalController)});
@@ -2591,10 +2591,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "close\x0a\x0a\x09self view modal: 'hide'.\x0a\x09\x0a\x09self trigger: #modalClosed",
+source: "close\x0a\x0a\x09self view modal: 'hide'.\x0a\x09\x0a\x09self triggerEvent: #modalClosed",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["modal:", "view", "trigger:"]
+messageSends: ["modal:", "view", "triggerEvent:"]
 }),
 $globals.ModalController);
 
@@ -2721,7 +2721,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 $recv(self._view())._modal_("show");
-self._trigger_("modalOpened");
+self._triggerEvent_("modalOpened");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"open",{},$globals.ModalController)});
@@ -2729,10 +2729,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "open\x0a\x0a\x09self view modal: 'show'.\x0a\x09\x0a\x09self trigger: #modalOpened",
+source: "open\x0a\x0a\x09self view modal: 'show'.\x0a\x09\x0a\x09self triggerEvent: #modalOpened",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["modal:", "view", "trigger:"]
+messageSends: ["modal:", "view", "triggerEvent:"]
 }),
 $globals.ModalController);
 
@@ -2896,7 +2896,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("accept");
+self._triggerEvent_("accept");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"accept",{},$globals.ConfirmController)});
@@ -2904,10 +2904,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "accept\x0a\x0a\x09self trigger: #accept",
+source: "accept\x0a\x0a\x09self triggerEvent: #accept",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.ConfirmController);
 
@@ -2968,7 +2968,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._trigger_("reject");
+self._triggerEvent_("reject");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"reject",{},$globals.ConfirmController)});
@@ -2976,10 +2976,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "reject\x0a\x0a\x09self trigger: #reject",
+source: "reject\x0a\x0a\x09self triggerEvent: #reject",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["trigger:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.ConfirmController);
 

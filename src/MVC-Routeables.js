@@ -178,9 +178,9 @@ function $RouteableController(){return $globals.RouteableController||(typeof Rou
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1,$receiver;
-self._trigger_("beforeRouting");
+self._triggerEvent_("beforeRouting");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["trigger:"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
 $1=self["@active"];
 if(($receiver = $1) == null || $receiver.isNil){
@@ -190,7 +190,7 @@ $recv(self["@active"])._remove();
 };
 self["@active"]=$recv($RouteableController())._routeFor_(self._route());
 $recv(self["@active"])._refresh();
-self._trigger_("afterRouting");
+self._triggerEvent_("afterRouting");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"refresh",{},$globals.FullPageRouter.klass)});
@@ -198,10 +198,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refresh\x0a\x09\x0a\x09self trigger: #beforeRouting.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active refresh.\x0a\x09\x0a\x09self trigger: #afterRouting.",
+source: "refresh\x0a\x09\x0a\x09self triggerEvent: #beforeRouting.\x0a\x09\x0a\x09active ifNotNil:[ active remove ].\x0a\x09active := RouteableController routeFor: self route.\x0a\x0a\x09active refresh.\x0a\x09\x0a\x09self triggerEvent: #afterRouting.",
 referencedClasses: ["RouteableController"],
 //>>excludeEnd("ide");
-messageSends: ["trigger:", "ifNotNil:", "remove", "routeFor:", "route", "refresh"]
+messageSends: ["triggerEvent:", "ifNotNil:", "remove", "routeFor:", "route", "refresh"]
 }),
 $globals.FullPageRouter.klass);
 

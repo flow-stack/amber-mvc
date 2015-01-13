@@ -60,14 +60,14 @@ observeHash
 
 refresh
 	
-	self trigger: #beforeRouting.
+	self triggerEvent: #beforeRouting.
 	
 	active ifNotNil:[ active remove ].
 	active := RouteableController routeFor: self route.
 
 	active refresh.
 	
-	self trigger: #afterRouting.
+	self triggerEvent: #afterRouting.
 ! !
 
 !FullPageRouter class methodsFor: 'reactions'!
