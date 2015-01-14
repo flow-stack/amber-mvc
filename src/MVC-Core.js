@@ -274,6 +274,30 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
+selector: "createControlers",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+self._triggerEvent_("controllersCreated");
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"createControlers",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "createControlers\x0a\x09\x22Create any children (sub)controllers for this controller.\x0a\x09Note: subclasses typically send `super createControllers` and then they create their specific ones.\x22\x0a\x09\x0a\x09\x22None by default\x22\x0a\x09\x0a\x09self triggerEvent: #controllersCreated",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["triggerEvent:"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
 selector: "deferred",
 protocol: 'accessing',
 fn: function (){
@@ -527,6 +551,46 @@ source: "ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock\x0a\x09\x22Answers
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["controllerAt:ifAbsent:", "value", "controllerAt:put:", "value:"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "initialize",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.Controller.superclass.fn.prototype._initialize.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+self._when_do_("onAfterView",(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._createControlers();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ self createControlers ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["initialize", "when:do:", "createControlers"]
 }),
 $globals.Controller);
 

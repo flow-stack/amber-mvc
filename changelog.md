@@ -6,6 +6,7 @@ Today - Unreleased
 January 14, 2015 - Release 0.1.12
 ===================================
 
+* Introducing Controller>>createControlers for creating children controllers after the view is set.
 * Bower now will install rlite form the bower repository (instead of directly from github)
 
 January 13, 2015 - Release 0.1.11

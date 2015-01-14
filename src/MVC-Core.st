@@ -143,6 +143,15 @@ view: aHtmlElement
 
 !Controller methodsFor: 'actions'!
 
+createControlers
+	"Create any children (sub)controllers for this controller.
+	Note: subclasses typically send `super createControllers` and then they create their specific ones."
+	
+	"None by default"
+	
+	self triggerEvent: #controllersCreated
+!
+
 destroy
 
 	self remove
@@ -268,6 +277,13 @@ silentRenderOn: html
 ! !
 
 !Controller methodsFor: 'initialization'!
+
+initialize
+
+	super initialize.
+	
+	self when: #onAfterView do: [ self createControlers ]
+!
 
 initializeControllers
 	
