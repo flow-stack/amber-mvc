@@ -1,4 +1,4 @@
-January 14, 2015 - Release 0.1.12
+January 14, 2015 - Release 0.1.13
 ===================================
 
 * Model as subclass of MaplessModel
