@@ -1,4 +1,4 @@
-define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
+define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "minimapless/MiniMapless", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('MVC-Core');
 $core.packages["MVC-Core"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
@@ -3122,10 +3122,10 @@ $globals.ConfirmController);
 
 
 
-$core.addClass('Model', $globals.Object, [], 'MVC-Core');
+$core.addClass('Model', $globals.MaplessModel, [], 'MVC-Core');
 
 
-$core.addClass('ListModel', $globals.Model, ['list'], 'MVC-Core');
+$core.addClass('ListModel', $globals.Model, [], 'MVC-Core');
 $core.addMethod(
 $core.method({
 selector: "add:",
@@ -3253,26 +3253,6 @@ $globals.ListModel);
 
 $core.addMethod(
 $core.method({
-selector: "list",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-var $1;
-$1=self["@list"];
-return $1;
-
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "list\x0a\x0a\x09^ list",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: []
-}),
-$globals.ListModel);
-
-$core.addMethod(
-$core.method({
 selector: "list:",
 protocol: 'accessing',
 fn: function (aCollection){
@@ -3280,7 +3260,14 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self["@list"]=aCollection;
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.ListModel.superclass.fn.prototype._list_.apply($recv(self), [aCollection]));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
 self._changed();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -3289,10 +3276,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aCollection"],
-source: "list: aCollection\x0a\x0a\x09list := aCollection.\x0a\x09\x0a\x09self changed",
+source: "list: aCollection\x0a\x0a\x09super list: aCollection.\x0a\x09\x0a\x09self changed",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["changed"]
+messageSends: ["list:", "changed"]
 }),
 $globals.ListModel);
 

@@ -1,7 +1,7 @@
-Today - Unreleased
+January 14, 2015 - Release 0.1.12
 ===================================
 
-* nothing at the moment
+* Model as subclass of MaplessModel
 
 January 14, 2015 - Release 0.1.12
 ===================================

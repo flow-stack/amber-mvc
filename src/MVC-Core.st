@@ -880,12 +880,12 @@ rejectButtonLabel: aString
 	self basicAt: #rejectButtonLabel put: aString
 ! !
 
-Object subclass: #Model
+MaplessModel subclass: #Model
 	instanceVariableNames: ''
 	package: 'MVC-Core'!
 
 Model subclass: #ListModel
-	instanceVariableNames: 'list'
+	instanceVariableNames: ''
 	package: 'MVC-Core'!
 
 !ListModel methodsFor: 'accessing'!
@@ -900,14 +900,9 @@ last
 	^ self list last
 !
 
-list
-
-	^ list
-!
-
 list: aCollection
 
-	list := aCollection.
+	super list: aCollection.
 	
 	self changed
 !
