@@ -3,6 +3,11 @@ Today - Unreleased
 
 * nothing at the moment
 
+January 14, 2015 - Release 0.1.12
+===================================
+
+* Bower now will install rlite form the bower repository (instead of directly from github)
+
 January 13, 2015 - Release 0.1.11
 ===================================
 
