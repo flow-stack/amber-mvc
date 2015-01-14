@@ -1,7 +1,7 @@
 {
   "name": "mvc",
   "description": "This is a MVC implementation for Amber",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -32,9 +32,9 @@
     "rivets": "~0.7.2",
     "amber-dom-events": "~0.1.5",
     "bootstrap": "~3.3.1",
-    "rlite": "git@github.com:flow-stack/rlite.git",
     "amber-attic": "~0.1.1",
-    "minimapless": "~0.10.9"
+    "minimapless": "~0.10.9",
+    "rlite": "~0.0.21"
   },
   "devDependencies": {
     "helios": "^0.3.0"
