@@ -1,3 +1,8 @@
+January 15, 2015 - Release 0.1.14
+===================================
+
+* Not using globals anymore. Rivets is now fetched using requirejs.
+
 January 14, 2015 - Release 0.1.13
 ===================================
 

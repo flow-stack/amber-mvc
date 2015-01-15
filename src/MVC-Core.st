@@ -1086,7 +1086,7 @@ installUtils
 
 newLiveValue
 
-	<return Object.create(rivets.binders.value)>
+	<return Object.create(require('rivets').binders.value)>
 ! !
 
 !RivetsJS class methodsFor: 'initialization'!

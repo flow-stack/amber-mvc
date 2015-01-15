@@ -1,4 +1,4 @@
-define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "amber_core/Kernel-Objects", "minimapless/MiniMapless", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
+define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "minimapless/MiniMapless", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('MVC-Core');
 $core.packages["MVC-Core"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
@@ -3720,7 +3720,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-return Object.create(rivets.binders.value);
+return Object.create(require('rivets').binders.value);
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"newLiveValue",{},$globals.RivetsJS.klass)});
@@ -3728,7 +3728,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "newLiveValue\x0a\x0a\x09<return Object.create(rivets.binders.value)>",
+source: "newLiveValue\x0a\x0a\x09<return Object.create(require('rivets').binders.value)>",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: []
