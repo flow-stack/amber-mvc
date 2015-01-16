@@ -1,3 +1,8 @@
+January 15, 2015 - Release 0.1.16
+===================================
+
+* Fixes typo #createControllers
+
 January 15, 2015 - Release 0.1.15
 ===================================
 

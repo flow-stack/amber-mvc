@@ -274,7 +274,7 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
-selector: "createControlers",
+selector: "createControllers",
 protocol: 'actions',
 fn: function (){
 var self=this;
@@ -284,12 +284,12 @@ return $core.withContext(function($ctx1) {
 self._triggerEvent_("controllersCreated");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"createControlers",{},$globals.Controller)});
+}, function($ctx1) {$ctx1.fill(self,"createControllers",{},$globals.Controller)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "createControlers\x0a\x09\x22Create any children (sub)controllers for this controller.\x0a\x09Note: subclasses typically send `super createControllers` and then they create their specific ones.\x22\x0a\x09\x0a\x09\x22None by default\x22\x0a\x09\x0a\x09self triggerEvent: #controllersCreated",
+source: "createControllers\x0a\x09\x22Create any children (sub)controllers for this controller.\x0a\x09Note: subclasses typically send `super createControllers` and then they create their specific ones.\x22\x0a\x09\x0a\x09\x22None by default\x22\x0a\x09\x0a\x09self triggerEvent: #controllersCreated",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["triggerEvent:"]
@@ -575,7 +575,7 @@ self._when_do_("onAfterView",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return self._createControlers();
+return self._createControllers();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -587,10 +587,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ self createControlers ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ self createControllers ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "createControlers"]
+messageSends: ["initialize", "when:do:", "createControllers"]
 }),
 $globals.Controller);
 

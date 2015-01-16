@@ -143,7 +143,7 @@ view: aHtmlElement
 
 !Controller methodsFor: 'actions'!
 
-createControlers
+createControllers
 	"Create any children (sub)controllers for this controller.
 	Note: subclasses typically send `super createControllers` and then they create their specific ones."
 	
@@ -282,7 +282,7 @@ initialize
 
 	super initialize.
 	
-	self when: #onAfterView do: [ self createControlers ]
+	self when: #onAfterView do: [ self createControllers ]
 !
 
 initializeControllers
