@@ -1,3 +1,8 @@
+January 15, 2015 - Release 0.1.15
+===================================
+
+* Using jQuery to unobserve window observeHash.
+
 January 15, 2015 - Release 0.1.14
 ===================================
 

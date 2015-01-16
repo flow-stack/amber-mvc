@@ -1153,7 +1153,7 @@ observeHash
 		
 	window 
 		addEventListener: #unload
-		do: [ window removeEventListener: #hashchange ]
+		do: [ window asJQuery off: #hashchange ]
 !
 
 processHash
