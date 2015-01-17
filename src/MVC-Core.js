@@ -575,7 +575,8 @@ self._when_do_("onAfterView",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return self._createControllers();
+self._createControllers();
+return self._observeEvents();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -587,10 +588,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ self createControllers ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09\x22Afte the view is set, we are ready to create any\x0a\x09\x09subcontroller and observe their interesting events.\x22\x0a\x09\x09self createControllers.\x0a\x09\x09self observeEvents ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "createControllers"]
+messageSends: ["initialize", "when:do:", "createControllers", "observeEvents"]
 }),
 $globals.Controller);
 
@@ -690,6 +691,30 @@ return self;
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel"],
 source: "model: aModel\x0a\x0a\x09self triggerEvent: #onBeforeModel.\x0a\x09model := aModel.\x0a\x09self triggerEvent: #onAfterModel.",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["triggerEvent:"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "observeEvents",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+self._triggerEvent_("controllersObserved");
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"observeEvents",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "observeEvents\x0a\x09\x22Programs the observations of events happening in the controllers of this controller.\x22\x0a\x09\x0a\x09\x22None by default\x22\x0a\x09\x0a\x09self triggerEvent: #controllersObserved",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["triggerEvent:"]

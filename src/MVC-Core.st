@@ -190,6 +190,14 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 			newController ]
 !
 
+observeEvents
+	"Programs the observations of events happening in the controllers of this controller."
+	
+	"None by default"
+	
+	self triggerEvent: #controllersObserved
+!
+
 refresh
 
 	self remove; render
@@ -293,7 +301,11 @@ initialize
 
 	super initialize.
 	
-	self when: #onAfterView do: [ self createControllers ]
+	self when: #onAfterView do: [ 
+		"Afte the view is set, we are ready to create any
+		subcontroller and observe their interesting events."
+		self createControllers.
+		self observeEvents ]
 !
 
 initializeControllers

@@ -436,7 +436,7 @@ $ctx3.sendIdx["browse"]=1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx3.sendIdx["alert:"]=1;
 //>>excludeEnd("ctx");
@@ -470,7 +470,7 @@ return $recv($TemplateController())._browse();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,6)});
 //>>excludeEnd("ctx");
@@ -489,7 +489,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#browse-example1') \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ].\x0a\x09\x09\x0a\x09(view asJQuery find: 'a#browse-template') \x0a\x09\x09on: #click\x0a\x09\x09do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]",
+source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#browse-example1') \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].\x0a\x09\x09\x0a\x09(view asJQuery find: 'a#browse-template') \x0a\x09\x09on: #click\x0a\x09\x09do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]",
 referencedClasses: ["Example1Controller", "Error", "TemplateController"],
 //>>excludeEnd("ide");
 messageSends: ["on:do:", "find:", "asJQuery", "browse", "alert:"]
@@ -733,7 +733,7 @@ return self._inspect();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx3.sendIdx["alert:"]=1;
 //>>excludeEnd("ctx");
@@ -767,7 +767,7 @@ return $recv($BindingController())._browse();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,6)});
 //>>excludeEnd("ctx");
@@ -786,7 +786,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#inspect-example2') \x0a\x09\x09on: 'click' \x0a\x09\x09do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ].\x0a\x09\x09\x0a\x09(view asJQuery find: 'a#browse-binding') \x0a\x09\x09on: 'click' \x0a\x09\x09do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]",
+source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#inspect-example2') \x0a\x09\x09on: 'click' \x0a\x09\x09do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].\x0a\x09\x09\x0a\x09(view asJQuery find: 'a#browse-binding') \x0a\x09\x09on: 'click' \x0a\x09\x09do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]",
 referencedClasses: ["Error", "BindingController"],
 //>>excludeEnd("ide");
 messageSends: ["on:do:", "find:", "asJQuery", "inspect", "alert:", "browse"]
@@ -998,7 +998,7 @@ return self._inspect();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,3)});
 //>>excludeEnd("ctx");
@@ -1017,7 +1017,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#inspect-this') \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]",
+source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#inspect-this') \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]",
 referencedClasses: ["Error"],
 //>>excludeEnd("ide");
 messageSends: ["on:do:", "find:", "asJQuery", "inspect", "alert:"]
@@ -1311,7 +1311,7 @@ return self._inspect();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,3)});
 //>>excludeEnd("ctx");
@@ -1330,7 +1330,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09'#inspect-this' asJQuery \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]",
+source: "observeEvents\x0a\x0a\x09'#inspect-this' asJQuery \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]",
 referencedClasses: ["Error"],
 //>>excludeEnd("ide");
 messageSends: ["on:do:", "asJQuery", "inspect", "alert:"]
@@ -1780,56 +1780,22 @@ $globals.MainController);
 
 $core.addMethod(
 $core.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.MainController.superclass.fn.prototype._initialize.apply($recv(self), []));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._observeEvents();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-$1=self._yourself();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.MainController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self \x0a\x09\x09when: #onAfterView do: [ \x0a\x09\x09\x09self observeEvents ];\x0a\x09\x09yourself",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "observeEvents", "yourself"]
-}),
-$globals.MainController);
-
-$core.addMethod(
-$core.method({
 selector: "observeEvents",
-protocol: 'actions',
+protocol: 'initializing',
 fn: function (){
 var self=this;
 function $Error(){return $globals.Error||(typeof Error=="undefined"?nil:Error)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.MainController.superclass.fn.prototype._observeEvents.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
 $recv($recv($recv(self["@view"])._asJQuery())._find_("a#inspect-main"))._on_do_("click",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
@@ -1846,7 +1812,7 @@ return self._inspect();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
 //>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
+return $recv(window)._alert_("Is the IDE open?");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,3)});
 //>>excludeEnd("ctx");
@@ -1865,10 +1831,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09(view asJQuery find: 'a#inspect-main') \x0a\x09\x09on: #click \x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]",
+source: "observeEvents\x0a\x09\x0a\x09super observeEvents.\x0a\x0a\x09(view asJQuery find: 'a#inspect-main') \x0a\x09\x09on: #click \x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]",
 referencedClasses: ["Error"],
 //>>excludeEnd("ide");
-messageSends: ["on:do:", "find:", "asJQuery", "inspect", "alert:"]
+messageSends: ["observeEvents", "on:do:", "find:", "asJQuery", "inspect", "alert:"]
 }),
 $globals.MainController);
 
@@ -1919,7 +1885,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._showThen_((function(){
+var $1;
+$1=self._show();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["show"]=1;
+//>>excludeEnd("ctx");
+$recv($1)._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -1936,10 +1907,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample1\x0a\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example1 show ]",
+source: "showExample1\x0a\x0a\x09self show done: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example1 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["showThen:", "hideAll", "show", "example1"]
+messageSends: ["done:", "show", "hideAll", "example1"]
 }),
 $globals.MainController);
 

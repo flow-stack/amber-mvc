@@ -97,11 +97,11 @@ observeEvents
 
 	(view asJQuery find: 'a#browse-example1') 
 		on: #click
-		do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ].
+		do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
 		
 	(view asJQuery find: 'a#browse-template') 
 		on: #click
-		do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
+		do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 ! !
 
 !Example1Controller methodsFor: 'initialization'!
@@ -170,11 +170,11 @@ observeEvents
 
 	(view asJQuery find: 'a#inspect-example2') 
 		on: 'click' 
-		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ].
+		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
 		
 	(view asJQuery find: 'a#browse-binding') 
 		on: 'click' 
-		do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
+		do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 !
 
 updateCanConfirm
@@ -243,7 +243,7 @@ observeEvents
 
 	(view asJQuery find: 'a#inspect-this') 
 		on: #click
-		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 !
 
 showSubController
@@ -359,7 +359,7 @@ observeEvents
 
 	'#inspect-this' asJQuery 
 		on: #click
-		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 !
 
 removeThing
@@ -494,13 +494,6 @@ highlightTitle
 	(view asJQuery find: 'h1') effect: 'highlight'
 !
 
-observeEvents
-
-	(view asJQuery find: 'a#inspect-main') 
-		on: #click 
-		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
-!
-
 reset
 	"Hides all subcontrollers and shows the welcome message"
 
@@ -511,7 +504,7 @@ reset
 
 showExample1
 
-	self showThen: [
+	self show done: [
 		self hideAll.
 		self example1 show ]
 !
@@ -537,16 +530,15 @@ showExample4
 		self example4 show ]
 ! !
 
-!MainController methodsFor: 'initialization'!
+!MainController methodsFor: 'initializing'!
 
-initialize
-
-	super initialize.
+observeEvents
 	
-	self 
-		when: #onAfterView do: [ 
-			self observeEvents ];
-		yourself
+	super observeEvents.
+
+	(view asJQuery find: 'a#inspect-main') 
+		on: #click 
+		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
 ! !
 
 BindingController subclass: #ThingDetailsController
