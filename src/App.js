@@ -123,7 +123,7 @@ function $App(){return $globals.App||(typeof App=="undefined"?nil:App)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1,$2,$3,$4,$5,$6;
+var $1,$2,$3,$4,$5;
 $1=$recv($Router())._rlite();
 $recv($1)._add_do_("",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -261,28 +261,12 @@ $recv($1)._add_do_("example4",(function(r){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$5=$recv($App())._main();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["main"]=4;
-//>>excludeEnd("ctx");
-return $recv($5)._showExample4();
+return $recv($recv($App())._main())._showExample4();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({r:r},$ctx1,10)});
 //>>excludeEnd("ctx");
 }));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["add:do:"]=10;
-//>>excludeEnd("ctx");
-$recv($1)._add_do_("example5",(function(r){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv($recv($App())._main())._showExample5();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({r:r},$ctx1,11)});
-//>>excludeEnd("ctx");
-}));
-$6=$recv($1)._yourself();
+$5=$recv($1)._yourself();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"setupRoutes",{},$globals.App.klass)});
@@ -290,10 +274,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "setupRoutes\x0a\x0a\x09Router rlite \x0a\x09\x09\x22Normalize the home URI\x22\x0a\x09\x09add: '' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/#' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/home' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/#/home' do: [ :r | Router set: '/home' ];\x0a\x0a\x09\x09\x22Setup the actual routes\x22\x0a\x09\x09add: 'home' do: [ :r | App home ];\x0a\x09\x09add: 'example1' do: [ :r | App main showExample1 ];\x0a\x09\x09add: 'example2' do: [ :r | App main showExample2 ];\x0a\x09\x09add: 'example3' do: [ :r | App main showExample3 ];\x0a\x09\x09add: 'example4' do: [ :r | App main showExample4 ];\x0a\x09\x09add: 'example5' do: [ :r | App main showExample5 ];\x0a\x09\x09yourself",
+source: "setupRoutes\x0a\x0a\x09Router rlite \x0a\x09\x09\x22Normalize the home URI\x22\x0a\x09\x09add: '' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/#' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/home' do: [ :r | Router set: '/home' ];\x0a\x09\x09add: '/#/home' do: [ :r | Router set: '/home' ];\x0a\x0a\x09\x09\x22Setup the actual routes\x22\x0a\x09\x09add: 'home' do: [ :r | App home ];\x0a\x09\x09add: 'example1' do: [ :r | App main showExample1 ];\x0a\x09\x09add: 'example2' do: [ :r | App main showExample2 ];\x0a\x09\x09add: 'example3' do: [ :r | App main showExample3 ];\x0a\x09\x09add: 'example4' do: [ :r | App main showExample4 ];\x0a\x09\x09yourself",
 referencedClasses: ["Router", "App"],
 //>>excludeEnd("ide");
-messageSends: ["add:do:", "rlite", "set:", "home", "showExample1", "main", "showExample2", "showExample3", "showExample4", "showExample5", "yourself"]
+messageSends: ["add:do:", "rlite", "set:", "home", "showExample1", "main", "showExample2", "showExample3", "showExample4", "yourself"]
 }),
 $globals.App.klass);
 
@@ -556,7 +540,8 @@ return $core.withContext(function($ctx1) {
 var $1,$2;
 $1=self._nameModal();
 $recv($1)._message_($recv($recv($recv(self["@model"])._firstName())._asString()).__comma(" are you sure you can handle this?"));
-$2=$recv($1)._showThen_((function(c){
+$2=$recv($1)._show();
+$recv($2)._done_((function(c){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -572,10 +557,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "confirm\x0a\x09\x22Sets a fresh message and opens the modal\x22\x0a\x0a\x09self nameModal\x0a\x09\x09message: (model firstName asString,' are you sure you can handle this?');\x0a\x09\x09showThen: [ :c | c open ]",
+source: "confirm\x0a\x09\x22Sets a fresh message and opens the modal\x22\x0a\x0a\x09(self nameModal\x0a\x09\x09message: (model firstName asString,' are you sure you can handle this?');\x0a\x09\x09show) done: [ :c | c open ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["message:", "nameModal", ",", "asString", "firstName", "showThen:", "open"]
+messageSends: ["done:", "message:", "nameModal", ",", "asString", "firstName", "show", "open"]
 }),
 $globals.Example2Controller);
 
@@ -1548,504 +1533,6 @@ messageSends: ["new"]
 $globals.Example4Controller.klass);
 
 
-$core.addClass('Example5Controller', $globals.BindingController, [], 'App');
-//>>excludeStart("ide", pragmas.excludeIdeData);
-$globals.Example5Controller.comment="##AppController\x0a\x0aThe AppController is the main/root controller of your flow-based application.";
-//>>excludeEnd("ide");
-$core.addMethod(
-$core.method({
-selector: "addThing",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $Thing(){return $globals.Thing||(typeof Thing=="undefined"?nil:Thing)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1,$2;
-$1=$recv($Thing())._new();
-$recv($1)._name_(["Wave", "Particle", "Entanglement", "Superposition"]._atRandom());
-$2=$recv($1)._yourself();
-$recv($recv(self["@model"])._things())._add_($2);
-self._updateNotEmpty();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"addThing",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "addThing\x0a\x0a\x09model things add: (Thing new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).\x0a\x09\x0a\x09self updateNotEmpty",
-referencedClasses: ["Thing"],
-//>>excludeEnd("ide");
-messageSends: ["add:", "things", "name:", "new", "atRandom", "yourself", "updateNotEmpty"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "details",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $ThingDetailsController(){return $globals.ThingDetailsController||(typeof ThingDetailsController=="undefined"?nil:ThingDetailsController)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-$recv((6)._self())._ifAbsentAt_put_("details",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv($ThingDetailsController())._on_appendingTo_(self,"#details-wrapper"._asJQuery());
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"details",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "details\x0a\x09\x22Makes sure we have a controller for #details and \x0a\x09make it fresh and visible with a refresh\x22\x0a\x09\x0a\x096  self ifAbsentAt: #details put: [\x0a\x09\x09ThingDetailsController\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#details-wrapper' asJQuery ]",
-referencedClasses: ["ThingDetailsController"],
-//>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "self", "on:appendingTo:", "asJQuery"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.Example5Controller.superclass.fn.prototype._initialize.apply($recv(self), []));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-$recv(self._things())._show();
-self._updateNotEmpty();
-return self._observeEvents();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ]",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "show", "things", "updateNotEmpty", "observeEvents"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "model:",
-protocol: 'initialization',
-fn: function (aModel){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.Example5Controller.superclass.fn.prototype._model_.apply($recv(self), [aModel]));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-$recv(aModel)._things_(self._newItems());
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"model:",{aModel:aModel},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aModel"],
-source: "model: aModel\x0a\x09\x0a\x09super model: aModel.\x0a\x09\x0a\x09aModel things: self newItems",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["model:", "things:", "newItems"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "newItemControllerForModel:view:parent:",
-protocol: 'actions',
-fn: function (aModel,aView,anItemsController){
-var self=this;
-var row;
-function $ThingRowController(){return $globals.ThingRowController||(typeof ThingRowController=="undefined"?nil:ThingRowController)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1,$2,$3;
-row=$recv($ThingRowController())._for_on_appendingTo_(aModel,anItemsController,$recv($recv(aView)._asJQuery())._find_(".item-wrapper"));
-$1=row;
-$recv($1)._when_do_("removeThing",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._onRemove_(aModel);
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["when:do:"]=1;
-//>>excludeEnd("ctx");
-$recv($1)._when_do_("viewDetails",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._onDetails_(aModel);
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
-//>>excludeEnd("ctx");
-}));
-$2=$recv($1)._yourself();
-$3=row;
-return $3;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"newItemControllerForModel:view:parent:",{aModel:aModel,aView:aView,anItemsController:anItemsController,row:row},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aModel", "aView", "anItemsController"],
-source: "newItemControllerForModel: aModel view: aView parent: anItemsController\x0a\x09\x22Returns a new controller for aModel using aView and meant to be child of anItemsController.\x22\x0a\x0a\x09| row |\x0a\x0a\x09row := ThingRowController \x0a\x09\x09\x09\x09for: aModel\x0a\x09\x09\x09\x09on: anItemsController\x0a\x09\x09\x09\x09appendingTo: (aView asJQuery find: '.item-wrapper').\x0a\x0a\x09row\x0a\x09\x09when: #removeThing do: [ self onRemove: aModel ];\x0a\x09\x09when: #viewDetails do: [ self onDetails: aModel ];\x0a\x09\x09yourself.\x0a\x0a\x09^ row",
-referencedClasses: ["ThingRowController"],
-//>>excludeEnd("ide");
-messageSends: ["for:on:appendingTo:", "find:", "asJQuery", "when:do:", "onRemove:", "onDetails:", "yourself"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "newItems",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $ThingModel(){return $globals.ThingModel||(typeof ThingModel=="undefined"?nil:ThingModel)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $2,$3,$1;
-$1=$recv($recv(self._potentialNames())._shuffled())._collect_((function(aName){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-$2=$recv($ThingModel())._new();
-$recv($2)._name_(aName);
-$3=$recv($2)._yourself();
-return $3;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({aName:aName},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"newItems",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "newItems\x0a\x09\x22Answers a newly created collection of items to be used as models in the ItemsController.\x22\x0a\x09\x0a\x09^ self potentialNames shuffled collect: [ :aName |  \x0a\x09\x09ThingModel new \x0a\x09\x09\x09name: aName;\x0a\x09\x09\x09yourself ]",
-referencedClasses: ["ThingModel"],
-//>>excludeEnd("ide");
-messageSends: ["collect:", "shuffled", "potentialNames", "name:", "new", "yourself"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "observeEvents",
-protocol: 'actions',
-fn: function (){
-var self=this;
-function $Error(){return $globals.Error||(typeof Error=="undefined"?nil:Error)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-$recv("#inspect-this"._asJQuery())._on_do_("click",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv((function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return self._inspect();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)});
-//>>excludeEnd("ctx");
-}))._on_do_($Error(),(function(x){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return $recv(window)._alert_("Is Helios open?");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,3)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["on:do:"]=1;
-//>>excludeEnd("ctx");
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"observeEvents",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "observeEvents\x0a\x0a\x09'#inspect-this' asJQuery \x0a\x09\x09on: #click\x0a\x09\x09do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]",
-referencedClasses: ["Error"],
-//>>excludeEnd("ide");
-messageSends: ["on:do:", "asJQuery", "inspect", "alert:"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "onDetails:",
-protocol: 'reactions',
-fn: function (aThing){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1,$2;
-self._basicAt_put_("hasDetails",true);
-$1=self._controllerAt_("details");
-$recv($1)._model_(aThing);
-$2=$recv($1)._refresh();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"onDetails:",{aThing:aThing},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aThing"],
-source: "onDetails: aThing\x0a\x0a\x09self basicAt: #hasDetails put: true.\x0a\x09\x0a\x09(self controllerAt: #details) model: aThing; refresh",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["basicAt:put:", "model:", "controllerAt:", "refresh"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "onRemove:",
-protocol: 'reactions',
-fn: function (aThing){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-$recv($recv(self["@model"])._things())._remove_ifAbsent_(aThing,(function(){
-return nil;
-
-}));
-self._updateNotEmpty();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"onRemove:",{aThing:aThing},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aThing"],
-source: "onRemove: aThing\x0a\x0a\x09model things remove: aThing ifAbsent: [ nil ].\x0a\x0a\x09self updateNotEmpty",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["remove:ifAbsent:", "things", "updateNotEmpty"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "potentialNames",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-var $1;
-$1=["Galileo", "Newton", "Einstein", "Heisemberg", "Bohr", "Schrodinger", "Plank", "Neumann", "DeBroglie", "Feynman"];
-return $1;
-
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "potentialNames\x0a\x0a\x09^ #(\x0a\x09Galileo\x0a\x09Newton\x0a\x09Einstein\x0a\x09Heisemberg\x0a\x09Bohr\x0a\x09Schrodinger\x0a\x09Plank\x0a\x09Neumann\x0a\x09DeBroglie\x0a\x09Feynman\x0a\x09)",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: []
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "removeThing",
-protocol: 'actions',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-$1=$recv(self["@model"])._things();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["things"]=1;
-//>>excludeEnd("ctx");
-$recv($1)._remove_ifAbsent_($recv($recv(self["@model"])._things())._last(),(function(){
-return nil;
-
-}));
-self._updateNotEmpty();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"removeThing",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "removeThing\x0a\x0a\x09model things remove: model things last ifAbsent: [ nil ].\x0a\x09\x0a\x09self updateNotEmpty",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["remove:ifAbsent:", "things", "last", "updateNotEmpty"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "things",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $ItemsController(){return $globals.ItemsController||(typeof ItemsController=="undefined"?nil:ItemsController)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $2,$3,$1;
-$1=self._ifAbsentAt_put_("things",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-$2=$recv($ItemsController())._for_on_appendingTo_(self["@model"],self,"#things-wrapper"._asJQuery());
-$recv($2)._getItemsBlock_((function(m){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return $recv(m)._things();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({m:m},$ctx2,2)});
-//>>excludeEnd("ctx");
-}));
-$recv($2)._rivetsAccessor_("thing");
-$recv($2)._newItemControllerBlock_((function(v,m,itemsController){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return self._newItemControllerForModel_view_parent_(m,v,itemsController);
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({v:v,m:m,itemsController:itemsController},$ctx2,3)});
-//>>excludeEnd("ctx");
-}));
-$recv($2)._model_(self["@model"]);
-$3=$recv($2)._yourself();
-return $3;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"things",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "things\x0a\x09\x22Makes sure we have a controller for #things and \x0a\x09make it fresh and visible with a refresh\x22\x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ItemsController \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09\x09getItemsBlock: [ :m | m things ];\x0a\x09\x09\x09\x09rivetsAccessor: #thing;\x0a\x09\x09\x09\x09newItemControllerBlock: [ :v :m :itemsController | \x0a\x09\x09\x09\x09\x09self newItemControllerForModel: m view: v parent: itemsController ];\x0a\x09\x09\x09\x09model: model;\x0a\x09\x09\x09\x09yourself ]",
-referencedClasses: ["ItemsController"],
-//>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "getItemsBlock:", "for:on:appendingTo:", "asJQuery", "things", "rivetsAccessor:", "newItemControllerBlock:", "newItemControllerForModel:view:parent:", "model:", "yourself"]
-}),
-$globals.Example5Controller);
-
-$core.addMethod(
-$core.method({
-selector: "updateNotEmpty",
-protocol: 'actions',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-self._basicAt_put_("notEmpty",$recv($recv(self["@model"])._things())._notEmpty());
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"updateNotEmpty",{},$globals.Example5Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "updateNotEmpty\x0a\x0a\x09self \x0a\x09\x09basicAt: #notEmpty \x0a\x09\x09put: model things notEmpty",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["basicAt:put:", "notEmpty", "things"]
-}),
-$globals.Example5Controller);
-
-
-$core.addMethod(
-$core.method({
-selector: "defaultModel",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="undefined"?nil:ExampleModel)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-$1=$recv($ExampleModel())._new();
-return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"defaultModel",{},$globals.Example5Controller.klass)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "defaultModel\x0a\x0a\x09^ ExampleModel new",
-referencedClasses: ["ExampleModel"],
-//>>excludeEnd("ide");
-messageSends: ["new"]
-}),
-$globals.Example5Controller.klass);
-
-
 $core.addClass('ExampleModel', $globals.Object, ['name'], 'App');
 $core.addMethod(
 $core.method({
@@ -2237,40 +1724,6 @@ $globals.MainController);
 
 $core.addMethod(
 $core.method({
-selector: "example5",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-function $Example5Controller(){return $globals.Example5Controller||(typeof Example5Controller=="undefined"?nil:Example5Controller)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-$1=self._ifAbsentAt_put_("example5",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv($Example5Controller())._for_on_appendingTo_(self["@model"],self,"#example5-wrapper"._asJQuery());
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"example5",{},$globals.MainController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "example5\x0a\x0a\x09^ self ifAbsentAt: #example5 put: [\x0a\x09\x09Example5Controller \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example5-wrapper' asJQuery ]",
-referencedClasses: ["Example5Controller"],
-//>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
-}),
-$globals.MainController);
-
-$core.addMethod(
-$core.method({
 selector: "hideAll",
 protocol: 'actions',
 fn: function (){
@@ -2428,8 +1881,13 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+var $1;
 self._hideAll();
-self._showThen_((function(){
+$1=self._show();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["show"]=1;
+//>>excludeEnd("ctx");
+$recv($1)._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -2445,10 +1903,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "reset\x0a\x09\x22Hides all subcontrollers and shows the welcome message\x22\x0a\x0a\x09self hideAll.\x0a\x09\x0a\x09self showThen: [ '#welcome' asJQuery show ]",
+source: "reset\x0a\x09\x22Hides all subcontrollers and shows the welcome message\x22\x0a\x0a\x09self hideAll.\x0a\x09\x0a\x09self show done: [ '#welcome' asJQuery show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["hideAll", "showThen:", "show", "asJQuery"]
+messageSends: ["hideAll", "done:", "show", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -2494,7 +1952,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._showThen_((function(){
+var $1;
+$1=self._show();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["show"]=1;
+//>>excludeEnd("ctx");
+$recv($1)._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -2511,10 +1974,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample2\x0a\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example2 show ]",
+source: "showExample2\x0a\x0a\x09self show done: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example2 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["showThen:", "hideAll", "show", "example2"]
+messageSends: ["done:", "show", "hideAll", "example2"]
 }),
 $globals.MainController);
 
@@ -2527,7 +1990,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._showThen_((function(){
+var $1;
+$1=self._show();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["show"]=1;
+//>>excludeEnd("ctx");
+$recv($1)._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -2544,10 +2012,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample3\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example3 show ]",
+source: "showExample3\x0a\x09\x0a\x09self show done: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example3 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["showThen:", "hideAll", "show", "example3"]
+messageSends: ["done:", "show", "hideAll", "example3"]
 }),
 $globals.MainController);
 
@@ -2560,7 +2028,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._showThen_((function(){
+var $1;
+$1=self._show();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["show"]=1;
+//>>excludeEnd("ctx");
+$recv($1)._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -2577,43 +2050,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample4\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example4 show ]",
+source: "showExample4\x0a\x09\x0a\x09self show done: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example4 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["showThen:", "hideAll", "show", "example4"]
-}),
-$globals.MainController);
-
-$core.addMethod(
-$core.method({
-selector: "showExample5",
-protocol: 'actions',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-self._showThen_((function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-self._hideAll();
-return $recv(self._example5())._show();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"showExample5",{},$globals.MainController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "showExample5\x0a\x09\x0a\x09self showThen: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example5 show ]",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["showThen:", "hideAll", "show", "example5"]
+messageSends: ["done:", "show", "hideAll", "example4"]
 }),
 $globals.MainController);
 

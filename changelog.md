@@ -1,3 +1,13 @@
+January 17, 2015 - Release 0.1.17
+===================================
+
+* Deprecation of #showThen:
+* Controller>>show now answers always a deferred, so it allows: `controller show done: [ :c | ... ]; fail: [ :c | ... ]`.
+* Removes packages that are not currently supported (MVC-Iterables and MVC-Routeables).
+* Removes example 5 page (which used unsupported code).
+* Removes duplicate license file
+
+
 January 15, 2015 - Release 0.1.16
 ===================================
 

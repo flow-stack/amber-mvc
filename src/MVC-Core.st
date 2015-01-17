@@ -229,10 +229,19 @@ renderOn: html
 !
 
 show
+	"Shows the receiver.
+	Rendes when there is no view.
+	Always returns a thenable (deferred).
+	The thenable will receive this controller as argument and 
+	evaluates when the view is set."
 
-	self hasView ifFalse: [ ^ self render ].
+	self hasView ifFalse: [ 
+		self render.
+		^ self deferred ].
 	
-	self view show
+	self view show.
+
+	^ self deferred
 !
 
 showAll
@@ -242,6 +251,8 @@ showAll
 
 showThen: aBlock
 	"Shows this controller and get aBlock executed after its view is set."
+	
+	console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.
 	
 	self deferred done: aBlock.
 	

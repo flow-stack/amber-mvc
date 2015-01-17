@@ -37,7 +37,6 @@ setupRoutes
 		add: 'example2' do: [ :r | App main showExample2 ];
 		add: 'example3' do: [ :r | App main showExample3 ];
 		add: 'example4' do: [ :r | App main showExample4 ];
-		add: 'example5' do: [ :r | App main showExample5 ];
 		yourself
 !
 
@@ -154,9 +153,9 @@ nameModal
 confirm
 	"Sets a fresh message and opens the modal"
 
-	self nameModal
+	(self nameModal
 		message: (model firstName asString,' are you sure you can handle this?');
-		showThen: [ :c | c open ]
+		show) done: [ :c | c open ]
 !
 
 confirmAgain
@@ -414,158 +413,6 @@ defaultModel
 	^ ExampleModel new
 ! !
 
-BindingController subclass: #Example5Controller
-	instanceVariableNames: ''
-	package: 'App'!
-!Example5Controller commentStamp!
-##AppController
-
-The AppController is the main/root controller of your flow-based application.!
-
-!Example5Controller methodsFor: 'accessing'!
-
-details
-	"Makes sure we have a controller for #details and 
-	make it fresh and visible with a refresh"
-	
-	6  self ifAbsentAt: #details put: [
-		ThingDetailsController
-			on: self
-			appendingTo: '#details-wrapper' asJQuery ]
-!
-
-potentialNames
-
-	^ #(
-	Galileo
-	Newton
-	Einstein
-	Heisemberg
-	Bohr
-	Schrodinger
-	Plank
-	Neumann
-	DeBroglie
-	Feynman
-	)
-!
-
-things
-	"Makes sure we have a controller for #things and 
-	make it fresh and visible with a refresh"
-	
-	^ self ifAbsentAt: #things put: [
-		(ItemsController 
-			for: model
-			on: self
-			appendingTo: '#things-wrapper' asJQuery)
-				getItemsBlock: [ :m | m things ];
-				rivetsAccessor: #thing;
-				newItemControllerBlock: [ :v :m :itemsController | 
-					self newItemControllerForModel: m view: v parent: itemsController ];
-				model: model;
-				yourself ]
-! !
-
-!Example5Controller methodsFor: 'actions'!
-
-addThing
-
-	model things add: (Thing new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
-	
-	self updateNotEmpty
-!
-
-newItemControllerForModel: aModel view: aView parent: anItemsController
-	"Returns a new controller for aModel using aView and meant to be child of anItemsController."
-
-	| row |
-
-	row := ThingRowController 
-				for: aModel
-				on: anItemsController
-				appendingTo: (aView asJQuery find: '.item-wrapper').
-
-	row
-		when: #removeThing do: [ self onRemove: aModel ];
-		when: #viewDetails do: [ self onDetails: aModel ];
-		yourself.
-
-	^ row
-!
-
-newItems
-	"Answers a newly created collection of items to be used as models in the ItemsController."
-	
-	^ self potentialNames shuffled collect: [ :aName |  
-		ThingModel new 
-			name: aName;
-			yourself ]
-!
-
-observeEvents
-
-	'#inspect-this' asJQuery 
-		on: #click
-		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is Helios open?' ] ]
-!
-
-removeThing
-
-	model things remove: model things last ifAbsent: [ nil ].
-	
-	self updateNotEmpty
-!
-
-updateNotEmpty
-
-	self 
-		basicAt: #notEmpty 
-		put: model things notEmpty
-! !
-
-!Example5Controller methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self when: #onAfterView do: [ 
-		self things show.
-		self updateNotEmpty.
-		self observeEvents ]
-!
-
-model: aModel
-	
-	super model: aModel.
-	
-	aModel things: self newItems
-! !
-
-!Example5Controller methodsFor: 'reactions'!
-
-onDetails: aThing
-
-	self basicAt: #hasDetails put: true.
-	
-	(self controllerAt: #details) model: aThing; refresh
-!
-
-onRemove: aThing
-
-	model things remove: aThing ifAbsent: [ nil ].
-
-	self updateNotEmpty
-! !
-
-!Example5Controller class methodsFor: 'accessing'!
-
-defaultModel
-
-	^ ExampleModel new
-! !
-
 Object subclass: #ExampleModel
 	instanceVariableNames: 'name'
 	package: 'App'!
@@ -630,15 +477,6 @@ example4
 			for: ThingModel new
 			on: self
 			appendingTo: '#example4-wrapper' asJQuery ]
-!
-
-example5
-
-	^ self ifAbsentAt: #example5 put: [
-		Example5Controller 
-			for: model
-			on: self
-			appendingTo: '#example5-wrapper' asJQuery ]
 ! !
 
 !MainController methodsFor: 'actions'!
@@ -668,7 +506,7 @@ reset
 
 	self hideAll.
 	
-	self showThen: [ '#welcome' asJQuery show ]
+	self show done: [ '#welcome' asJQuery show ]
 !
 
 showExample1
@@ -680,30 +518,23 @@ showExample1
 
 showExample2
 
-	self showThen: [
+	self show done: [
 		self hideAll.
 		self example2 show ]
 !
 
 showExample3
 	
-	self showThen: [
+	self show done: [
 		self hideAll.
 		self example3 show ]
 !
 
 showExample4
 	
-	self showThen: [
+	self show done: [
 		self hideAll.
 		self example4 show ]
-!
-
-showExample5
-	
-	self showThen: [
-		self hideAll.
-		self example5 show ]
 ! !
 
 !MainController methodsFor: 'initialization'!

@@ -951,24 +951,29 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1,$2;
+var $1,$2,$3;
 $1=self._hasView();
 if(!$core.assert($1)){
-$2=self._render();
+self._render();
+$2=self._deferred();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["deferred"]=1;
+//>>excludeEnd("ctx");
 return $2;
 };
 $recv(self._view())._show();
-return self;
+$3=self._deferred();
+return $3;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"show",{},$globals.Controller)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x0a\x09self hasView ifFalse: [ ^ self render ].\x0a\x09\x0a\x09self view show",
+source: "show\x0a\x09\x22Shows the receiver.\x0a\x09Rendes when there is no view.\x0a\x09Always returns a thenable (deferred).\x0a\x09The thenable will receive this controller as argument and \x0a\x09evaluates when the view is set.\x22\x0a\x0a\x09self hasView ifFalse: [ \x0a\x09\x09self render.\x0a\x09\x09^ self deferred ].\x0a\x09\x0a\x09self view show.\x0a\x0a\x09^ self deferred",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifFalse:", "hasView", "render", "show", "view"]
+messageSends: ["ifFalse:", "hasView", "render", "deferred", "show", "view"]
 }),
 $globals.Controller);
 
@@ -1013,6 +1018,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+$recv(console)._log_("Controller>>showThen: is deprecated. Use `controller show then:` instead");
 $recv(self._deferred())._done_(aBlock);
 self._show();
 return self;
@@ -1022,10 +1028,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aBlock"],
-source: "showThen: aBlock\x0a\x09\x22Shows this controller and get aBlock executed after its view is set.\x22\x0a\x09\x0a\x09self deferred done: aBlock.\x0a\x09\x0a\x09self show",
+source: "showThen: aBlock\x0a\x09\x22Shows this controller and get aBlock executed after its view is set.\x22\x0a\x09\x0a\x09console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.\x0a\x09\x0a\x09self deferred done: aBlock.\x0a\x09\x0a\x09self show",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["done:", "deferred", "show"]
+messageSends: ["log:", "done:", "deferred", "show"]
 }),
 $globals.Controller);
 
