@@ -8,6 +8,11 @@ January 21, 2015 - Release 0.1.18
 * Upgrades to Amber 0.14.3
 * Removed development dependency on Helios
 * Upgrades amber-attic to 0.1.3
+* Makes sure all works after amber-dev 0.3.1
+* Upgrades to Amber 0.14.3
+* Upgrades amber-attic to 0.1.3
+* Upgrades Helios 0.3.4
+* Adds changelog.md
 
 January 17, 2015 - Release 0.1.17
 ===================================

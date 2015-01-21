@@ -1232,6 +1232,23 @@ removeAll: aCollection
 	aCollection == self ifTrue: [^self removeAll].
 	aCollection do: [:each | self remove: each].
 	^ aCollection
+!
+
+removeAllFoundIn: aCollection 
+    "Remove each element of aCollection which is present in the receiver 
+    from the receiver. Answer aCollection. No error is raised if an element
+    isn't found. ArrayedCollections cannot respond to this message."
+
+    aCollection do: [ :each | self remove: each ifAbsent: [ nil ] ].
+    ^ aCollection
+!
+
+removeAllSuchThat: aBlock 
+	"Evaluate aBlock for each element and remove all that elements from
+	the receiver for that aBlock evaluates to true.  Use a copy to enumerate 
+	collections whose order changes when an element is removed (i.e. Sets)."
+
+	self copy do: [ :each | (aBlock value: each) ifTrue: [ self remove: each ] ]
 ! !
 
 !JSObjectProxy methodsFor: '*MVC-Core'!

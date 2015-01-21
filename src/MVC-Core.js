@@ -1,6 +1,7 @@
 define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "minimapless/MiniMapless", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('MVC-Core');
+$core.packages["MVC-Core"].innerEval = function (expr) { return eval(expr); };
 $core.packages["MVC-Core"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
 
 $core.addClass('Controller', $globals.Widget, ['controllers', 'model', 'view', 'parent', 'parentElement', 'deferred'], 'MVC-Core');
@@ -4256,6 +4257,77 @@ source: "removeAll: aCollection \x0a\x09\x22Remove each element of aCollection f
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["ifTrue:", "==", "removeAll", "do:", "remove:"]
+}),
+$globals.Collection);
+
+$core.addMethod(
+$core.method({
+selector: "removeAllFoundIn:",
+protocol: '*MVC-Core',
+fn: function (aCollection){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv(aCollection)._do_((function(each){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._remove_ifAbsent_(each,(function(){
+return nil;
+
+}));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return aCollection;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"removeAllFoundIn:",{aCollection:aCollection},$globals.Collection)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aCollection"],
+source: "removeAllFoundIn: aCollection \x0a    \x22Remove each element of aCollection which is present in the receiver \x0a    from the receiver. Answer aCollection. No error is raised if an element\x0a    isn't found. ArrayedCollections cannot respond to this message.\x22\x0a\x0a    aCollection do: [ :each | self remove: each ifAbsent: [ nil ] ].\x0a    ^ aCollection",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["do:", "remove:ifAbsent:"]
+}),
+$globals.Collection);
+
+$core.addMethod(
+$core.method({
+selector: "removeAllSuchThat:",
+protocol: '*MVC-Core',
+fn: function (aBlock){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$recv(self._copy())._do_((function(each){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+$1=$recv(aBlock)._value_(each);
+if($core.assert($1)){
+return self._remove_(each);
+};
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"removeAllSuchThat:",{aBlock:aBlock},$globals.Collection)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aBlock"],
+source: "removeAllSuchThat: aBlock \x0a\x09\x22Evaluate aBlock for each element and remove all that elements from\x0a\x09the receiver for that aBlock evaluates to true.  Use a copy to enumerate \x0a\x09collections whose order changes when an element is removed (i.e. Sets).\x22\x0a\x0a\x09self copy do: [ :each | (aBlock value: each) ifTrue: [ self remove: each ] ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["do:", "copy", "ifTrue:", "value:", "remove:"]
 }),
 $globals.Collection);
 

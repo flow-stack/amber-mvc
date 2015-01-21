@@ -1,6 +1,7 @@
 define("amber-mvc/App", ["amber/boot", "amber_core/Kernel-Objects", "amber-mvc/MVC-Core", "minimapless/MiniMapless"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('App');
+$core.packages["App"].innerEval = function (expr) { return eval(expr); };
 $core.packages["App"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
 
 $core.addClass('App', $globals.Object, [], 'App');
@@ -1227,7 +1228,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self basicAt: #hasDetails put: false.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ] ",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self basicAt: #hasDetails put: false.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty.\x0a\x09\x09self observeEvents ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["initialize", "basicAt:put:", "when:do:", "show", "things", "updateNotEmpty", "observeEvents"]
