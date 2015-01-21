@@ -1,3 +1,14 @@
+January 21, 2015 - Release 0.1.18
+===================================
+
+* ListModel>>addAll:
+* ListModel>>removeAll
+* ListModel>>removeAll:
+* Collection>>removeAll:
+* Upgrades to Amber 0.14.3
+* Removed development dependency on Helios
+* Upgrades amber-attic to 0.1.3
+
 January 17, 2015 - Release 0.1.17
 ===================================
 
