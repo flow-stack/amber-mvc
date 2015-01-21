@@ -3442,6 +3442,31 @@ $globals.ListModel);
 
 $core.addMethod(
 $core.method({
+selector: "removeAll:",
+protocol: 'actions',
+fn: function (someObjects){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv(self._list())._removeAll_(someObjects);
+self._changed();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"removeAll:",{someObjects:someObjects},$globals.ListModel)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["someObjects"],
+source: "removeAll: someObjects\x0a\x0a\x09self list removeAll: someObjects.\x0a\x09\x0a\x09self changed",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["removeAll:", "list", "changed"]
+}),
+$globals.ListModel);
+
+$core.addMethod(
+$core.method({
 selector: "removeFirst",
 protocol: 'actions',
 fn: function (){
@@ -4195,6 +4220,44 @@ referencedClasses: [],
 messageSends: ["at:put:", "location"]
 }),
 $globals.Router.klass);
+
+$core.addMethod(
+$core.method({
+selector: "removeAll:",
+protocol: '*MVC-Core',
+fn: function (aCollection){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1,$2;
+$1=$recv(aCollection).__eq_eq(self);
+if($core.assert($1)){
+$2=self._removeAll();
+return $2;
+};
+$recv(aCollection)._do_((function(each){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._remove_(each);
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,2)});
+//>>excludeEnd("ctx");
+}));
+return aCollection;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"removeAll:",{aCollection:aCollection},$globals.Collection)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aCollection"],
+source: "removeAll: aCollection \x0a\x09\x22Remove each element of aCollection from the receiver. If successful for \x0a\x09each, answer aCollection. Otherwise create an error notification.\x0a\x09ArrayedCollections cannot respond to this message.\x22\x0a\x0a\x09aCollection == self ifTrue: [^self removeAll].\x0a\x09aCollection do: [:each | self remove: each].\x0a\x09^ aCollection",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["ifTrue:", "==", "removeAll", "do:", "remove:"]
+}),
+$globals.Collection);
 
 $core.addMethod(
 $core.method({
