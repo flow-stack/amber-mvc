@@ -531,7 +531,9 @@ initialize
 
 	super initialize.
 	
-	self when: #onAfterModel do: [ self observeList ]
+	self when: #onAfterModel do: [ 
+		self observeList.
+		self refresh ]
 ! !
 
 Controller subclass: #TemplateController
@@ -944,6 +946,13 @@ add: anObject
 	self changed
 !
 
+addAll: someObjects
+
+	self list addAll: someObjects.
+	
+	self changed
+!
+
 remove: anObject
 
 	self list remove: anObject.
@@ -954,6 +963,13 @@ remove: anObject
 remove: anObject ifAbsent: aBlock
 
 	self list remove: anObject ifAbsent: aBlock.
+	
+	self changed
+!
+
+removeAll
+
+	self list removeAll.
 	
 	self changed
 !

@@ -1580,7 +1580,8 @@ self._when_do_("onAfterModel",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return self._observeList();
+self._observeList();
+return self._refresh();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -1592,10 +1593,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterModel do: [ self observeList ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterModel do: [ \x0a\x09\x09self observeList.\x0a\x09\x09self refresh ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "observeList"]
+messageSends: ["initialize", "when:do:", "observeList", "refresh"]
 }),
 $globals.ListController);
 
@@ -3184,6 +3185,31 @@ $globals.ListModel);
 
 $core.addMethod(
 $core.method({
+selector: "addAll:",
+protocol: 'actions',
+fn: function (someObjects){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv(self._list())._addAll_(someObjects);
+self._changed();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"addAll:",{someObjects:someObjects},$globals.ListModel)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["someObjects"],
+source: "addAll: someObjects\x0a\x0a\x09self list addAll: someObjects.\x0a\x09\x0a\x09self changed",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["addAll:", "list", "changed"]
+}),
+$globals.ListModel);
+
+$core.addMethod(
+$core.method({
 selector: "first",
 protocol: 'accessing',
 fn: function (){
@@ -3386,6 +3412,31 @@ source: "remove: anObject ifAbsent: aBlock\x0a\x0a\x09self list remove: anObject
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["remove:ifAbsent:", "list", "changed"]
+}),
+$globals.ListModel);
+
+$core.addMethod(
+$core.method({
+selector: "removeAll",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv(self._list())._removeAll();
+self._changed();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"removeAll",{},$globals.ListModel)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "removeAll\x0a\x0a\x09self list removeAll.\x0a\x09\x0a\x09self changed",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["removeAll", "list", "changed"]
 }),
 $globals.ListModel);
 
