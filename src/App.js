@@ -647,7 +647,7 @@ $1=self._ifAbsentAt_put_("nameModal",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$2=$recv($ConfirmNameController())._for_on_appendingTo_(self["@model"],self,"#confirmName"._asJQuery());
+$2=$recv($ConfirmNameController())._on_in_appendingTo_(self["@model"],self,"#confirmName"._asJQuery());
 $recv($2)._acceptBlock_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
@@ -691,10 +691,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "nameModal\x0a\x0a\x09^ self ifAbsentAt: #nameModal put: [\x0a\x09\x09(ConfirmNameController \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#confirmName' asJQuery)\x0a\x09\x09\x09\x09acceptBlock: [ \x0a\x09\x09\x09\x09\x09model isConfirmed: true.\x0a\x09\x09\x09\x09\x09self nameModal close ];\x0a\x09\x09\x09\x09rejectBlock: [ \x0a\x09\x09\x09\x09\x09model isConfirmed: false.\x0a\x09\x09\x09\x09\x09self nameModal close ];\x0a\x09\x09\x09\x09yourself ]",
+source: "nameModal\x0a\x0a\x09^ self ifAbsentAt: #nameModal put: [\x0a\x09\x09(ConfirmNameController \x0a\x09\x09\x09on: model\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#confirmName' asJQuery)\x0a\x09\x09\x09\x09acceptBlock: [ \x0a\x09\x09\x09\x09\x09model isConfirmed: true.\x0a\x09\x09\x09\x09\x09self nameModal close ];\x0a\x09\x09\x09\x09rejectBlock: [ \x0a\x09\x09\x09\x09\x09model isConfirmed: false.\x0a\x09\x09\x09\x09\x09self nameModal close ];\x0a\x09\x09\x09\x09yourself ]",
 referencedClasses: ["ConfirmNameController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "acceptBlock:", "for:on:appendingTo:", "asJQuery", "isConfirmed:", "close", "nameModal", "rejectBlock:", "yourself"]
+messageSends: ["ifAbsentAt:put:", "acceptBlock:", "on:in:appendingTo:", "asJQuery", "isConfirmed:", "close", "nameModal", "rejectBlock:", "yourself"]
 }),
 $globals.Example2Controller);
 
@@ -1451,7 +1451,7 @@ $1=self._ifAbsentAt_put_("things",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$2=$recv($ListController())._on_appendingTo_(self,"#things-wrapper"._asJQuery());
+$2=$recv($ListController())._for_on_appendingTo_(self._getListModel(),self,"#things-wrapper"._asJQuery());
 $recv($2)._newItemControllerBlock_((function(item){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
@@ -1461,7 +1461,6 @@ return self._newItemControllerFor_for_(item,self._things());
 }, function($ctx3) {$ctx3.fillBlock({item:item},$ctx2,2)});
 //>>excludeEnd("ctx");
 }));
-$recv($2)._model_(self._getListModel());
 $3=$recv($2)._yourself();
 return $3;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1475,10 +1474,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "things \x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ListController \x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09newItemControllerBlock: [ :item | \x0a\x09\x09\x09\x09self newItemControllerFor: item for: self things ];\x0a\x09\x09\x09model: self getListModel;\x0a\x09\x09\x09yourself ]",
+source: "things \x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ListController \x0a\x09\x09\x09for: self getListModel\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09\x09newItemControllerBlock: [ :item | \x0a\x09\x09\x09\x09\x09self newItemControllerFor: item for: self things ];\x0a\x09\x09\x09\x09yourself ]",
 referencedClasses: ["ListController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "newItemControllerBlock:", "on:appendingTo:", "asJQuery", "newItemControllerFor:for:", "things", "model:", "getListModel", "yourself"]
+messageSends: ["ifAbsentAt:put:", "newItemControllerBlock:", "for:on:appendingTo:", "getListModel", "asJQuery", "newItemControllerFor:for:", "things", "yourself"]
 }),
 $globals.Example4Controller);
 

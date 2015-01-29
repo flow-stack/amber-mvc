@@ -136,8 +136,8 @@ nameModal
 
 	^ self ifAbsentAt: #nameModal put: [
 		(ConfirmNameController 
-			for: model
-			on: self
+			on: model
+			in: self
 			appendingTo: '#confirmName' asJQuery)
 				acceptBlock: [ 
 					model isConfirmed: true.
@@ -301,12 +301,12 @@ things
 	
 	^ self ifAbsentAt: #things put: [
 		(ListController 
+			for: self getListModel
 			on: self
 			appendingTo: '#things-wrapper' asJQuery)
-			newItemControllerBlock: [ :item | 
-				self newItemControllerFor: item for: self things ];
-			model: self getListModel;
-			yourself ]
+				newItemControllerBlock: [ :item | 
+					self newItemControllerFor: item for: self things ];
+				yourself ]
 ! !
 
 !Example4Controller methodsFor: 'actions'!

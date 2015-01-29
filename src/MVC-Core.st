@@ -403,8 +403,8 @@ for: aModel
 	with no parent and meant to be appended to the default html element,
 	expected to be <div id=#content></div>."
 
-	#deprecated
-	console warn: 'this will be removed in next version, use #on:'.
+	#deprecated.
+	console warn: self name,'>>for: this will be removed in next version, use #on:'.
 	
 	^ self for: aModel on: nil appendingTo: self defaultHtmlElement
 !
@@ -414,8 +414,8 @@ for: aModel on: aParentControllerOrNil
 	child of aParentControllerOrNil and meant to be appended to 
 	the default html element, expected to be <div id=#content></div>."
 	
-	#deprecated
-	console warn: 'this will be removed in next version, use #on:in:'.
+	#deprecated.
+	console warn: self name,'>>for:on: this will be removed in next version, use #on:in:'.
 	
 	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
 !
@@ -424,8 +424,8 @@ for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
-	#deprecated
-	console warn: ' use #on:in:appending:'.
+	#deprecated.
+	console warn: self name,'>>for:on:appendingTo: use #on:in:appendingTo:'.
 	
 	^ self new
 		model: aModel;
@@ -438,8 +438,8 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
 
-	#deprecated
-	console warn: 'this will be removed in next version, use #on:in:view:'.
+	#deprecated.
+	console warn: self name,'>>for:on:view: this will be removed in next version, use #on:in:view:'.
 	
 	^ self new
 		model: aModel;

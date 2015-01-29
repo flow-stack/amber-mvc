@@ -1480,7 +1480,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$recv("deprecated"._console())._warn_("this will be removed in next version, use #on:");
+"deprecated";
+$recv(console)._warn_($recv(self._name()).__comma(">>for: this will be removed in next version, use #on:"));
 $1=self._for_on_appendingTo_(aModel,nil,self._defaultHtmlElement());
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1489,10 +1490,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel"],
-source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x0a\x09#deprecated\x0a\x09console warn: 'this will be removed in next version, use #on:'.\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
+source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for: this will be removed in next version, use #on:'.\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", "console", "for:on:appendingTo:", "defaultHtmlElement"]
+messageSends: ["warn:", ",", "name", "for:on:appendingTo:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1506,7 +1507,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$recv("deprecated"._console())._warn_("this will be removed in next version, use #on:in:");
+"deprecated";
+$recv(console)._warn_($recv(self._name()).__comma(">>for:on: this will be removed in next version, use #on:in:"));
 $1=self._on_in_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1515,10 +1517,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil"],
-source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09#deprecated\x0a\x09console warn: 'this will be removed in next version, use #on:in:'.\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
+source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for:on: this will be removed in next version, use #on:in:'.\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", "console", "on:in:appendingTo:", "defaultHtmlElement"]
+messageSends: ["warn:", ",", "name", "on:in:appendingTo:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1532,7 +1534,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
-$recv("deprecated"._console())._warn_(" use #on:in:appending:");
+"deprecated";
+$recv(console)._warn_($recv(self._name()).__comma(">>for:on:appendingTo: use #on:in:appendingTo:"));
 $2=self._new();
 $recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
@@ -1546,10 +1549,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated\x0a\x09console warn: ' use #on:in:appending:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for:on:appendingTo: use #on:in:appendingTo:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", "console", "model:", "new", "parent:", "parentElement:", "yourself"]
+messageSends: ["warn:", ",", "name", "model:", "new", "parent:", "parentElement:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1563,7 +1566,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
-$recv("deprecated"._console())._warn_("this will be removed in next version, use #on:in:view:");
+"deprecated";
+$recv(console)._warn_($recv(self._name()).__comma(">>for:on:view: this will be removed in next version, use #on:in:view:"));
 $2=self._new();
 $recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
@@ -1577,10 +1581,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09#deprecated\x0a\x09console warn: 'this will be removed in next version, use #on:in:view:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
+source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for:on:view: this will be removed in next version, use #on:in:view:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", "console", "model:", "new", "parent:", "view:", "yourself"]
+messageSends: ["warn:", ",", "name", "model:", "new", "parent:", "view:", "yourself"]
 }),
 $globals.Controller.klass);
 
