@@ -1480,6 +1480,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
+$recv("deprecated"._console())._warn_("this will be removed in next version, use #on:");
 $1=self._for_on_appendingTo_(aModel,nil,self._defaultHtmlElement());
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1488,10 +1489,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel"],
-source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
+source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x0a\x09#deprecated\x0a\x09console warn: 'this will be removed in next version, use #on:'.\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["for:on:appendingTo:", "defaultHtmlElement"]
+messageSends: ["warn:", "console", "for:on:appendingTo:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1505,7 +1506,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=self._for_on_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
+$recv("deprecated"._console())._warn_("this will be removed in next version, use #on:in:");
+$1=self._on_in_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"for:on:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil},$globals.Controller.klass)});
@@ -1513,10 +1515,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil"],
-source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self for: aModel on: aParentControllerOrNil appendingTo: self defaultHtmlElement",
+source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09#deprecated\x0a\x09console warn: 'this will be removed in next version, use #on:in:'.\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["for:on:appendingTo:", "defaultHtmlElement"]
+messageSends: ["warn:", "console", "on:in:appendingTo:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1530,6 +1532,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
+$recv("deprecated"._console())._warn_(" use #on:in:appending:");
 $2=self._new();
 $recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
@@ -1543,10 +1546,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated\x0a\x09console warn: ' use #on:in:appending:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["model:", "new", "parent:", "parentElement:", "yourself"]
+messageSends: ["warn:", "console", "model:", "new", "parent:", "parentElement:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1560,6 +1563,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
+$recv("deprecated"._console())._warn_("this will be removed in next version, use #on:in:view:");
 $2=self._new();
 $recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
@@ -1573,10 +1577,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
+source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09#deprecated\x0a\x09console warn: 'this will be removed in next version, use #on:in:view:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["model:", "new", "parent:", "view:", "yourself"]
+messageSends: ["warn:", "console", "model:", "new", "parent:", "view:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1621,6 +1625,31 @@ $globals.Controller.klass);
 
 $core.addMethod(
 $core.method({
+selector: "on:",
+protocol: 'actions',
+fn: function (aModel){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=self._on_in_appendingTo_(aModel,nil,self._defaultHtmlElement());
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"on:",{aModel:aModel},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aModel"],
+source: "on: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self on: aModel in: nil appendingTo: self defaultHtmlElement",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["on:in:appendingTo:", "defaultHtmlElement"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
 selector: "on:appendingTo:",
 protocol: 'actions',
 fn: function (aParentControllerOrNil,aHtmlElement){
@@ -1645,6 +1674,91 @@ source: "on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["parent:", "new", "parentElement:", "yourself"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
+selector: "on:in:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=self._on_in_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"on:in:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aModel", "aParentControllerOrNil"],
+source: "on: aModel in: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["on:in:appendingTo:", "defaultHtmlElement"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
+selector: "on:in:appendingTo:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil,aHtmlElement){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._model_(aModel);
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._parentElement_(aHtmlElement);
+$3=$recv($2)._yourself();
+$1=$3;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"on:in:appendingTo:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
+source: "on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["model:", "new", "parent:", "parentElement:", "yourself"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
+selector: "on:in:view:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil,aHtmlElement){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._model_(aModel);
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._view_(aHtmlElement);
+$3=$recv($2)._yourself();
+$1=$3;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"on:in:view:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
+source: "on: aModel in: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["model:", "new", "parent:", "view:", "yourself"]
 }),
 $globals.Controller.klass);
 

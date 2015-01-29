@@ -402,6 +402,9 @@ for: aModel
 	"Answers a new instance of this controller dedicated to aModel,
 	with no parent and meant to be appended to the default html element,
 	expected to be <div id=#content></div>."
+
+	#deprecated
+	console warn: 'this will be removed in next version, use #on:'.
 	
 	^ self for: aModel on: nil appendingTo: self defaultHtmlElement
 !
@@ -411,13 +414,19 @@ for: aModel on: aParentControllerOrNil
 	child of aParentControllerOrNil and meant to be appended to 
 	the default html element, expected to be <div id=#content></div>."
 	
-	^ self for: aModel on: aParentControllerOrNil appendingTo: self defaultHtmlElement
+	#deprecated
+	console warn: 'this will be removed in next version, use #on:in:'.
+	
+	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
 !
 
 for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
+	#deprecated
+	console warn: ' use #on:in:appending:'.
+	
 	^ self new
 		model: aModel;
 		parent: aParentControllerOrNil;
@@ -429,11 +438,22 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
 
+	#deprecated
+	console warn: 'this will be removed in next version, use #on:in:view:'.
+	
 	^ self new
 		model: aModel;
 		parent: aParentControllerOrNil;
 		view: aHtmlElement;
 		yourself
+!
+
+on: aModel 
+	"Answers a new instance of this controller dedicated to aModel,
+	with no parent and meant to be appended to the default html element,
+	expected to be <div id=#content></div>."
+	
+	^ self on: aModel in: nil appendingTo: self defaultHtmlElement
 !
 
 on: aParentControllerOrNil appendingTo: aHtmlElement
@@ -444,6 +464,36 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	^ self new
 		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;
+		yourself
+!
+
+on: aModel in: aParentControllerOrNil
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to 
+	the default html element, expected to be <div id=#content></div>."
+	
+	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
+!
+
+on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		parentElement: aHtmlElement;
+		yourself
+!
+
+on: aModel in: aParentControllerOrNil view: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
+
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		view: aHtmlElement;
 		yourself
 ! !
 
