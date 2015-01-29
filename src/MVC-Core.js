@@ -3300,7 +3300,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._when_do_("accept",aBlock);
+self._when_do_("accepted",aBlock);
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"acceptBlock:",{aBlock:aBlock},$globals.ConfirmController)});
@@ -3308,7 +3308,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aBlock"],
-source: "acceptBlock: aBlock\x0a\x0a\x09self when: #accept do: aBlock",
+source: "acceptBlock: aBlock\x0a\x0a\x09self when: #accepted do: aBlock",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["when:do:"]

@@ -937,7 +937,7 @@ accept
 
 acceptBlock: aBlock
 
-	self when: #accept do: aBlock
+	self when: #accepted do: aBlock
 !
 
 acceptButtonLabel: aString
