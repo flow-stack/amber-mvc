@@ -6,24 +6,24 @@ require.config({
   "paths": {
     "helios/showdown": "bower_components/showdown/src/showdown",
     "requireJS": "node_modules/requirejs/require",
+    "require-css": "bower_components/require-css",
     "jquery": "bower_components/jquery/jquery",
     "jquery-ui": "bower_components/jquery-ui/jquery-ui",
     "codemirror": "bower_components/codemirror",
     "bootstrap2.3.2": "bower_components/bootstrap2.3.2/bootstrap",
-    "mousetrap": "bower_components/mousetrap/mousetrap",
-    "jquery.blockUI": "bower_components/blockui/jquery.blockUI",
-    "require-css": "bower_components/require-css",
-    "amber_lib/es5-shim": "bower_components/es5-shim",
     "text": "bower_components/text/text",
     "sightglass": "bower_components/sightglass/index",
+    "rlite": "bower_components/rlite/rlite.min",
     "rivets": "bower_components/rivets/dist/rivets",
+    "bootstrap": "bower_components/bootstrap/dist/js/bootstrap.min",
+    "minimapless": "bower_components/minimapless/src",
     "helios": "bower_components/helios/src",
     "helios/resources": "bower_components/helios/resources",
     "helios/index": "bower_components/helios/index",
-    "amber-ide-starter-dialog": "bower_components/amber-ide-starter-dialog/lib/idestarter",
     "domevents": "bower_components/amber-dom-events/src",
+    "amber-attic": "bower_components/amber-attic/src",
+    "amber-attic/resources": "bower_components/amber-attic/resources",
     "amber": "bower_components/amber/support",
-    "amber_css": "bower_components/amber/support/resources",
     "amber_core": "bower_components/amber/src",
     "amber-mvc": "src"
   },
@@ -31,6 +31,11 @@ require.config({
   "rjs_comment2": "it's backward compatibility hack if config finds",
   "rjs_comment3": "support/requirejs before node_modules/requirejs;",
   "rjs_comment4": "the former will go away in 0.14.0",
+  "map": {
+    "*": {
+      "css": "require-css/css"
+    }
+  },
   "shim": {
     "jquery-ui": {
       "deps": [
@@ -55,19 +60,13 @@ require.config({
         "sightglass"
       ]
     },
+    "bootstrap": {
+      "deps": [
+        "jquery"
+      ]
+    },
     "ensure-console": {
       "exports": "console"
-    },
-    "amber-mvc": {
-      "deps": [
-        "bootstrap",
-        "amber-dom-events"
-      ]
-    }
-  },
-  "map": {
-    "*": {
-      "css": "require-css/css"
     }
   }
 });

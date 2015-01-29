@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'MVC-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model view parent parentElement'
+	instanceVariableNames: 'controllers model view parent parentElement deferred'
 	package: 'MVC-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -79,6 +79,11 @@ controllers
 	^ controllers ifNil:[ self initializeControllers ]
 !
 
+deferred
+
+	^ deferred ifNil: [ self initializeDeferred ]
+!
+
 model
 	
 	^ model
@@ -86,9 +91,9 @@ model
 
 model: aModel
 
-	self trigger: #onBeforeModel.
+	self triggerEvent: #onBeforeModel.
 	model := aModel.
-	self trigger: #onAfterModel.
+	self triggerEvent: #onAfterModel.
 !
 
 parent
@@ -99,9 +104,9 @@ parent
 
 parent: aParentControllerOrNil
 
-	self trigger: #onBeforeParent.
+	self triggerEvent: #onBeforeParent.
 	parent := aParentControllerOrNil.
-	self trigger: #onAfterParent.
+	self triggerEvent: #onAfterParent.
 !
 
 parentElement
@@ -111,14 +116,17 @@ parentElement
 
 parentElement: aHtmlElement
 
-	self trigger: #onBeforeParentElement.
+	self triggerEvent: #onBeforeParentElement.
 	parentElement := aHtmlElement.
-	self trigger: #onAfterParentElement.
+	self triggerEvent: #onAfterParentElement.
 !
 
 silentView: aHtmlElement
 	"Sets the instance of the element considered the view of this controller."
-	view := aHtmlElement
+	view := aHtmlElement.
+	
+	self hasDeferred ifTrue: [
+		deferred resolve: self ]
 !
 
 view
@@ -128,12 +136,21 @@ view
 
 view: aHtmlElement
 
-	self trigger: #onBeforeView.
+	self triggerEvent: #onBeforeView.
 	self silentView: aHtmlElement.
-	self trigger: #onAfterView.
+	self triggerEvent: #onAfterView.
 ! !
 
 !Controller methodsFor: 'actions'!
+
+createControllers
+	"Create any children (sub)controllers for this controller.
+	Note: subclasses typically send `super createControllers` and then they create their specific ones."
+	
+	"None by default"
+	
+	self triggerEvent: #controllersCreated
+!
 
 destroy
 
@@ -173,6 +190,14 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 			newController ]
 !
 
+observeEvents
+	"Programs the observations of events happening in the controllers of this controller."
+	
+	"None by default"
+	
+	self triggerEvent: #controllersObserved
+!
+
 refresh
 
 	self remove; render
@@ -180,11 +205,11 @@ refresh
 
 remove
 	
-	self trigger: #onBeforeRemove.
+	self triggerEvent: #onBeforeRemove.
 
 	self silentRemove.
 	
-	self trigger: #onAfterRemove.
+	self triggerEvent: #onAfterRemove.
 !
 
 removeControllerAt: aKey 
@@ -201,9 +226,9 @@ removeControllerAt: aKey
 
 render
 	
-	self trigger: #onBeforeRender.
+	self triggerEvent: #onBeforeRender.
 	self renderOn: (HTMLCanvas onJQuery: self parentElement).
-	self trigger: #onAfterRender.
+	self triggerEvent: #onAfterRender.
 !
 
 renderOn: html
@@ -212,15 +237,34 @@ renderOn: html
 !
 
 show
+	"Shows the receiver.
+	Rendes when there is no view.
+	Always returns a thenable (deferred).
+	The thenable will receive this controller as argument and 
+	evaluates when the view is set."
 
-	self hasView ifFalse: [ ^ self render ].
+	self hasView ifFalse: [ 
+		self render.
+		^ self deferred ].
 	
-	self view show
+	self view show.
+
+	^ self deferred
 !
 
 showAll
 
 	self controllers values do: [ :e | e show ]
+!
+
+showThen: aBlock
+	"Shows this controller and get aBlock executed after its view is set."
+	
+	console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.
+	
+	self deferred done: aBlock.
+	
+	self show
 !
 
 silentRefresh
@@ -253,12 +297,36 @@ silentRenderOn: html
 
 !Controller methodsFor: 'initialization'!
 
+initialize
+
+	super initialize.
+	
+	self when: #onAfterView do: [ 
+		"Afte the view is set, we are ready to create any
+		subcontroller and observe their interesting events."
+		self createControllers.
+		self observeEvents ]
+!
+
 initializeControllers
 	
 	^ controllers := Dictionary new
+!
+
+initializeDeferred
+	"Sets the promise used by this controller.
+	http://api.jquery.com/category/deferred-object/"
+	
+	^ deferred := jQuery Deferred value
 ! !
 
 !Controller methodsFor: 'testing'!
+
+hasDeferred
+	"Answers true if this controller has a deferred object."
+	
+	^ deferred notNil
+!
 
 hasModel
 	"Answers true if this controller has a model"
@@ -282,6 +350,15 @@ defaultHtmlElement
 defaultModel
 
 	^ nil
+!
+
+keyword
+	"Answers the name of the class in lowercase without 
+	the 'Controller' sufix so it can, for example, be used for friendly URI.
+	Subclasses are expected to follow the naming convention *Controller like
+	ThisNameController, ThatOtherNameController, AnyNameController, etc"
+
+	^ (self name reversed copyFrom: 'Controller' size + 1 to: self name size) reversed
 ! !
 
 !Controller class methodsFor: 'actions'!
@@ -373,9 +450,9 @@ listView
 
 listView: aHtmlElement
 
-	self trigger: #onBeforeListView.
+	self triggerEvent: #onBeforeListView.
 	listView := aHtmlElement.
-	self trigger: #onAfterListView.
+	self triggerEvent: #onAfterListView.
 !
 
 newItemControllerBlock
@@ -454,7 +531,9 @@ initialize
 
 	super initialize.
 	
-	self when: #onAfterModel do: [ self observeList ]
+	self when: #onAfterModel do: [ 
+		self observeList.
+		self refresh ]
 ! !
 
 Controller subclass: #TemplateController
@@ -581,7 +660,7 @@ asBindArgument
 	"Answers the model and this controller as rivets like it for binding."
 
 	^ #{
-	'model' -> self getModelAsArgument.
+	'model' -> self getBindableModel.
 	'controller' -> self
 	}
 !
@@ -614,6 +693,19 @@ configureAndBind
 	self bind.
 !
 
+getBindableModel
+	"Returns the model in a way that is appropiate for binding (usable by rivets).
+	By default BindingController assumes you are using a plain javascript object as model
+	but subclasses might differ if they please to do so."
+
+	"We are assuming here that you are working with aMapless as model so you
+	can use regular Amber objects as models in your application.
+	Mapless are implemented using a plain JavaScript object at its core so 
+	you'll have a single source of truth for your models and enjoy the 
+	two-way data binding an other RivetJS features simultaneously."
+	^ model data
+!
+
 getConfiguration
 
 	^ #{ #handler -> self getHandler }
@@ -628,13 +720,6 @@ getHandler
 	<return function( target, event, binding ){
 		this.call(binding.model);
 	}>
-!
-
-getModelAsArgument
-	"Returns the model in a way that is appropiate for binding (usable by rivets).
-	By default BindingController assumes you are using mapless as the controllers model
-	so we send their data but subclasses might differ if they please to do so."
-	^ model data
 !
 
 rebind
@@ -713,20 +798,20 @@ close
 
 	self view modal: 'hide'.
 	
-	self trigger: #modalClosed
+	self triggerEvent: #modalClosed
 !
 
 createModal
 	"Creates the bootstrap modal on the view of this controller."
 
-	(jQuery value: view) modal: self modalOptions
+	view asJQuery modal: self modalOptions
 !
 
 open
 
 	self view modal: 'show'.
 	
-	self trigger: #modalOpened
+	self triggerEvent: #modalOpened
 !
 
 toggle
@@ -792,7 +877,7 @@ This controller asks the user for confirmation of a given action. It has a rejec
 
 accept
 
-	self trigger: #accept
+	self triggerEvent: #accept
 !
 
 acceptBlock: aBlock
@@ -807,7 +892,7 @@ acceptButtonLabel: aString
 
 reject
 
-	self trigger: #reject
+	self triggerEvent: #reject
 !
 
 rejectBlock: aBlock
@@ -820,12 +905,12 @@ rejectButtonLabel: aString
 	self basicAt: #rejectButtonLabel put: aString
 ! !
 
-Object subclass: #Model
+MaplessModel subclass: #Model
 	instanceVariableNames: ''
 	package: 'MVC-Core'!
 
 Model subclass: #ListModel
-	instanceVariableNames: 'list'
+	instanceVariableNames: ''
 	package: 'MVC-Core'!
 
 !ListModel methodsFor: 'accessing'!
@@ -840,14 +925,9 @@ last
 	^ self list last
 !
 
-list
-
-	^ list
-!
-
 list: aCollection
 
-	list := aCollection.
+	super list: aCollection.
 	
 	self changed
 !
@@ -866,6 +946,13 @@ add: anObject
 	self changed
 !
 
+addAll: someObjects
+
+	self list addAll: someObjects.
+	
+	self changed
+!
+
 remove: anObject
 
 	self list remove: anObject.
@@ -876,6 +963,20 @@ remove: anObject
 remove: anObject ifAbsent: aBlock
 
 	self list remove: anObject ifAbsent: aBlock.
+	
+	self changed
+!
+
+removeAll
+
+	self list removeAll.
+	
+	self changed
+!
+
+removeAll: someObjects
+
+	self list removeAll: someObjects.
 	
 	self changed
 !
@@ -1031,7 +1132,7 @@ installUtils
 
 newLiveValue
 
-	<return Object.create(rivets.binders.value)>
+	<return Object.create(require('rivets').binders.value)>
 ! !
 
 !RivetsJS class methodsFor: 'initialization'!
@@ -1040,5 +1141,146 @@ initialize
 
 	self installUtils.
 	self installBinders.
+! !
+
+Object subclass: #Router
+	instanceVariableNames: ''
+	package: 'MVC-Core'!
+!Router commentStamp!
+This is a simple Router based on [rlite](https://github.com/chrisdavies/rlite)
+
+##Example
+
+```
+App class>>setupRoutes
+
+	Router rlite 
+		add: '' do: [ :r | Router set: '#/home' ];
+		add: '#' do: [ :r | Router set: '#/home' ];
+		add: '#/' do: [ :r | Router set: '#/home' ];
+		add: '/' do: [ :r | Router set: '#/home' ];
+		add: 'home' do: [ :r | App home ];
+		add: 'users' do: [ :r | App users ];
+		add: 'users/:id' do: [ :r | App showUserAt: r params id ];
+		add: 'articles/:articleid?query=thisthing' do: [ :r | App showArticleAt: r params articleid searching: r params query ];
+		add: 'profile' do: [ :r | console log: 'view / edit profile requested' ];
+		add: 'settings' do: [ :r | console log: 'view edit settings requested' ];
+		add: 'system' do: [ :r | console log: 'view edit system requested' ];
+		add: 'account' do: [ :r | console log: 'view edit account requested' ];
+		add: 'signout' do: [ :r | console log: 'sign out requested' ];
+		yourself
+```!
+
+Router class instanceVariableNames: 'rlite'!
+
+!Router class methodsFor: 'accessing'!
+
+rlite
+
+	^ rlite ifNil: [ rlite := Rlite new ]
+! !
+
+!Router class methodsFor: 'actions'!
+
+go: aURI
+	"Evaluates the predefined callback for the route defined by aURI.
+	Returns false if no callback was found for it."
+
+	^ (aURI includes: '#')
+		ifTrue: [ self rlite run: aURI allButFirst ]
+		ifFalse: [ self rlite run: aURI ]
+!
+
+observeHash
+
+	window 
+		addEventListener: #hashchange 
+		do: [ self processHash ].
+		
+	window 
+		addEventListener: #unload
+		do: [ window asJQuery off: #hashchange ]
+!
+
+processHash
+	"Evaluates the predefined callback for the route defined by the current hash.
+	Returns false if no callback was found for it."
+
+    ^ self go: window location hash
+!
+
+set: aURI
+	"Sets the URI of the web browser to aRUI."
+	
+	window location at: #hash put: aURI
+! !
+
+!Router class methodsFor: 'initialization'!
+
+initialize
+	
+	self observeHash
+! !
+
+!Collection methodsFor: '*MVC-Core'!
+
+removeAll: aCollection 
+	"Remove each element of aCollection from the receiver. If successful for 
+	each, answer aCollection. Otherwise create an error notification.
+	ArrayedCollections cannot respond to this message."
+
+	aCollection == self ifTrue: [^self removeAll].
+	aCollection do: [:each | self remove: each].
+	^ aCollection
+!
+
+removeAllFoundIn: aCollection 
+    "Remove each element of aCollection which is present in the receiver 
+    from the receiver. Answer aCollection. No error is raised if an element
+    isn't found. ArrayedCollections cannot respond to this message."
+
+    aCollection do: [ :each | self remove: each ifAbsent: [ nil ] ].
+    ^ aCollection
+!
+
+removeAllSuchThat: aBlock 
+	"Evaluate aBlock for each element and remove all that elements from
+	the receiver for that aBlock evaluates to true.  Use a copy to enumerate 
+	collections whose order changes when an element is removed (i.e. Sets)."
+
+	self copy do: [ :each | (aBlock value: each) ifTrue: [ self remove: each ] ]
+! !
+
+!JSObjectProxy methodsFor: '*MVC-Core'!
+
+isNil
+
+	^ false
+!
+
+notNil
+
+	^ true
+! !
+
+!Object methodsFor: '*MVC-Core'!
+
+changed
+
+	self triggerEvent: #changed
+! !
+
+!SequenceableCollection methodsFor: '*MVC-Core'!
+
+shuffled
+	"Answers a copy of this collection with the same elements but randomly positioned."
+	
+	| shaked source | 
+	
+	shaked := self class new.
+	source := self copy.
+	
+	1 to: self size do: [ :i | 
+		shaked add: (source remove: source atRandom) ].
 ! !
 

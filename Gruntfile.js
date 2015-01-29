@@ -34,14 +34,16 @@ module.exports = function (grunt) {
             all: {
                 src: [ // list all sources in dependency order
                     'src/MVC-Core.st', 
-                    'src/MVC-Iterables.st', 
-                    'src/MVC-Routeables.st'
+                    'src/App.st'
                 ],
                 amd_namespace: 'amber-mvc',
-                libraries: [ 'SUnit', 'Web', 'DOMEvents' ],
-                 options: {
+                libraries: [ 'SUnit', 'Web', 
+                    'DOMEvents',
+                    'MiniMapless' ],
+                options: {
                    library_dirs: [
-                        'bower_components/amber-dom-events/src' ], 
+                       'bower_components/amber-dom-events/src',
+                        'bower_components/minimapless/src' ], 
                    verbose: true
                  }                
             },
