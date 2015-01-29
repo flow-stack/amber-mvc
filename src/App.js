@@ -67,7 +67,7 @@ function $ExampleModel(){return $globals.ExampleModel||(typeof ExampleModel=="un
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-self["@main"]=$recv($MainController())._for_on_appendingTo_($recv($ExampleModel())._new(),nil,"#main-wrapper"._asJQuery());
+self["@main"]=$recv($MainController())._on_in_appendingTo_($recv($ExampleModel())._new(),nil,"#main-wrapper"._asJQuery());
 $1=self["@main"];
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -76,10 +76,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initializeMain\x0a\x0a\x09^ main := MainController \x0a\x09\x09\x09\x09\x09for: ExampleModel new\x0a\x09\x09\x09\x09\x09on: nil\x0a\x09\x09\x09\x09\x09appendingTo: '#main-wrapper' asJQuery",
+source: "initializeMain\x0a\x0a\x09^ main := MainController \x0a\x09\x09\x09\x09\x09on: ExampleModel new\x0a\x09\x09\x09\x09\x09in: nil\x0a\x09\x09\x09\x09\x09appendingTo: '#main-wrapper' asJQuery",
 referencedClasses: ["MainController", "ExampleModel"],
 //>>excludeEnd("ide");
-messageSends: ["for:on:appendingTo:", "new", "asJQuery"]
+messageSends: ["on:in:appendingTo:", "new", "asJQuery"]
 }),
 $globals.App.klass);
 
@@ -913,7 +913,7 @@ $1=self._ifAbsentAt_put_("example1",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example1Controller())._for_on_appendingTo_(nil,self,"#subexample-wrapper"._asJQuery());
+return $recv($Example1Controller())._on_in_appendingTo_(nil,self,"#subexample-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -925,10 +925,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example1\x0a\x0a\x09^ self ifAbsentAt: #example1 put: [\x0a\x09\x09Example1Controller \x0a\x09\x09\x09for: nil \x22We don't need to set any particular model for it\x22\x0a\x09\x09\x09on: self  \x22with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)\x22\x0a\x09\x09\x09appendingTo: '#subexample-wrapper' asJQuery ]",
+source: "example1\x0a\x0a\x09^ self ifAbsentAt: #example1 put: [\x0a\x09\x09Example1Controller \x0a\x09\x09\x09on: nil \x22We don't need to set any particular model for it\x22\x0a\x09\x09\x09in: self  \x22with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)\x22\x0a\x09\x09\x09appendingTo: '#subexample-wrapper' asJQuery ]",
 referencedClasses: ["Example1Controller"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "asJQuery"]
 }),
 $globals.Example3Controller);
 
@@ -1247,7 +1247,7 @@ function $ThingRowController(){return $globals.ThingRowController||(typeof Thing
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1,$2,$3;
-row=$recv($ThingRowController())._for_on_appendingTo_(aModel,aListController,$recv(aListController)._view());
+row=$recv($ThingRowController())._on_in_appendingTo_(aModel,aListController,$recv(aListController)._view());
 $1=row;
 $recv($1)._when_do_("removeThing",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1279,10 +1279,10 @@ return $3;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aListController"],
-source: "newItemControllerFor: aModel for: aListController\x0a\x09\x22Returns a new controller for aModel to be handled by aListController.\x22\x0a\x0a\x09| row |\x0a\x0a\x09row := ThingRowController \x0a\x09\x09\x09\x09for: aModel\x0a\x09\x09\x09\x09on: aListController\x0a\x09\x09\x09\x09appendingTo: aListController view.\x0a\x09\x09\x09\x09\x0a\x09row\x0a\x09\x09when: #removeThing do: [ self onRemove: aModel ];\x0a\x09\x09when: #viewDetails do: [ self onDetails: aModel ];\x0a\x09\x09yourself.\x0a\x0a\x09^ row",
+source: "newItemControllerFor: aModel for: aListController\x0a\x09\x22Returns a new controller for aModel to be handled by aListController.\x22\x0a\x0a\x09| row |\x0a\x0a\x09row := ThingRowController \x0a\x09\x09\x09\x09on: aModel\x0a\x09\x09\x09\x09in: aListController\x0a\x09\x09\x09\x09appendingTo: aListController view.\x0a\x09\x09\x09\x09\x0a\x09row\x0a\x09\x09when: #removeThing do: [ self onRemove: aModel ];\x0a\x09\x09when: #viewDetails do: [ self onDetails: aModel ];\x0a\x09\x09yourself.\x0a\x0a\x09^ row",
 referencedClasses: ["ThingRowController"],
 //>>excludeEnd("ide");
-messageSends: ["for:on:appendingTo:", "view", "when:do:", "onRemove:", "onDetails:", "yourself"]
+messageSends: ["on:in:appendingTo:", "view", "when:do:", "onRemove:", "onDetails:", "yourself"]
 }),
 $globals.Example4Controller);
 
@@ -1451,7 +1451,7 @@ $1=self._ifAbsentAt_put_("things",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$2=$recv($ListController())._for_on_appendingTo_(self._getListModel(),self,"#things-wrapper"._asJQuery());
+$2=$recv($ListController())._on_in_appendingTo_(self._getListModel(),self,"#things-wrapper"._asJQuery());
 $recv($2)._newItemControllerBlock_((function(item){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx3) {
@@ -1474,10 +1474,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "things \x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ListController \x0a\x09\x09\x09for: self getListModel\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09\x09newItemControllerBlock: [ :item | \x0a\x09\x09\x09\x09\x09self newItemControllerFor: item for: self things ];\x0a\x09\x09\x09\x09yourself ]",
+source: "things \x0a\x09\x0a\x09^ self ifAbsentAt: #things put: [\x0a\x09\x09(ListController \x0a\x09\x09\x09on: self getListModel\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#things-wrapper' asJQuery)\x0a\x09\x09\x09\x09newItemControllerBlock: [ :item | \x0a\x09\x09\x09\x09\x09self newItemControllerFor: item for: self things ];\x0a\x09\x09\x09\x09yourself ]",
 referencedClasses: ["ListController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "newItemControllerBlock:", "for:on:appendingTo:", "getListModel", "asJQuery", "newItemControllerFor:for:", "things", "yourself"]
+messageSends: ["ifAbsentAt:put:", "newItemControllerBlock:", "on:in:appendingTo:", "getListModel", "asJQuery", "newItemControllerFor:for:", "things", "yourself"]
 }),
 $globals.Example4Controller);
 
@@ -1594,7 +1594,7 @@ $1=self._ifAbsentAt_put_("example1",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example1Controller())._for_on_appendingTo_(self["@model"],self,"#example1-wrapper"._asJQuery());
+return $recv($Example1Controller())._on_in_appendingTo_(self["@model"],self,"#example1-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -1606,10 +1606,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example1\x0a\x0a\x09^ self ifAbsentAt: #example1 put: [\x0a\x09\x09Example1Controller \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example1-wrapper' asJQuery ]",
+source: "example1\x0a\x0a\x09^ self ifAbsentAt: #example1 put: [\x0a\x09\x09Example1Controller \x0a\x09\x09\x09on: model\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#example1-wrapper' asJQuery ]",
 referencedClasses: ["Example1Controller"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -1634,7 +1634,7 @@ $recv($2)._firstName_("Dude");
 $recv($2)._someNumbers_([(3), (6), (2), (8), (1)]);
 $recv($2)._someFloatValue_((33.33333333));
 $3=$recv($2)._yourself();
-return $recv($Example2Controller())._for_on_appendingTo_($3,self,"#example2-wrapper"._asJQuery());
+return $recv($Example2Controller())._on_in_appendingTo_($3,self,"#example2-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -1646,10 +1646,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example2\x0a\x0a\x09^ self ifAbsentAt: #example2 put: [\x0a\x09\x09Example2Controller \x0a\x09\x09\x09for: (ThingModel new\x0a\x09\x09\x09\x09\x09firstName: 'Dude';\x0a\x09\x09\x09\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09\x09\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09\x09\x09\x09yourself)\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example2-wrapper' asJQuery ]",
+source: "example2\x0a\x0a\x09^ self ifAbsentAt: #example2 put: [\x0a\x09\x09Example2Controller \x0a\x09\x09\x09on: (ThingModel new\x0a\x09\x09\x09\x09\x09firstName: 'Dude';\x0a\x09\x09\x09\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09\x09\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09\x09\x09\x09yourself)\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#example2-wrapper' asJQuery ]",
 referencedClasses: ["Example2Controller", "ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "firstName:", "new", "someNumbers:", "someFloatValue:", "yourself", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "firstName:", "new", "someNumbers:", "someFloatValue:", "yourself", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -1668,7 +1668,7 @@ $1=self._ifAbsentAt_put_("example3",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example3Controller())._for_on_appendingTo_(self["@model"],self,"#example3-wrapper"._asJQuery());
+return $recv($Example3Controller())._on_in_appendingTo_(self["@model"],self,"#example3-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -1680,10 +1680,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example3\x0a\x0a\x09^ self ifAbsentAt: #example3 put: [\x0a\x09\x09Example3Controller \x0a\x09\x09\x09for: model\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example3-wrapper' asJQuery ]",
+source: "example3\x0a\x0a\x09^ self ifAbsentAt: #example3 put: [\x0a\x09\x09Example3Controller \x0a\x09\x09\x09on: model\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#example3-wrapper' asJQuery ]",
 referencedClasses: ["Example3Controller"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "asJQuery"]
 }),
 $globals.MainController);
 
@@ -1703,7 +1703,7 @@ $1=self._ifAbsentAt_put_("example4",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($Example4Controller())._for_on_appendingTo_($recv($ThingModel())._new(),self,"#example4-wrapper"._asJQuery());
+return $recv($Example4Controller())._on_in_appendingTo_($recv($ThingModel())._new(),self,"#example4-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -1715,10 +1715,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example4\x0a\x0a\x09^ self ifAbsentAt: #example4 put: [\x0a\x09\x09Example4Controller \x0a\x09\x09\x09for: ThingModel new\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#example4-wrapper' asJQuery ]",
+source: "example4\x0a\x0a\x09^ self ifAbsentAt: #example4 put: [\x0a\x09\x09Example4Controller \x0a\x09\x09\x09on: ThingModel new\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#example4-wrapper' asJQuery ]",
 referencedClasses: ["Example4Controller", "ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "for:on:appendingTo:", "new", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "new", "asJQuery"]
 }),
 $globals.MainController);
 
