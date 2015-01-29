@@ -57,8 +57,8 @@ initialize
 initializeMain
 
 	^ main := MainController 
-					for: ExampleModel new
-					on: nil
+					on: ExampleModel new
+					in: nil
 					appendingTo: '#main-wrapper' asJQuery
 ! !
 
@@ -136,8 +136,8 @@ nameModal
 
 	^ self ifAbsentAt: #nameModal put: [
 		(ConfirmNameController 
-			for: model
-			on: self
+			on: model
+			in: self
 			appendingTo: '#confirmName' asJQuery)
 				acceptBlock: [ 
 					model isConfirmed: true.
@@ -232,8 +232,8 @@ example1
 
 	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
-			for: nil "We don't need to set any particular model for it"
-			on: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
+			on: nil "We don't need to set any particular model for it"
+			in: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
 			appendingTo: '#subexample-wrapper' asJQuery ]
 ! !
 
@@ -301,12 +301,12 @@ things
 	
 	^ self ifAbsentAt: #things put: [
 		(ListController 
-			on: self
+			on: self getListModel
+			in: self
 			appendingTo: '#things-wrapper' asJQuery)
-			newItemControllerBlock: [ :item | 
-				self newItemControllerFor: item for: self things ];
-			model: self getListModel;
-			yourself ]
+				newItemControllerBlock: [ :item | 
+					self newItemControllerFor: item for: self things ];
+				yourself ]
 ! !
 
 !Example4Controller methodsFor: 'actions'!
@@ -343,8 +343,8 @@ newItemControllerFor: aModel for: aListController
 	| row |
 
 	row := ThingRowController 
-				for: aModel
-				on: aListController
+				on: aModel
+				in: aListController
 				appendingTo: aListController view.
 				
 	row
@@ -443,8 +443,8 @@ example1
 
 	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
-			for: model
-			on: self
+			on: model
+			in: self
 			appendingTo: '#example1-wrapper' asJQuery ]
 !
 
@@ -452,12 +452,12 @@ example2
 
 	^ self ifAbsentAt: #example2 put: [
 		Example2Controller 
-			for: (ThingModel new
+			on: (ThingModel new
 					firstName: 'Dude';
 					someNumbers: #( 3 6 2 8 1 );
 					someFloatValue: 33.33333333;
 					yourself)
-			on: self
+			in: self
 			appendingTo: '#example2-wrapper' asJQuery ]
 !
 
@@ -465,8 +465,8 @@ example3
 
 	^ self ifAbsentAt: #example3 put: [
 		Example3Controller 
-			for: model
-			on: self
+			on: model
+			in: self
 			appendingTo: '#example3-wrapper' asJQuery ]
 !
 
@@ -474,8 +474,8 @@ example4
 
 	^ self ifAbsentAt: #example4 put: [
 		Example4Controller 
-			for: ThingModel new
-			on: self
+			on: ThingModel new
+			in: self
 			appendingTo: '#example4-wrapper' asJQuery ]
 ! !
 

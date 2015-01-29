@@ -125,6 +125,8 @@ silentView: aHtmlElement
 	"Sets the instance of the element considered the view of this controller."
 	view := aHtmlElement.
 	
+	aHtmlElement at: #controller put: self.
+	
 	self hasDeferred ifTrue: [
 		deferred resolve: self ]
 !
@@ -169,6 +171,22 @@ hideAll
 	self controllers values do: [ :e | e hide ]
 !
 
+hideAllBut: aKey
+	"Hides all the (sub)controller except the one at aKey.
+	Does  not fail when controller are not found."
+
+	(self controllers keys reject: [ :e | e = aKey ]) do: [ :each | | found |
+		found := self controllerAt: each ifAbsent: [ nil ].
+		found ifNotNil: [ found hide ] ]
+!
+
+hideAt: aKey
+	"Hides the (sub)controller found at aKey.
+	Does nothing if no controller is found."
+	
+	(self controllerAt: aKey ifAbsent: [ ^ self ]) hide
+!
+
 ifAbsentAt: aKey put: aBlock
 	"Answers the controller already present at aKey or,
 	if absent, puts the one expected to be created during aBlock and returns it."
@@ -200,7 +218,7 @@ observeEvents
 
 refresh
 
-	self remove; render
+	^ self removeView; show
 !
 
 remove
@@ -210,6 +228,11 @@ remove
 	self silentRemove.
 	
 	self triggerEvent: #onAfterRemove.
+!
+
+removeAll
+
+	self controllers keys do: [ :each | self removeControllerAt: each ]
 !
 
 removeControllerAt: aKey 
@@ -222,6 +245,15 @@ removeControllerAt: aKey
 		controller remove ].
 		
 	self controllers removeKey: aKey ifAbsent: [ nil ]
+!
+
+removeView
+	
+	view ifNotNil:[ | exView |
+		exView := view.
+		exView asJQuery off.
+		view := nil.
+		exView asJQuery remove ].
 !
 
 render
@@ -257,6 +289,13 @@ showAll
 	self controllers values do: [ :e | e show ]
 !
 
+showAt: aKey
+	"Shows the (sub)controller found at aKey.
+	Does nothing if no controller is found."
+	
+	(self controllerAt: aKey ifAbsent: [ ^ self ]) show
+!
+
 showThen: aBlock
 	"Shows this controller and get aBlock executed after its view is set."
 	
@@ -274,11 +313,7 @@ silentRefresh
 
 silentRemove
 	
-	view ifNotNil:[ | exView |
-		exView := view.
-		exView off.
-		view := nil.
-		exView remove ].
+	self removeView
 !
 
 silentRender
@@ -367,6 +402,9 @@ for: aModel
 	"Answers a new instance of this controller dedicated to aModel,
 	with no parent and meant to be appended to the default html element,
 	expected to be <div id=#content></div>."
+
+	#deprecated.
+	console warn: self name,'>>for: this will be removed in next version, use #on:'.
 	
 	^ self for: aModel on: nil appendingTo: self defaultHtmlElement
 !
@@ -376,13 +414,19 @@ for: aModel on: aParentControllerOrNil
 	child of aParentControllerOrNil and meant to be appended to 
 	the default html element, expected to be <div id=#content></div>."
 	
-	^ self for: aModel on: aParentControllerOrNil appendingTo: self defaultHtmlElement
+	#deprecated.
+	console warn: self name,'>>for:on: this will be removed in next version, use #on:in:'.
+	
+	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
 !
 
 for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
+	#deprecated.
+	console warn: self name,'>>for:on:appendingTo: use #on:in:appendingTo:'.
+	
 	^ self new
 		model: aModel;
 		parent: aParentControllerOrNil;
@@ -394,11 +438,22 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
 
+	#deprecated.
+	console warn: self name,'>>for:on:view: this will be removed in next version, use #on:in:view:'.
+	
 	^ self new
 		model: aModel;
 		parent: aParentControllerOrNil;
 		view: aHtmlElement;
 		yourself
+!
+
+on: aModel 
+	"Answers a new instance of this controller dedicated to aModel,
+	with no parent and meant to be appended to the default html element,
+	expected to be <div id=#content></div>."
+	
+	^ self on: aModel in: nil appendingTo: self defaultHtmlElement
 !
 
 on: aParentControllerOrNil appendingTo: aHtmlElement
@@ -409,6 +464,36 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	^ self new
 		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;
+		yourself
+!
+
+on: aModel in: aParentControllerOrNil
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to 
+	the default html element, expected to be <div id=#content></div>."
+	
+	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
+!
+
+on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		parentElement: aHtmlElement;
+		yourself
+!
+
+on: aModel in: aParentControllerOrNil view: aHtmlElement
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
+
+	^ self new
+		model: aModel;
+		parent: aParentControllerOrNil;
+		view: aHtmlElement;
 		yourself
 ! !
 
@@ -475,6 +560,16 @@ parentElement: anHtmlElement
 
 !ListController methodsFor: 'actions'!
 
+addNovelties
+	"Adds a new controller for the models that yet don't have one."
+	
+	self getItems do:[ :each | | added |
+		self controllerAt: each ifAbsentPut:[ 
+			added := self newItemControllerFor: each ].
+		added ifNotNil:[ 
+			added render ] ]
+!
+
 getItems
 	"Answers the items using the custom getItemsBlock on its model"
 	
@@ -502,20 +597,19 @@ refresh
 	Nothing less and nothing more. So it will add lazily 
 	the missing controllers and remove those who's model isn't present."
 	
-	| items |
+	self removeAbsences.
+	self addNovelties.
+!
+
+removeAbsences
+	"Remove the controllers which their keys that are absent from the list model."
+
+	| models |
 	
-	"Remove absences"
-	self controllers keys 
-		with: self getItems 
-		do:[ :e | (self getItems anySatisfy:[ :each | each == e]) ifFalse:[
-					self removeControllerAt: e ] ].
-	
-	"Add novelties"
-	self getItems do:[ :e | | added |
-		self controllerAt: e ifAbsentPut:[ 
-			added := self newItemControllerFor: e ].
-		added ifNotNil:[ 
-			added render ] ]
+	models := self getItems.
+
+ 	self controllers keys copy do: [ :each |
+		(models includes: each) ifFalse: [ self removeControllerAt: each ] ]
 !
 
 show
@@ -533,7 +627,16 @@ initialize
 	
 	self when: #onAfterModel do: [ 
 		self observeList.
-		self refresh ]
+		self canCreateControllers ifTrue: [ self refresh ] ]
+! !
+
+!ListController methodsFor: 'testing'!
+
+canCreateControllers
+	"Answers true if this list controller has minimum needs to create controllers."
+	
+	^ itemControllerClass notNil or: [
+	newItemControllerBlock notNil ]
 ! !
 
 Controller subclass: #TemplateController
@@ -646,7 +749,7 @@ isValidFor: anURI
 ! !
 
 TemplateController subclass: #BindingController
-	instanceVariableNames: ''
+	instanceVariableNames: 'bindedView'
 	package: 'MVC-Core'!
 !BindingController commentStamp!
 ## BindingController is an abstraction
@@ -669,9 +772,9 @@ bind
 	"Tells rivets.js to bind 
 	the model of this controller to its view."
 	
-	RivetsJS rv
-		bind: self view 
-		to: self asBindArgument
+	bindedView := RivetsJS rv
+			bind: self view 
+			to: self asBindArgument
 !
 
 configure
@@ -809,9 +912,11 @@ createModal
 
 open
 
-	self view modal: 'show'.
+	self show done: [
+
+		self view modal: 'show'.
 	
-	self triggerEvent: #modalOpened
+		self triggerEvent: #modalOpened ]
 !
 
 toggle
@@ -877,12 +982,12 @@ This controller asks the user for confirmation of a given action. It has a rejec
 
 accept
 
-	self triggerEvent: #accept
+	self triggerEvent: #accepted.
 !
 
 acceptBlock: aBlock
 
-	self when: #accept do: aBlock
+	self when: #accepted do: aBlock
 !
 
 acceptButtonLabel: aString
@@ -892,12 +997,12 @@ acceptButtonLabel: aString
 
 reject
 
-	self triggerEvent: #reject
+	self triggerEvent: #rejected.
 !
 
 rejectBlock: aBlock
 
-	self when: #reject do: aBlock
+	self when: #rejected do: aBlock
 !
 
 rejectButtonLabel: aString
@@ -1008,6 +1113,16 @@ notEmpty
 	^ self list notEmpty
 ! !
 
+!ListModel class methodsFor: 'actions'!
+
+on: aCollection
+	"Answers a new ListModel instance wrapping aCollection."
+	
+	^ self new 
+		list: aCollection;
+		yourself
+! !
+
 Object subclass: #RivetsJS
 	instanceVariableNames: ''
 	package: 'MVC-Core'!
@@ -1077,14 +1192,14 @@ rv
 utilFormatters
 
 	^ Dictionary new 
-		at: #at put: [ :object :key | object basicAt: key ];
+		at: #at put: [ :object :key | object at: key ];
 		at: #reversed put: [ :aCollection | aCollection reversed ];
 		at: #sorted put: [ :aCollection | aCollection sorted ];
 		at: #size put: [ :anObject | anObject size ];
 		at: #rounded put: [ :aNumber | aNumber rounded ];
 		at: #capitalized put: [ :aString | aString capitalized ];
-		at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber printShowingDecimalPlaces: 2) ];
-		at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber printShowingDecimalPlaces: decimalPlaces ];
+		at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
+		at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];
 		at: #asLowercase put: [ :aString | aString asString asLowercase ];
 		at: #asUppercase put: [ :aString | aString asString asUppercase ];
 		at: #bind put: self binderCallback;
@@ -1178,9 +1293,25 @@ Router class instanceVariableNames: 'rlite'!
 rlite
 
 	^ rlite ifNil: [ rlite := Rlite new ]
+!
+
+uri
+
+	^ window location hash
 ! !
 
 !Router class methodsFor: 'actions'!
+
+back
+
+	self back: -1
+!
+
+back: aNegtiveInteger
+
+	aNegtiveInteger > 0 ifTrue:[ ^self ].
+	window history go: aNegtiveInteger
+!
 
 go: aURI
 	"Evaluates the predefined callback for the route defined by aURI.
@@ -1268,6 +1399,11 @@ notNil
 changed
 
 	self triggerEvent: #changed
+!
+
+destroy
+
+	<delete self>
 ! !
 
 !SequenceableCollection methodsFor: '*MVC-Core'!
