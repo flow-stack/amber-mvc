@@ -1,6 +1,7 @@
 January 29, 2015 - Release 0.1.19
 ===================================
 
+* Upgrades to "minimapless": "~0.10.12"
 * Using verbs in past for events of the modals controllers.
 * New constructor ListModel class>>on: aCollection.
 * BindingControllers now hold the RivetJS returned binded View.
