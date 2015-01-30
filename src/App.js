@@ -1126,7 +1126,7 @@ $1=self._ifAbsentAt_put_("details",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($ThingDetailsController())._on_appendingTo_(self,"#details-wrapper"._asJQuery());
+return $recv($ThingDetailsController())._in_appendingTo_(self,"#details-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -1138,10 +1138,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "details\x0a\x09\x0a\x09^ self ifAbsentAt: #details put: [\x0a\x09\x09ThingDetailsController\x0a\x09\x09\x09on: self\x0a\x09\x09\x09appendingTo: '#details-wrapper' asJQuery ]",
+source: "details\x0a\x09\x0a\x09^ self ifAbsentAt: #details put: [\x0a\x09\x09ThingDetailsController\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#details-wrapper' asJQuery ]",
 referencedClasses: ["ThingDetailsController"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "on:appendingTo:", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "in:appendingTo:", "asJQuery"]
 }),
 $globals.Example4Controller);
 

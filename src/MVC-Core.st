@@ -448,6 +448,17 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 		yourself
 !
 
+in: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller, child of aParentControllerOrNil 
+	and meant to be appended to aHtmlElement.
+	Using this contructor will make the model to stay nil."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		parentElement: aHtmlElement;
+		yourself
+!
+
 on: aModel 
 	"Answers a new instance of this controller dedicated to aModel,
 	with no parent and meant to be appended to the default html element,
@@ -461,6 +472,9 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	and meant to be appended to aHtmlElement.
 	Using this contructor will make the model to stay nil."
 
+	#deprecated.
+	console warn: self name,'>>on:appendingTo: this will be removed in next version, use #on:in:'.
+	
 	^ self new
 		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;

@@ -1590,6 +1590,35 @@ $globals.Controller.klass);
 
 $core.addMethod(
 $core.method({
+selector: "in:appendingTo:",
+protocol: 'actions',
+fn: function (aParentControllerOrNil,aHtmlElement){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._parentElement_(aHtmlElement);
+$3=$recv($2)._yourself();
+$1=$3;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"in:appendingTo:",{aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aParentControllerOrNil", "aHtmlElement"],
+source: "in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller, child of aParentControllerOrNil \x0a\x09and meant to be appended to aHtmlElement.\x0a\x09Using this contructor will make the model to stay nil.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["parent:", "new", "parentElement:", "yourself"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
 selector: "keyword",
 protocol: 'accessing',
 fn: function (){
@@ -1662,6 +1691,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
+"deprecated";
+$recv(console)._warn_($recv(self._name()).__comma(">>on:appendingTo: this will be removed in next version, use #on:in:"));
 $2=self._new();
 $recv($2)._parent_(aParentControllerOrNil);
 $recv($2)._parentElement_(aHtmlElement);
@@ -1674,10 +1705,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aParentControllerOrNil", "aHtmlElement"],
-source: "on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller, child of aParentControllerOrNil \x0a\x09and meant to be appended to aHtmlElement.\x0a\x09Using this contructor will make the model to stay nil.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller, child of aParentControllerOrNil \x0a\x09and meant to be appended to aHtmlElement.\x0a\x09Using this contructor will make the model to stay nil.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>on:appendingTo: this will be removed in next version, use #on:in:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["parent:", "new", "parentElement:", "yourself"]
+messageSends: ["warn:", ",", "name", "parent:", "new", "parentElement:", "yourself"]
 }),
 $globals.Controller.klass);
 

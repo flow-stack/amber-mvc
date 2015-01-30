@@ -322,7 +322,7 @@ details
 	
 	^ self ifAbsentAt: #details put: [
 		ThingDetailsController
-			on: self
+			in: self
 			appendingTo: '#details-wrapper' asJQuery ]
 !
 
