@@ -565,3 +565,10 @@ viewDetails
 	self triggerEvent: #viewDetails
 ! !
 
+!Controller methodsFor: '*App'!
+
+hasControllerAt: aKey
+
+	 ^ self controllers includesKey: aKey
+! !
+

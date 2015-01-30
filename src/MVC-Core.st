@@ -357,6 +357,11 @@ initializeDeferred
 
 !Controller methodsFor: 'testing'!
 
+hasControllerAt: aKey
+
+	 ^ self controllers includesKey: aKey
+!
+
 hasDeferred
 	"Answers true if this controller has a deferred object."
 	
