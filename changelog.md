@@ -1,3 +1,10 @@
+January 30, 2015 - Release 0.1.20
+===================================
+
+* Controller class>>in:appendingTo:
+* Adds missing deprecation warning
+
+
 January 29, 2015 - Release 0.1.19
 ===================================
 
