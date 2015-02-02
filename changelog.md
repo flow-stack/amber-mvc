@@ -1,3 +1,9 @@
+February 1, 2015 - Release 0.1.23
+===================================
+
+* Controller>>hasControllerAt:
+
+
 January 30, 2015 - Release 0.1.22
 ===================================
 
