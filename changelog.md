@@ -1,7 +1,8 @@
-February 1, 2015 - Release 0.1.23
+February 2, 2015 - Release 0.1.23
 ===================================
 
-* Controller>>hasControllerAt:
+* Controller>>hasControllerAt: belongs to amber-mvc instead of *App
+* Upgrades to Amber 0.14.4
 
 
 January 30, 2015 - Release 0.1.22

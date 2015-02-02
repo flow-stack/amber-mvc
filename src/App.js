@@ -2086,29 +2086,4 @@ messageSends: ["triggerEvent:"]
 $globals.ThingRowController);
 
 
-$core.addMethod(
-$core.method({
-selector: "hasControllerAt:",
-protocol: '*App',
-fn: function (aKey){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-$1=$recv(self._controllers())._includesKey_(aKey);
-return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"hasControllerAt:",{aKey:aKey},$globals.Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aKey"],
-source: "hasControllerAt: aKey\x0a\x0a\x09 ^ self controllers includesKey: aKey",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["includesKey:", "controllers"]
-}),
-$globals.Controller);
-
 });
