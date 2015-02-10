@@ -2701,7 +2701,7 @@ messageSends: []
 $globals.TemplateController.klass);
 
 
-$core.addClass('BindingController', $globals.TemplateController, ['bindedView'], 'MVC-Core');
+$core.addClass('BindingController', $globals.TemplateController, ['boundView'], 'MVC-Core');
 //>>excludeStart("ide", pragmas.excludeIdeData);
 $globals.BindingController.comment="## BindingController is an abstraction\x0aThe concrete subclasses of BindingController are users of the two-way data binding mechanism loaded by flow.\x0a\x0aNote that BindingController is a subclass of TemplateController so all subclasses of it follow the convention of loading a html template from the server using the keyword of the controller as the name of the template to be found at views/";
 //>>excludeEnd("ide");
@@ -2740,7 +2740,7 @@ function $RivetsJS(){return $globals.RivetsJS||(typeof RivetsJS=="undefined"?nil
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self["@bindedView"]=$recv($recv($RivetsJS())._rv())._bind_to_(self._view(),self._asBindArgument());
+self["@boundView"]=$recv($recv($RivetsJS())._rv())._bind_to_(self._view(),self._asBindArgument());
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"bind",{},$globals.BindingController)});
@@ -2748,7 +2748,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09bindedView := RivetsJS rv\x0a\x09\x09\x09bind: self view \x0a\x09\x09\x09to: self asBindArgument",
+source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09boundView := RivetsJS rv\x0a\x09\x09\x09bind: self view \x0a\x09\x09\x09to: self asBindArgument",
 referencedClasses: ["RivetsJS"],
 //>>excludeEnd("ide");
 messageSends: ["bind:to:", "rv", "view", "asBindArgument"]
@@ -2834,7 +2834,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=$recv(self["@model"])._data();
+$1=$recv(self["@model"])._asJSON();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"getBindableModel",{},$globals.BindingController)});
@@ -2842,10 +2842,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "getBindableModel\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using a plain javascript object as model\x0a\x09but subclasses might differ if they please to do so.\x22\x0a\x0a\x09\x22We are assuming here that you are working with aMapless as model so you\x0a\x09can use regular Amber objects as models in your application.\x0a\x09Mapless are implemented using a plain JavaScript object at its core so \x0a\x09you'll have a single source of truth for your models and enjoy the \x0a\x09two-way data binding an other RivetJS features simultaneously.\x22\x0a\x09^ model data",
+source: "getBindableModel\x0a\x09\x22Returns the model in a way that is appropiate for binding (usable by rivets).\x0a\x09By default BindingController assumes you are using a plain javascript object as model\x0a\x09but subclasses might differ if they please to do so.\x22\x0a\x0a\x09\x22We are assuming here that you are working with aMapless as model so you\x0a\x09can use regular Amber objects as models in your application.\x0a\x09Mapless are implemented using a plain JavaScript object at its core so \x0a\x09you'll have a single source of truth for your models and enjoy the \x0a\x09two-way data binding an other RivetJS features simultaneously.\x22\x0a\x09^ model asJSON",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["data"]
+messageSends: ["asJSON"]
 }),
 $globals.BindingController);
 
@@ -4412,7 +4412,7 @@ return $recv(aString)._capitalized();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.sendIdx["at:put:"]=6;
 //>>excludeEnd("ctx");
-$recv($2)._at_put_("currency",(function(aNumber,aCurrencySymbol){
+$recv($2)._at_put_("asCurrency",(function(aNumber,aCurrencySymbol){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -4494,7 +4494,7 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "utilFormatters\x0a\x0a\x09^ Dictionary new \x0a\x09\x09at: #at put: [ :object :key | object at: key ];\x0a\x09\x09at: #reversed put: [ :aCollection | aCollection reversed ];\x0a\x09\x09at: #sorted put: [ :aCollection | aCollection sorted ];\x0a\x09\x09at: #size put: [ :anObject | anObject size ];\x0a\x09\x09at: #rounded put: [ :aNumber | aNumber rounded ];\x0a\x09\x09at: #capitalized put: [ :aString | aString capitalized ];\x0a\x09\x09at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];\x0a\x09\x09at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];\x0a\x09\x09at: #asLowercase put: [ :aString | aString asString asLowercase ];\x0a\x09\x09at: #asUppercase put: [ :aString | aString asString asUppercase ];\x0a\x09\x09at: #bind put: self binderCallback;\x0a\x09\x09yourself",
+source: "utilFormatters\x0a\x0a\x09^ Dictionary new \x0a\x09\x09at: #at put: [ :object :key | object at: key ];\x0a\x09\x09at: #reversed put: [ :aCollection | aCollection reversed ];\x0a\x09\x09at: #sorted put: [ :aCollection | aCollection sorted ];\x0a\x09\x09at: #size put: [ :anObject | anObject size ];\x0a\x09\x09at: #rounded put: [ :aNumber | aNumber rounded ];\x0a\x09\x09at: #capitalized put: [ :aString | aString capitalized ];\x0a\x09\x09at: #asCurrency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];\x0a\x09\x09at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];\x0a\x09\x09at: #asLowercase put: [ :aString | aString asString asLowercase ];\x0a\x09\x09at: #asUppercase put: [ :aString | aString asString asUppercase ];\x0a\x09\x09at: #bind put: self binderCallback;\x0a\x09\x09yourself",
 referencedClasses: ["Dictionary"],
 //>>excludeEnd("ide");
 messageSends: ["at:put:", "new", "at:", "reversed", "sorted", "size", "rounded", "capitalized", ",", "asString", "ifNotNil:ifNil:", "printShowingDecimalPlaces:", "asNumber", "asLowercase", "asUppercase", "binderCallback", "yourself"]

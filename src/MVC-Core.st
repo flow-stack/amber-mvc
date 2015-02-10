@@ -768,7 +768,7 @@ isValidFor: anURI
 ! !
 
 TemplateController subclass: #BindingController
-	instanceVariableNames: 'bindedView'
+	instanceVariableNames: 'boundView'
 	package: 'MVC-Core'!
 !BindingController commentStamp!
 ## BindingController is an abstraction
@@ -791,7 +791,7 @@ bind
 	"Tells rivets.js to bind 
 	the model of this controller to its view."
 	
-	bindedView := RivetsJS rv
+	boundView := RivetsJS rv
 			bind: self view 
 			to: self asBindArgument
 !
@@ -825,7 +825,7 @@ getBindableModel
 	Mapless are implemented using a plain JavaScript object at its core so 
 	you'll have a single source of truth for your models and enjoy the 
 	two-way data binding an other RivetJS features simultaneously."
-	^ model data
+	^ model asJSON
 !
 
 getConfiguration
@@ -1217,7 +1217,7 @@ utilFormatters
 		at: #size put: [ :anObject | anObject size ];
 		at: #rounded put: [ :aNumber | aNumber rounded ];
 		at: #capitalized put: [ :aString | aString capitalized ];
-		at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
+		at: #asCurrency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
 		at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];
 		at: #asLowercase put: [ :aString | aString asString asLowercase ];
 		at: #asUppercase put: [ :aString | aString asString asUppercase ];
