@@ -798,15 +798,15 @@ configureAndBind
 
 getBindableModel
 	"Returns the model in a way that is appropiate for binding (usable by rivets).
-	By default BindingController assumes you are using a plain javascript object as model
+	By default BindingController assumes that you are using a plain javascript object as model
 	but subclasses might differ if they please to do so."
 
 	"We are assuming here that you are working with aMapless as model so you
 	can use regular Amber objects as models in your application.
-	Mapless are implemented using a plain JavaScript object at its core so 
-	you'll have a single source of truth for your models and enjoy the 
-	two-way data binding an other RivetJS features simultaneously."
-	^ model data
+	Mapless are implemented in a way that they have JavaScript properties 
+	holding the references so you  can have a single source of truth 
+	for your models and enjoy the two-way data binding and other RivetJS features."
+	^ model
 !
 
 getConfiguration
