@@ -2,3 +2,6 @@
 /bower_components/
 
 /test_runner.js
+
+/config.js
+/the.js
