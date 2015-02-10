@@ -1,27 +1,7 @@
-February 2, 2015 - Release 0.1.23
+February 10, 2015 - Release 0.1.20
 ===================================
 
-* Controller>>hasControllerAt: belongs to amber-mvc instead of *App
-* Upgrades to Amber 0.14.4
-
-
-January 30, 2015 - Release 0.1.22
-===================================
-
-* Controller>>hasControllerAt:
-
-
-January 30, 2015 - Release 0.1.21
-===================================
-
-* Review
-
-
-January 30, 2015 - Release 0.1.20
-===================================
-
-* Controller class>>in:appendingTo:
-* Adds missing deprecation warning
+* Upgrades to "minimapless": "^0.11.0"
 
 
 January 29, 2015 - Release 0.1.19

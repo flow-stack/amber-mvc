@@ -357,11 +357,6 @@ initializeDeferred
 
 !Controller methodsFor: 'testing'!
 
-hasControllerAt: aKey
-
-	 ^ self controllers includesKey: aKey
-!
-
 hasDeferred
 	"Answers true if this controller has a deferred object."
 	
@@ -453,17 +448,6 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 		yourself
 !
 
-in: aParentControllerOrNil appendingTo: aHtmlElement
-	"Answers a new instance of this controller, child of aParentControllerOrNil 
-	and meant to be appended to aHtmlElement.
-	Using this contructor will make the model to stay nil."
-
-	^ self new
-		parent: aParentControllerOrNil;
-		parentElement: aHtmlElement;
-		yourself
-!
-
 on: aModel 
 	"Answers a new instance of this controller dedicated to aModel,
 	with no parent and meant to be appended to the default html element,
@@ -477,9 +461,6 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	and meant to be appended to aHtmlElement.
 	Using this contructor will make the model to stay nil."
 
-	#deprecated.
-	console warn: self name,'>>on:appendingTo: this will be removed in next version, use #on:in:'.
-	
 	^ self new
 		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;
@@ -768,7 +749,7 @@ isValidFor: anURI
 ! !
 
 TemplateController subclass: #BindingController
-	instanceVariableNames: 'boundView'
+	instanceVariableNames: 'bindedView'
 	package: 'MVC-Core'!
 !BindingController commentStamp!
 ## BindingController is an abstraction
@@ -791,7 +772,7 @@ bind
 	"Tells rivets.js to bind 
 	the model of this controller to its view."
 	
-	boundView := RivetsJS rv
+	bindedView := RivetsJS rv
 			bind: self view 
 			to: self asBindArgument
 !
@@ -817,15 +798,15 @@ configureAndBind
 
 getBindableModel
 	"Returns the model in a way that is appropiate for binding (usable by rivets).
-	By default BindingController assumes you are using a plain javascript object as model
+	By default BindingController assumes that you are using a plain javascript object as model
 	but subclasses might differ if they please to do so."
 
 	"We are assuming here that you are working with aMapless as model so you
 	can use regular Amber objects as models in your application.
-	Mapless are implemented using a plain JavaScript object at its core so 
-	you'll have a single source of truth for your models and enjoy the 
-	two-way data binding an other RivetJS features simultaneously."
-	^ model asJSON
+	Mapless are implemented in a way that they have JavaScript properties 
+	holding the references so you  can have a single source of truth 
+	for your models and enjoy the two-way data binding and other RivetJS features."
+	^ model
 !
 
 getConfiguration
@@ -1217,7 +1198,7 @@ utilFormatters
 		at: #size put: [ :anObject | anObject size ];
 		at: #rounded put: [ :aNumber | aNumber rounded ];
 		at: #capitalized put: [ :aString | aString capitalized ];
-		at: #asCurrency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
+		at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
 		at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];
 		at: #asLowercase put: [ :aString | aString asString asLowercase ];
 		at: #asUppercase put: [ :aString | aString asString asUppercase ];
