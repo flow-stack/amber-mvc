@@ -1590,6 +1590,35 @@ $globals.Controller.klass);
 
 $core.addMethod(
 $core.method({
+selector: "in:appendingTo:",
+protocol: 'actions',
+fn: function (aParentControllerOrNil,aHtmlElement){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._parentElement_(aHtmlElement);
+$3=$recv($2)._yourself();
+$1=$3;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"in:appendingTo:",{aParentControllerOrNil:aParentControllerOrNil,aHtmlElement:aHtmlElement},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aParentControllerOrNil", "aHtmlElement"],
+source: "in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller without model (nil),\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["parent:", "new", "parentElement:", "yourself"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
 selector: "keyword",
 protocol: 'accessing',
 fn: function (){
@@ -2126,7 +2155,7 @@ $2=$recv(self["@itemControllerClass"])._isNil();
 if($core.assert($2)){
 $1=$recv(self._newItemControllerBlock())._value_(anItem);
 } else {
-$1=$recv(self["@itemControllerClass"])._for_on_appendingTo_(anItem,self,self._view());
+$1=$recv(self["@itemControllerClass"])._on_in_appendingTo_(anItem,self,self._view());
 };
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -2135,10 +2164,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["anItem"],
-source: "newItemControllerFor: anItem\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09for: anItem \x0a\x09\x09\x09\x09\x09on: self \x0a\x09\x09\x09\x09\x09appendingTo: self view ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: anItem ]",
+source: "newItemControllerFor: anItem\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09on: anItem \x0a\x09\x09\x09\x09\x09in: self \x0a\x09\x09\x09\x09\x09appendingTo: self view ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: anItem ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifFalse:ifTrue:", "isNil", "for:on:appendingTo:", "view", "value:", "newItemControllerBlock"]
+messageSends: ["ifFalse:ifTrue:", "isNil", "on:in:appendingTo:", "view", "value:", "newItemControllerBlock"]
 }),
 $globals.ListController);
 
@@ -4351,7 +4380,26 @@ return $recv(aString)._capitalized();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.sendIdx["at:put:"]=6;
 //>>excludeEnd("ctx");
-$recv($2)._at_put_("currency",(function(aNumber,aCurrencySymbol){
+$recv($2)._at_put_("asNumber",(function(aString){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+if(($receiver = aString) == null || $receiver.isNil){
+return (0);
+} else {
+return $recv(aString)._asNumber();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx2.sendIdx["asNumber"]=1;
+//>>excludeEnd("ctx");
+};
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({aString:aString},$ctx1,7)});
+//>>excludeEnd("ctx");
+}));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["at:put:"]=7;
+//>>excludeEnd("ctx");
+$recv($2)._at_put_("asCurrency",(function(aNumber,aCurrencySymbol){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
@@ -4364,7 +4412,7 @@ $4="";
 } else {
 $5=$recv(aNumber)._asNumber();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["asNumber"]=1;
+$ctx2.sendIdx["asNumber"]=2;
 //>>excludeEnd("ctx");
 $4=$recv($5)._printShowingDecimalPlaces_((2));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -4373,11 +4421,11 @@ $ctx2.sendIdx["printShowingDecimalPlaces:"]=1;
 };
 return $recv($3).__comma($4);
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({aNumber:aNumber,aCurrencySymbol:aCurrencySymbol},$ctx1,7)});
+}, function($ctx2) {$ctx2.fillBlock({aNumber:aNumber,aCurrencySymbol:aCurrencySymbol},$ctx1,10)});
 //>>excludeEnd("ctx");
 }));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["at:put:"]=7;
+$ctx1.sendIdx["at:put:"]=8;
 //>>excludeEnd("ctx");
 $recv($2)._at_put_("decimalPlaces",(function(aNumber,decimalPlaces){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -4389,11 +4437,11 @@ return "";
 return $recv($recv(aNumber)._asNumber())._printShowingDecimalPlaces_(decimalPlaces);
 };
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({aNumber:aNumber,decimalPlaces:decimalPlaces},$ctx1,10)});
+}, function($ctx2) {$ctx2.fillBlock({aNumber:aNumber,decimalPlaces:decimalPlaces},$ctx1,13)});
 //>>excludeEnd("ctx");
 }));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["at:put:"]=8;
+$ctx1.sendIdx["at:put:"]=9;
 //>>excludeEnd("ctx");
 $recv($2)._at_put_("asLowercase",(function(aString){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -4405,11 +4453,11 @@ $ctx2.sendIdx["asString"]=2;
 //>>excludeEnd("ctx");
 return $recv($6)._asLowercase();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({aString:aString},$ctx1,13)});
+}, function($ctx2) {$ctx2.fillBlock({aString:aString},$ctx1,16)});
 //>>excludeEnd("ctx");
 }));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["at:put:"]=9;
+$ctx1.sendIdx["at:put:"]=10;
 //>>excludeEnd("ctx");
 $recv($2)._at_put_("asUppercase",(function(aString){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -4417,11 +4465,11 @@ return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
 return $recv($recv(aString)._asString())._asUppercase();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({aString:aString},$ctx1,14)});
+}, function($ctx2) {$ctx2.fillBlock({aString:aString},$ctx1,17)});
 //>>excludeEnd("ctx");
 }));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["at:put:"]=10;
+$ctx1.sendIdx["at:put:"]=11;
 //>>excludeEnd("ctx");
 $recv($2)._at_put_("bind",self._binderCallback());
 $7=$recv($2)._yourself();
@@ -4433,10 +4481,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "utilFormatters\x0a\x0a\x09^ Dictionary new \x0a\x09\x09at: #at put: [ :object :key | object at: key ];\x0a\x09\x09at: #reversed put: [ :aCollection | aCollection reversed ];\x0a\x09\x09at: #sorted put: [ :aCollection | aCollection sorted ];\x0a\x09\x09at: #size put: [ :anObject | anObject size ];\x0a\x09\x09at: #rounded put: [ :aNumber | aNumber rounded ];\x0a\x09\x09at: #capitalized put: [ :aString | aString capitalized ];\x0a\x09\x09at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];\x0a\x09\x09at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];\x0a\x09\x09at: #asLowercase put: [ :aString | aString asString asLowercase ];\x0a\x09\x09at: #asUppercase put: [ :aString | aString asString asUppercase ];\x0a\x09\x09at: #bind put: self binderCallback;\x0a\x09\x09yourself",
+source: "utilFormatters\x0a\x0a\x09^ Dictionary new \x0a\x09\x09at: #at put: [ :object :key | object at: key ];\x0a\x09\x09at: #reversed put: [ :aCollection | aCollection reversed ];\x0a\x09\x09at: #sorted put: [ :aCollection | aCollection sorted ];\x0a\x09\x09at: #size put: [ :anObject | anObject size ];\x0a\x09\x09at: #rounded put: [ :aNumber | aNumber rounded ];\x0a\x09\x09at: #capitalized put: [ :aString | aString capitalized ];\x0a\x09\x09at: #asNumber put: [ :aString | aString ifNotNil: [ aString asNumber ] ifNil: [ 0 ] ];\x0a\x09\x09at: #asCurrency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];\x0a\x09\x09at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];\x0a\x09\x09at: #asLowercase put: [ :aString | aString asString asLowercase ];\x0a\x09\x09at: #asUppercase put: [ :aString | aString asString asUppercase ];\x0a\x09\x09at: #bind put: self binderCallback;\x0a\x09\x09yourself",
 referencedClasses: ["Dictionary"],
 //>>excludeEnd("ide");
-messageSends: ["at:put:", "new", "at:", "reversed", "sorted", "size", "rounded", "capitalized", ",", "asString", "ifNotNil:ifNil:", "printShowingDecimalPlaces:", "asNumber", "asLowercase", "asUppercase", "binderCallback", "yourself"]
+messageSends: ["at:put:", "new", "at:", "reversed", "sorted", "size", "rounded", "capitalized", "ifNotNil:ifNil:", "asNumber", ",", "asString", "printShowingDecimalPlaces:", "asLowercase", "asUppercase", "binderCallback", "yourself"]
 }),
 $globals.RivetsJS.klass);
 

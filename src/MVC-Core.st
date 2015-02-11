@@ -448,6 +448,16 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 		yourself
 !
 
+in: aParentControllerOrNil appendingTo: aHtmlElement
+	"Answers a new instance of this controller without model (nil),
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		parentElement: aHtmlElement;
+		yourself
+!
+
 on: aModel 
 	"Answers a new instance of this controller dedicated to aModel,
 	with no parent and meant to be appended to the default html element,
@@ -580,8 +590,8 @@ newItemControllerFor: anItem
 
 	^ itemControllerClass isNil
 		ifFalse:[ itemControllerClass 
-					for: anItem 
-					on: self 
+					on: anItem 
+					in: self 
 					appendingTo: self view ] 
 		ifTrue:[ self newItemControllerBlock value: anItem ]
 !
@@ -1198,7 +1208,8 @@ utilFormatters
 		at: #size put: [ :anObject | anObject size ];
 		at: #rounded put: [ :aNumber | aNumber rounded ];
 		at: #capitalized put: [ :aString | aString capitalized ];
-		at: #currency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
+		at: #asNumber put: [ :aString | aString ifNotNil: [ aString asNumber ] ifNil: [ 0 ] ];
+		at: #asCurrency put: [ :aNumber :aCurrencySymbol | aCurrencySymbol asString, (aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: 2 ] ifNil: [ '' ]) ];
 		at: #decimalPlaces put: [ :aNumber :decimalPlaces | aNumber ifNotNil: [ aNumber asNumber printShowingDecimalPlaces: decimalPlaces ] ifNil: [ '' ]  ];
 		at: #asLowercase put: [ :aString | aString asString asLowercase ];
 		at: #asUppercase put: [ :aString | aString asString asUppercase ];

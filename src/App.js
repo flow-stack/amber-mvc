@@ -877,6 +877,7 @@ $2=$recv($ThingModel())._new();
 $recv($2)._firstName_("Dude");
 $recv($2)._someNumbers_([(3), (6), (2), (8), (1)]);
 $recv($2)._someFloatValue_((33.33333333));
+$recv($2)._someStringNumericValue_("1776");
 $3=$recv($2)._yourself();
 $1=$3;
 return $1;
@@ -886,10 +887,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultModel\x0a\x0a\x09^ ThingModel new \x0a\x09\x09firstName: 'Dude';\x0a\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09yourself",
+source: "defaultModel\x0a\x0a\x09^ ThingModel new \x0a\x09\x09firstName: 'Dude';\x0a\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09someStringNumericValue: '1776';\x0a\x09\x09yourself",
 referencedClasses: ["ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["firstName:", "new", "someNumbers:", "someFloatValue:", "yourself"]
+messageSends: ["firstName:", "new", "someNumbers:", "someFloatValue:", "someStringNumericValue:", "yourself"]
 }),
 $globals.Example2Controller.klass);
 
@@ -1633,6 +1634,7 @@ $2=$recv($ThingModel())._new();
 $recv($2)._firstName_("Dude");
 $recv($2)._someNumbers_([(3), (6), (2), (8), (1)]);
 $recv($2)._someFloatValue_((33.33333333));
+$recv($2)._someStringNumericValue_("1776");
 $3=$recv($2)._yourself();
 return $recv($Example2Controller())._on_in_appendingTo_($3,self,"#example2-wrapper"._asJQuery());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1646,10 +1648,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "example2\x0a\x0a\x09^ self ifAbsentAt: #example2 put: [\x0a\x09\x09Example2Controller \x0a\x09\x09\x09on: (ThingModel new\x0a\x09\x09\x09\x09\x09firstName: 'Dude';\x0a\x09\x09\x09\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09\x09\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09\x09\x09\x09yourself)\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#example2-wrapper' asJQuery ]",
+source: "example2\x0a\x0a\x09^ self ifAbsentAt: #example2 put: [\x0a\x09\x09Example2Controller \x0a\x09\x09\x09on: (ThingModel new\x0a\x09\x09\x09\x09\x09firstName: 'Dude';\x0a\x09\x09\x09\x09\x09someNumbers: #( 3 6 2 8 1 );\x0a\x09\x09\x09\x09\x09someFloatValue: 33.33333333;\x0a\x09\x09\x09\x09\x09someStringNumericValue: '1776';\x0a\x09\x09\x09\x09\x09yourself)\x0a\x09\x09\x09in: self\x0a\x09\x09\x09appendingTo: '#example2-wrapper' asJQuery ]",
 referencedClasses: ["Example2Controller", "ThingModel"],
 //>>excludeEnd("ide");
-messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "firstName:", "new", "someNumbers:", "someFloatValue:", "yourself", "asJQuery"]
+messageSends: ["ifAbsentAt:put:", "on:in:appendingTo:", "firstName:", "new", "someNumbers:", "someFloatValue:", "someStringNumericValue:", "yourself", "asJQuery"]
 }),
 $globals.MainController);
 
