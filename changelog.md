@@ -1,3 +1,9 @@
+February 10, 2015 - Release 0.1.25
+===================================
+
+* Re-version fixes bower access issue
+
+
 February 10, 2015 - Release 0.1.24
 ===================================
 
