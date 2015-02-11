@@ -2645,7 +2645,7 @@ messageSends: []
 $globals.TemplateController.klass);
 
 
-$core.addClass('BindingController', $globals.TemplateController, ['bindedView'], 'MVC-Core');
+$core.addClass('BindingController', $globals.TemplateController, ['boundView'], 'MVC-Core');
 //>>excludeStart("ide", pragmas.excludeIdeData);
 $globals.BindingController.comment="## BindingController is an abstraction\x0aThe concrete subclasses of BindingController are users of the two-way data binding mechanism loaded by flow.\x0a\x0aNote that BindingController is a subclass of TemplateController so all subclasses of it follow the convention of loading a html template from the server using the keyword of the controller as the name of the template to be found at views/";
 //>>excludeEnd("ide");
@@ -2684,7 +2684,7 @@ function $RivetsJS(){return $globals.RivetsJS||(typeof RivetsJS=="undefined"?nil
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self["@bindedView"]=$recv($recv($RivetsJS())._rv())._bind_to_(self._view(),self._asBindArgument());
+self["@boundView"]=$recv($recv($RivetsJS())._rv())._bind_to_(self._view(),self._asBindArgument());
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"bind",{},$globals.BindingController)});
@@ -2692,7 +2692,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09bindedView := RivetsJS rv\x0a\x09\x09\x09bind: self view \x0a\x09\x09\x09to: self asBindArgument",
+source: "bind\x0a\x09\x22Tells rivets.js to bind \x0a\x09the model of this controller to its view.\x22\x0a\x09\x0a\x09boundView := RivetsJS rv\x0a\x09\x09\x09bind: self view \x0a\x09\x09\x09to: self asBindArgument",
 referencedClasses: ["RivetsJS"],
 //>>excludeEnd("ide");
 messageSends: ["bind:to:", "rv", "view", "asBindArgument"]

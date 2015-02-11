@@ -749,7 +749,7 @@ isValidFor: anURI
 ! !
 
 TemplateController subclass: #BindingController
-	instanceVariableNames: 'bindedView'
+	instanceVariableNames: 'boundView'
 	package: 'MVC-Core'!
 !BindingController commentStamp!
 ## BindingController is an abstraction
@@ -772,7 +772,7 @@ bind
 	"Tells rivets.js to bind 
 	the model of this controller to its view."
 	
-	bindedView := RivetsJS rv
+	boundView := RivetsJS rv
 			bind: self view 
 			to: self asBindArgument
 !
