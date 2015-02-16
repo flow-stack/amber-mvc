@@ -1217,7 +1217,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x0a\x09\x09self updateNotEmpty ]",
+source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x09\x09\x0a\x09\x09self updateNotEmpty ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["observeEvents", "when:do:", "show", "things", "updateNotEmpty"]
@@ -1948,7 +1948,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "showExample4\x0a\x09\x0a\x09self show done: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example4 show ]",
+source: "showExample4\x0a\x0a\x09self show done: [\x0a\x09\x09self hideAll.\x0a\x09\x09self example4 show ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["done:", "show", "hideAll", "example4"]
@@ -1958,9 +1958,81 @@ $globals.MainController);
 
 
 $core.addClass('ThingDetailsController', $globals.BindingController, [], 'App');
+$core.addMethod(
+$core.method({
+selector: "renderOn:",
+protocol: 'not yet classified',
+fn: function (html){
+var self=this;
+function $App(){return $globals.App||(typeof App=="undefined"?nil:App)}
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=$recv($recv($recv($recv($App())._main())._example4())._details()).__eq(self);
+if(!$core.assert($1)){
+self._halt();
+};
+self._deprecatedAPI();
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.ThingDetailsController.superclass.fn.prototype._renderOn_.apply($recv(self), [html]));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},$globals.ThingDetailsController)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["html"],
+source: "renderOn: html\x0a\x0a\x09(App main example4 details = self) ifFalse: [ self halt ].\x0aself deprecatedAPI.\x0a\x0a\x0a\x09super renderOn: html",
+referencedClasses: ["App"],
+//>>excludeEnd("ide");
+messageSends: ["ifFalse:", "=", "details", "example4", "main", "halt", "deprecatedAPI", "renderOn:"]
+}),
+$globals.ThingDetailsController);
+
 
 
 $core.addClass('ThingModel', $globals.MaplessModel, [], 'App');
+$core.addMethod(
+$core.method({
+selector: "printOn:",
+protocol: 'actions',
+fn: function (aStream){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.ThingModel.superclass.fn.prototype._printOn_.apply($recv(self), [aStream]));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+$recv(aStream)._space();
+$1=$recv(aStream)._nextPutAll_(self._asJSONString());
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},$globals.ThingModel)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aStream"],
+source: "printOn: aStream\x0a\x0a\x09super printOn: aStream.\x0a\x09\x0a\x09aStream space; nextPutAll: self asJSONString",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["printOn:", "space", "nextPutAll:", "asJSONString"]
+}),
+$globals.ThingModel);
+
 
 
 $core.addClass('ThingRowController', $globals.BindingController, [], 'App');
@@ -2030,7 +2102,6 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$recv(console)._info_on_(self,">>show");
 $1=(
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
@@ -2046,10 +2117,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x0a\x09console info: self on: '>>show'.\x0a\x0a\x09^ super show",
+source: "show\x0a\x0a\x09\x22console info: self on: '>>show'.\x22\x0a\x0a\x09^ super show",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["info:on:", "show"]
+messageSends: ["show"]
 }),
 $globals.ThingRowController);
 
@@ -2077,5 +2148,29 @@ messageSends: ["triggerEvent:"]
 }),
 $globals.ThingRowController);
 
+
+$core.addMethod(
+$core.method({
+selector: "perform:withArguments:",
+protocol: '*App',
+fn: function (aString,aCollection){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+return $core.send(self, $core.st2js(aString), aCollection);
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"perform:withArguments:",{aString:aString,aCollection:aCollection},$globals.ProtoObject)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aString", "aCollection"],
+source: "perform: aString withArguments: aCollection\x0a\x09<return $core.send(self, $core.st2js(aString), aCollection)>",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.ProtoObject);
 
 });

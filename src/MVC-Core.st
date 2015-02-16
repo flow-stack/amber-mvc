@@ -184,11 +184,6 @@ createControllers
 	self triggerEvent: #controllersCreated
 !
 
-destroy
-
-	self remove
-!
-
 hide 
 
 	self view ifNil: [ ^ self ].
@@ -241,7 +236,7 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 observeEvents
 	"Program the observations of events that are important for this controller."
 	
-	console log: (self class name,'>>observeEvents').
+	"console log: (self class name,'>>observeEvents')."
 	
 	parent ifNotNil: [ 
 		parent 
@@ -261,9 +256,8 @@ refresh
 
 remove
 
-	self triggerEvent: #onRemove.
+	self silentRemoveView.
 	self unobserveEvents.
-	self removeView.
 !
 
 removeAll
@@ -294,7 +288,7 @@ removeView
 !
 
 render
-	
+
 	self triggerEvent: #onBeforeRender.
 	self renderOn: (HTMLCanvas onJQuery: self parentElement).
 	self triggerEvent: #onAfterRender.
@@ -317,7 +311,7 @@ show
 	The promise is a jQuery Deferred that will resolve receiving 
 	this controller as argument when the view is set."
 	
-	console log: (self class name,'>>show').
+	"console log: (self class name,'>>show')."
 
 	self hasView ifFalse: [ 
 		self render.
@@ -398,7 +392,9 @@ initialize
 	
 	"By default the controllers will append to render 
 	on the parentElement (as opposed to prepend)."
-	self beAppending
+	self beAppending.
+	
+	self showPromise done: [ self observeEvents ]
 !
 
 initializeControllers
@@ -432,19 +428,16 @@ initializeShowPromise
 
 onAfterView
 	"Hook used when the view of this controller was just set.
-	Create subcontrollers, observe events and resolve 
-	the show promise in case there is one."
+	Create subcontrollers and resolve the show promise 
+	in case there is one."
 
-	console log: (self class name,'>>onAfterView').
+	"console log: (self class name,'>>onAfterView')."
 
 	"After the view is set, we are ready to create subcontrollers..." 
 	self createControllers.
-	
-	"...and observe interesting events."
-	self observeEvents.
 
 	self hasShowPromise ifTrue: [
-		console log: (self class name,'>>onAfterView fulfilling promise').
+		"console log: (self class name,'>>onAfterView fulfilling promise')."
 		showPromise resolve: self ].
 
 	self triggerEvent: #onAfterView.
@@ -465,9 +458,10 @@ onParentViewChanged
 	making a new one on the DOM probably using same id attribute 
 	but with different identity."
 	
-	console log: (self class name,'>>onParentViewChanged').
+	self deprecatedAPI.
+	"console log: (self class name,'>>onParentViewChanged')."
 	self initializeParentElement.
-	self refresh
+	"self refresh"
 ! !
 
 !Controller methodsFor: 'testing'!
@@ -989,7 +983,7 @@ configureAndBind
 	
 	self bind.
 	
-	console log: (self class name,'>>configureAndBind').
+	"console log: (self class name,'>>configureAndBind')."
 !
 
 getBindableModel
@@ -1613,6 +1607,11 @@ notNil
 changed
 
 	self triggerEvent: #changed
+!
+
+debugger
+
+	<debugger>
 !
 
 destroy

@@ -337,7 +337,7 @@ observeEvents
 	super observeEvents.
 	
 	self when: #onAfterView do: [ 
-		self things show.
+		self things show.		
 		self updateNotEmpty ]
 !
 
@@ -499,7 +499,7 @@ showExample3
 !
 
 showExample4
-	
+
 	self show done: [
 		self hideAll.
 		self example4 show ]
@@ -520,9 +520,29 @@ BindingController subclass: #ThingDetailsController
 	instanceVariableNames: ''
 	package: 'App'!
 
+!ThingDetailsController methodsFor: 'not yet classified'!
+
+renderOn: html
+
+	(App main example4 details = self) ifFalse: [ self halt ].
+self deprecatedAPI.
+
+
+	super renderOn: html
+! !
+
 MaplessModel subclass: #ThingModel
 	instanceVariableNames: ''
 	package: 'App'!
+
+!ThingModel methodsFor: 'actions'!
+
+printOn: aStream
+
+	super printOn: aStream.
+	
+	aStream space; nextPutAll: self asJSONString
+! !
 
 BindingController subclass: #ThingRowController
 	instanceVariableNames: ''
@@ -544,7 +564,7 @@ renderOn: html
 
 show
 
-	console info: self on: '>>show'.
+	"console info: self on: '>>show'."
 
 	^ super show
 !
@@ -552,5 +572,11 @@ show
 viewDetails
 
 	self triggerEvent: #viewDetails
+! !
+
+!ProtoObject methodsFor: '*App'!
+
+perform: aString withArguments: aCollection
+	<return $core.send(self, $core.st2js(aString), aCollection)>
 ! !
 
