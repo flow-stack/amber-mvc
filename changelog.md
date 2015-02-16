@@ -1,10 +1,13 @@
 February 16, 2015 - Release 0.1.25
 ===================================
 
-* Deprecation of all methods of Controller using appendingTo: in favor of addOn: aBlock where aBlock is the parentElement getter block that controllers can use on demand to get it fresh anytime they want.
+* Deprecation of all constructor methods of Controller using appendingTo: in favor of addOn: aBlock where aBlock is the parentElement getter block that controllers can use on demand to get it fresh anytime they want.
 * Fixes #observeEvents on the examples, controllers now need to always send `super observeEvents` and no need to call it during their #initialize #onAfterView since that's being done for all in the Controller class.
 * Introducing #beAppending and #bePrepending controlled by #isAppending true or false. The default is appending.
 * Introducing #resetParentElement and making use of it through #observeEvents. All controllers that have a parent observes when their parents triggers an #onAfterView and resets their parentElement.
+* Deprecated Controller>>deferred in favor of Controller>>showPromise
+* Introducing Controller>>removeView with events #onBeforeRemoveView and #onAfterRemoveView.
+* ConfirmController now using instVars acceptBlock and rejectBlock for the callbacks.
 
 
 February 10, 2015 - Release 0.1.24

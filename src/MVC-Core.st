@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'MVC-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model view parent parentElement deferred getParentElementBlock isAppending'
+	instanceVariableNames: 'controllers model view parent parentElement showPromise getParentElementBlock isAppending'
 	package: 'MVC-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -81,7 +81,10 @@ controllers
 
 deferred
 
-	^ deferred ifNil: [ self initializeDeferred ]
+	#deprecated.
+	console log: self class name, '>>deferred deprecated, use #showPromise'.
+
+	^ self showPromise
 !
 
 getParentElementBlock
@@ -134,12 +137,17 @@ parentElement: aHtmlElement
 	self triggerEvent: #onAfterParentElement.
 !
 
+showPromise
+
+	^ showPromise ifNil: [ self initializeShowPromise ]
+!
+
 silentView: aHtmlElement
 	"Sets the instance of the element considered the view of this controller."
+	
+	self onBeforeView.
 	view := aHtmlElement.
-		
-	self hasDeferred ifTrue: [
-		deferred resolve: self ]
+	self onAfterView.
 !
 
 view
@@ -148,10 +156,12 @@ view
 !
 
 view: aHtmlElement
-
-	self triggerEvent: #onBeforeView.
-	self silentView: aHtmlElement.
-	self triggerEvent: #onAfterView.
+	"Sets aHtmlElement as the view of this controller and 
+	evaluate the hooks before and after the view gets set."
+	
+	self onBeforeView.
+	view := aHtmlElement.
+	self onAfterView
 ! !
 
 !Controller methodsFor: 'actions'!
@@ -230,31 +240,35 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 !
 
 observeEvents
-	"Programs the observations of events happening in the controllers of this controller."
+	"Program the observations of events that are important for this controller."
 	
 	console log: (self class name,'>>observeEvents').
 	
-	parent ifNotNil: [ parent when: #onAfterView do: [ self onParentViewChanged ] ].
+	parent ifNotNil: [ 
+		parent 
+			when: #onAfterRemoveView do: [ self resetParentElement ];
+			when: #onAfterView do: [ self onParentViewChanged ];
+			yourself ].
 	
 	self triggerEvent: #controllersObserved
 !
 
 refresh
+	"Removes the view and shows a fresh view of this controller."
 
 	^ self removeView; show
 !
 
 remove
 	
-	self triggerEvent: #onBeforeRemove.
-
-	self silentRemove.
+	#deprecated.
+	console log: self class name, '>>remove deprecated, use #removeView'.
 	
-	self triggerEvent: #onAfterRemove.
+	self removeView
 !
 
 removeAll
-
+	"Removes all the subcontrollers children of this controller"
 	self controllers keys do: [ :each | self removeControllerAt: each ]
 !
 
@@ -265,20 +279,19 @@ removeControllerAt: aKey
 	controller := self controllerAt: aKey ifAbsent:[ nil ].
 	
 	controller ifNotNil:[
-		controller remove ].
+		controller removeView ].
 		
 	self controllers removeKey: aKey ifAbsent: [ nil ]
 !
 
 removeView
+	"Removes the view of this controller."
 	
-	deferred := nil.
+	self triggerEvent: #onBeforeRemoveView.
+
+	self silentRemoveView.
 	
-	view ifNotNil:[ | exView |
-		exView := view.
-		exView asJQuery off.
-		view := nil.
-		exView asJQuery remove ].
+	self triggerEvent: #onAfterRemoveView.
 !
 
 render
@@ -301,17 +314,19 @@ resetParentElement
 show
 	"Shows the receiver.
 	Rendes when there is no view.
-	Always returns a thenable (deferred).
-	The thenable will receive this controller as argument and 
-	evaluates when the view is set."
+	Always returns the deferred showPromise.
+	The promise is a jQuery Deferred that will resolve receiving 
+	this controller as argument when the view is set."
+	
+	console log: (self class name,'>>show').
 
 	self hasView ifFalse: [ 
 		self render.
-		^ self deferred ].
+		^ self showPromise ].
 	
 	self view show.
 
-	^ self deferred
+	^ self showPromise
 !
 
 showAll
@@ -331,7 +346,7 @@ showThen: aBlock
 	
 	console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.
 	
-	self deferred done: aBlock.
+	self showPromise done: aBlock.
 	
 	self show
 !
@@ -342,8 +357,20 @@ silentRefresh
 !
 
 silentRemove
+
+	#deprecated.
+	console log: self class name, '>>silentRemove deprecated, use #silentRemoveView'.
 	
-	self removeView
+	self silentRemoveView
+!
+
+silentRemoveView
+	
+	view ifNotNil:[ | exView |
+		exView := view.
+		exView asJQuery off.
+		view := nil.
+		exView asJQuery remove ].
 !
 
 silentRender
@@ -382,13 +409,6 @@ initializeControllers
 	^ controllers := Dictionary new
 !
 
-initializeDeferred
-	"Sets the promise used by this controller.
-	http://api.jquery.com/category/deferred-object/"
-	
-	^ deferred := jQuery Deferred value
-!
-
 initializeGetParentElementBlock
 	"Returns the default parent element getter."
 
@@ -402,9 +422,49 @@ initializeParentElement
 	self parentElement: self getParentElementBlock value.
 
 	^ parentElement
+!
+
+initializeShowPromise
+	"Sets the promise used by this controller when it shows (resolves when the view is set).
+	For the full promise API check here: http://api.jquery.com/category/deferred-object/"
+	
+	^ showPromise := jQuery Deferred value
 ! !
 
 !Controller methodsFor: 'reactions'!
+
+onAfterView
+	"Hook used when the view of this controller was just set.
+	Create subcontrollers, observe events and resolve 
+	the show promise in case there is one."
+
+	console log: (self class name,'>>onAfterView').
+
+	"After the view is set, we are ready to create subcontrollers..." 
+	self createControllers.
+	
+	"...and observe interesting events."
+	self observeEvents.
+
+	self hasShowPromise ifTrue: [
+		console log: (self class name,'>>onAfterView fulfilling promise').
+		showPromise resolve: self ].
+
+	self triggerEvent: #onAfterView.
+!
+
+onBeforeView
+	"Hook used when the view of this controller is about to be set."
+
+	self triggerEvent: #onBeforeView.
+
+	"Break promises that might be done for the about-to-be-removed view."
+	"showPromise := nil."
+	
+	"Stop listening to events probably depending on the about-to-be-removed view
+	since we expect to re-observe them once this has a fesh view."
+	self releaseActionMap.
+!
 
 onParentViewChanged
 	"The parent's view has changed, make sure we have one and refresh.
@@ -421,14 +481,23 @@ onParentViewChanged
 
 hasDeferred
 	"Answers true if this controller has a deferred object."
+
+	#deprecated.
+	console log: self class name, '>>hasDeferred deprecated, use #hasShowPromise'.
 	
-	^ deferred notNil
+	^ self hasShowPomise
 !
 
 hasModel
 	"Answers true if this controller has a model"
 	
 	^ model notNil
+!
+
+hasShowPromise
+	"Answers true if this controller has a show promise object."
+	
+	^ showPromise notNil
 !
 
 hasView
@@ -785,13 +854,13 @@ setTemplate: htmlString
 	| added |
 
 	"Make it to be the contents of this controllers parent element"
-	isAppending 
-		ifTrue: [ added := self parentElement append: htmlString ]
-		ifFalse: [ added := self parentElement prepend: htmlString ].
-	
-	"And follow the convention that all templates are wrapped
-	in one element which is the view of this controller."
-	self view: added children last.
+	^ isAppending 
+		ifTrue: [ 
+			added := self parentElement append: htmlString.
+			self view: added children last ]
+		ifFalse: [ 
+			added := self parentElement prepend: htmlString 
+			self view: added children first ]
 !
 
 silentSetTemplate: htmlString
@@ -801,13 +870,13 @@ silentSetTemplate: htmlString
 	| added |
 
 	"Make it to be the contents of this controllers parent element"
-	isAppending 
-		ifTrue: [ added := self parentElement append: htmlString ]
-		ifFalse: [ added := self parentElement prepend: htmlString ].
-	
-	"And follow the convention that all templates are wrapped
-	in one element which is the view of this controller."
-	self silentView: added children last.
+	^ isAppending 
+		ifTrue: [ 
+			added := self parentElement append: htmlString.
+			self silentView: added children last ]
+		ifFalse: [ 
+			added := self parentElement prepend: htmlString 
+			self silentView: added children first ]
 ! !
 
 !TemplateController methodsFor: 'initialization'!
@@ -910,6 +979,8 @@ configureAndBind
 	self configure.
 	
 	self bind.
+	
+	console log: (self class name,'>>configureAndBind').
 !
 
 getBindableModel
@@ -943,7 +1014,10 @@ getHandler
 
 rebind
 
-	self unbind; configureAndBind
+	"Reuse of a binded view is not exactly supported by RivetJS.
+	You might want to use a refresh that will remove, 
+	re-render and fesh bind this controller and its model."
+	self mustNotImplement
 !
 
 removeView
@@ -956,7 +1030,8 @@ removeView
 
 show
 
-	^ super show done: [ self configureAndBind ]
+	^ super show 
+		"done: [ self configureAndBind ]"
 !
 
 unbind
@@ -984,6 +1059,13 @@ onAfterBound: aRivetsBinding
 
 onAfterUnbound: aRivetsBinding
 	"Rivets has unbound aRivetsBinding"
+!
+
+onAfterView
+
+	super onAfterView.
+		
+	self configureAndBind
 ! !
 
 !BindingController class methodsFor: 'testing'!
@@ -1030,6 +1112,13 @@ createModal
 	view asJQuery modal: self modalOptions
 !
 
+observeEvents
+
+	super observeEvents.
+	
+	self when: #onAfterView do: [ self createModal ]
+!
+
 open
 
 	self show done: [
@@ -1042,15 +1131,6 @@ open
 toggle
 
 	self view modal: 'toggle'
-! !
-
-!ModalController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self when: #onAfterView do: [ self createModal ]
 ! !
 
 !ModalController class methodsFor: 'accessing'!
@@ -1092,7 +1172,7 @@ onConfirmBlock: aBlock
 ! !
 
 ModalController subclass: #ConfirmController
-	instanceVariableNames: ''
+	instanceVariableNames: 'acceptBlock rejectBlock'
 	package: 'MVC-Core'!
 !ConfirmController commentStamp!
 ##ConfirmController
@@ -1102,12 +1182,14 @@ This controller asks the user for confirmation of a given action. It has a rejec
 
 accept
 
+	acceptBlock value.
+
 	self triggerEvent: #accepted.
 !
 
 acceptBlock: aBlock
 
-	self when: #accepted do: aBlock
+	acceptBlock := aBlock
 !
 
 acceptButtonLabel: aString
@@ -1117,12 +1199,14 @@ acceptButtonLabel: aString
 
 reject
 
-	self triggerEvent: #rejected.
+	rejectBlock value.
+
+	self triggerEvent: #rejected
 !
 
 rejectBlock: aBlock
 
-	self when: #rejected do: aBlock
+	rejectBlock := aBlock
 !
 
 rejectButtonLabel: aString

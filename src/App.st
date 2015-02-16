@@ -144,9 +144,9 @@ nameModal
 confirm
 	"Sets a fresh message and opens the modal"
 
-	(self nameModal
+	self nameModal
 		message: (model firstName asString,' are you sure you can handle this?');
-		show) done: [ :c | c open ]
+		open
 !
 
 confirmAgain
@@ -160,14 +160,10 @@ confirmAgain
 observeEvents
 
 	super observeEvents.
-
-	(view asJQuery find: 'a#inspect-example2') 
-		on: 'click' 
-		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
-		
-	(view asJQuery find: 'a#browse-binding') 
-		on: 'click' 
-		do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
+	
+	self 
+		when: #onAfterView 
+		do: [ self updateCanConfirm ]
 !
 
 updateCanConfirm
@@ -178,17 +174,6 @@ updateCanConfirm
 		basicAt: #canConfirm
 		put: (model firstName notNil and: [
 				model firstName notEmpty ])
-! !
-
-!Example2Controller methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self 
-		when: #onAfterView 
-		do: [ self updateCanConfirm ]
 ! !
 
 !Example2Controller methodsFor: 'reactions'!
@@ -273,6 +258,14 @@ The AppController is the main/root controller of your flow-based application.!
 
 !Example4Controller methodsFor: 'accessing'!
 
+details
+	
+	^ self ifAbsentAt: #details put: [
+		ThingDetailsController
+			in: self
+			addOn: [ '#details-wrapper' asJQuery ]]
+!
+
 potentialNames
 
 	^ #(
@@ -308,14 +301,6 @@ addThing
 	self things model add: (ThingModel new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
 	
 	self updateNotEmpty
-!
-
-details
-	
-	^ self ifAbsentAt: #details put: [
-		ThingDetailsController
-			in: self
-			addOn: [ '#details-wrapper' asJQuery ]]
 !
 
 getListModel
@@ -550,7 +535,7 @@ BindingController subclass: #ThingRowController
 !ThingRowController methodsFor: 'actions'!
 
 removeThing
-
+console log: 'removeThing'.
 	self triggerEvent: #removeThing
 !
 

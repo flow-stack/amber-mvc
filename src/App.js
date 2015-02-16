@@ -515,16 +515,7 @@ return $core.withContext(function($ctx1) {
 var $1,$2;
 $1=self._nameModal();
 $recv($1)._message_($recv($recv($recv(self["@model"])._firstName())._asString()).__comma(" are you sure you can handle this?"));
-$2=$recv($1)._show();
-$recv($2)._done_((function(c){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv(c)._open();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({c:c},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
+$2=$recv($1)._open();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"confirm",{},$globals.Example2Controller)});
@@ -532,10 +523,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "confirm\x0a\x09\x22Sets a fresh message and opens the modal\x22\x0a\x0a\x09(self nameModal\x0a\x09\x09message: (model firstName asString,' are you sure you can handle this?');\x0a\x09\x09show) done: [ :c | c open ]",
+source: "confirm\x0a\x09\x22Sets a fresh message and opens the modal\x22\x0a\x0a\x09self nameModal\x0a\x09\x09message: (model firstName asString,' are you sure you can handle this?');\x0a\x09\x09open",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["done:", "message:", "nameModal", ",", "asString", "firstName", "show", "open"]
+messageSends: ["message:", "nameModal", ",", "asString", "firstName", "open"]
 }),
 $globals.Example2Controller);
 
@@ -562,46 +553,6 @@ source: "confirmAgain\x0a\x0a\x09model firstName: ''.\x0a\x09model isConfirmed: 
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["firstName:", "isConfirmed:", "updateCanConfirm"]
-}),
-$globals.Example2Controller);
-
-$core.addMethod(
-$core.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.Example2Controller.superclass.fn.prototype._initialize.apply($recv(self), []));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._updateCanConfirm();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.Example2Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self \x0a\x09\x09when: #onAfterView \x0a\x09\x09do: [ self updateCanConfirm ]",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "updateCanConfirm"]
 }),
 $globals.Example2Controller);
 
@@ -685,12 +636,9 @@ selector: "observeEvents",
 protocol: 'actions',
 fn: function (){
 var self=this;
-function $Error(){return $globals.Error||(typeof Error=="undefined"?nil:Error)}
-function $BindingController(){return $globals.BindingController||(typeof BindingController=="undefined"?nil:BindingController)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$1;
 (
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
@@ -699,76 +647,15 @@ $globals.Example2Controller.superclass.fn.prototype._observeEvents.apply($recv(s
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
-$2=$recv(self["@view"])._asJQuery();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["asJQuery"]=1;
-//>>excludeEnd("ctx");
-$1=$recv($2)._find_("a#inspect-example2");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["find:"]=1;
-//>>excludeEnd("ctx");
-$recv($1)._on_do_("click",(function(){
+self._when_do_("onAfterView",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv((function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return self._inspect();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,2)});
-//>>excludeEnd("ctx");
-}))._on_do_($Error(),(function(x){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return $recv(window)._alert_("Is the IDE open?");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx3.sendIdx["alert:"]=1;
-//>>excludeEnd("ctx");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,3)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["on:do:"]=2;
-//>>excludeEnd("ctx");
+return self._updateCanConfirm();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
 }));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["on:do:"]=1;
-//>>excludeEnd("ctx");
-$recv($recv($recv(self["@view"])._asJQuery())._find_("a#browse-binding"))._on_do_("click",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv((function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return $recv($BindingController())._browse();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({},$ctx2,5)});
-//>>excludeEnd("ctx");
-}))._on_do_($Error(),(function(x){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx3) {
-//>>excludeEnd("ctx");
-return $recv(window)._alert_("Is the IDE open?");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx3) {$ctx3.fillBlock({x:x},$ctx2,6)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,4)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["on:do:"]=3;
-//>>excludeEnd("ctx");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"observeEvents",{},$globals.Example2Controller)});
@@ -776,10 +663,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x0a\x09(view asJQuery find: 'a#inspect-example2') \x0a\x09\x09on: 'click' \x0a\x09\x09do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].\x0a\x09\x09\x0a\x09(view asJQuery find: 'a#browse-binding') \x0a\x09\x09on: 'click' \x0a\x09\x09do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]",
-referencedClasses: ["Error", "BindingController"],
+source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x09\x0a\x09self \x0a\x09\x09when: #onAfterView \x0a\x09\x09do: [ self updateCanConfirm ]",
+referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["observeEvents", "on:do:", "find:", "asJQuery", "inspect", "alert:", "browse"]
+messageSends: ["observeEvents", "when:do:", "updateCanConfirm"]
 }),
 $globals.Example2Controller);
 
@@ -1119,7 +1006,7 @@ $globals.Example4Controller);
 $core.addMethod(
 $core.method({
 selector: "details",
-protocol: 'actions',
+protocol: 'accessing',
 fn: function (){
 var self=this;
 function $ThingDetailsController(){return $globals.ThingDetailsController||(typeof ThingDetailsController=="undefined"?nil:ThingDetailsController)}
@@ -2115,6 +2002,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+$recv(console)._log_("removeThing");
 self._triggerEvent_("removeThing");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -2123,10 +2011,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeThing\x0a\x0a\x09self triggerEvent: #removeThing",
+source: "removeThing\x0aconsole log: 'removeThing'.\x0a\x09self triggerEvent: #removeThing",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["triggerEvent:"]
+messageSends: ["log:", "triggerEvent:"]
 }),
 $globals.ThingRowController);
 
