@@ -81,8 +81,7 @@ controllers
 
 deferred
 
-	#deprecated.
-	console log: self class name, '>>deferred deprecated, use #showPromise'.
+	self deprecatedAPI: 'use #showPromise'.
 
 	^ self showPromise
 !
@@ -246,6 +245,7 @@ observeEvents
 	
 	parent ifNotNil: [ 
 		parent 
+			when: #onRemove do: [ self remove ];
 			when: #onAfterRemoveView do: [ self resetParentElement ];
 			when: #onAfterView do: [ self onParentViewChanged ];
 			yourself ].
@@ -260,11 +260,10 @@ refresh
 !
 
 remove
-	
-	#deprecated.
-	console log: self class name, '>>remove deprecated, use #removeView'.
-	
-	self removeView
+
+	self triggerEvent: #onRemove.
+	self unobserveEvents.
+	self removeView.
 !
 
 removeAll
@@ -279,7 +278,7 @@ removeControllerAt: aKey
 	controller := self controllerAt: aKey ifAbsent:[ nil ].
 	
 	controller ifNotNil:[
-		controller removeView ].
+		controller remove ].
 		
 	self controllers removeKey: aKey ifAbsent: [ nil ]
 !
@@ -344,11 +343,9 @@ showAt: aKey
 showThen: aBlock
 	"Shows this controller and get aBlock executed after its view is set."
 	
-	console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.
+	self deprecatedAPI: 'use `controller show done: [ do something ]` instead'.
 	
-	self showPromise done: aBlock.
-	
-	self show
+	self show done: aBlock.
 !
 
 silentRefresh
@@ -359,7 +356,7 @@ silentRefresh
 silentRemove
 
 	#deprecated.
-	console log: self class name, '>>silentRemove deprecated, use #silentRemoveView'.
+	console warn: self class name, '>>silentRemove deprecated, use #silentRemoveView'.
 	
 	self silentRemoveView
 !
@@ -385,6 +382,12 @@ silentRenderOn: html
 	TemplateController or BindingController are good examples of this."
 	
 	self silentView: (html h1: self class name) asJQuery.
+!
+
+unobserveEvents
+	"Stops any pre-programed reaction based on events coming from this controller."
+	
+	self releaseActionMap
 ! !
 
 !Controller methodsFor: 'initialization'!
@@ -395,13 +398,7 @@ initialize
 	
 	"By default the controllers will append to render 
 	on the parentElement (as opposed to prepend)."
-	self beAppending.
-	
-	self when: #onAfterView do: [ 
-		"Afte the view is set, we are ready to create any
-		subcontroller and observe their interesting events."
-		self createControllers.
-		self observeEvents ]
+	self beAppending
 !
 
 initializeControllers
@@ -460,10 +457,6 @@ onBeforeView
 
 	"Break promises that might be done for the about-to-be-removed view."
 	"showPromise := nil."
-	
-	"Stop listening to events probably depending on the about-to-be-removed view
-	since we expect to re-observe them once this has a fesh view."
-	self releaseActionMap.
 !
 
 onParentViewChanged
@@ -482,8 +475,7 @@ onParentViewChanged
 hasDeferred
 	"Answers true if this controller has a deferred object."
 
-	#deprecated.
-	console log: self class name, '>>hasDeferred deprecated, use #hasShowPromise'.
+	self deprecatedAPI: 'use #hasShowPromise'.
 	
 	^ self hasShowPomise
 !
@@ -549,7 +541,7 @@ for: aModel
 	expected to be <div id=#content></div>."
 
 	#deprecated.
-	console warn: self name,'>>for: this will be removed in next version, use #on:'.
+	self deprecatedAPI: 'use #on:'.
 	
 	^ self for: aModel on: nil appendingTo: self defaultHtmlElement
 !
@@ -560,7 +552,7 @@ for: aModel on: aParentControllerOrNil
 	the default html element, expected to be <div id=#content></div>."
 	
 	#deprecated.
-	console warn: self name,'>>for:on: this will be removed in next version, use #on:in:'.
+	self deprecatedAPI: 'use #on:in:'.
 	
 	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
 !
@@ -570,7 +562,7 @@ for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
 	#deprecated.
-	console warn: self name,'>>for:on:appendingTo: use #on:in:addOn:'.
+	self deprecatedAPI: 'use #on:in:addOn:'.
 	
 	^ self new
 		model: aModel;
@@ -584,7 +576,7 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
 
 	#deprecated.
-	console warn: self name,'>>for:on:view: this will be removed in next version, use #on:in:view:'.
+	self deprecatedAPI: 'use #on:in:view:'.
 	
 	^ self new
 		model: aModel;
@@ -608,7 +600,7 @@ in: aParentControllerOrNil appendingTo: aHtmlElement
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
 	#deprecated.
-	console warn: self name,'>>in:appendingTo: use #on:in:addOn: aBlock where aBlock is the getter of the parent element'.
+	self deprecatedAPI: 'use #in:addOn: aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -629,7 +621,7 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 	Using this contructor will make the model to stay nil."
 
 	#deprecated.
-	console warn: self name,'>>on:appendingTo: use #on:addOn:aBlock where aBlock is the getter of the parent element'.
+	self deprecatedAPI: 'use #on:addOn:aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -664,7 +656,7 @@ on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
 	#deprecated.
-	console warn: self name,'>>on:in:appendingTo: use #on:in:addOn:aBlock where aBlock is the getter of the parent element'.
+	self deprecatedAPI: 'use #on:in:addOn:aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -802,6 +794,23 @@ initialize
 	self when: #onAfterModel do: [ 
 		self observeList.
 		self canCreateControllers ifTrue: [ self refresh ] ]
+! !
+
+!ListController methodsFor: 'reactions'!
+
+onParentViewChanged
+	"The parent's view has changed, make sure we have one and refresh.
+	We refresh the parentElement because it probably got re-rendered
+	making a new one on the DOM probably using same id attribute 
+	but with different identity."
+	
+	"If the parent element is changed, all the observed 
+	events become invalid and would need to re-observe,
+	the trivial way to do it is to just remove and 
+	let the refresh to rebuild all children properly."
+	self removeAll.
+
+	super onParentViewChanged
 ! !
 
 !ListController methodsFor: 'testing'!

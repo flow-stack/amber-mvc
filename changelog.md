@@ -8,6 +8,8 @@ February 16, 2015 - Release 0.1.25
 * Deprecated Controller>>deferred in favor of Controller>>showPromise
 * Introducing Controller>>removeView with events #onBeforeRemoveView and #onAfterRemoveView.
 * ConfirmController now using instVars acceptBlock and rejectBlock for the callbacks.
+* Introducing #onRemove triggered when a controller receives the #remove message.
+* Controllers listens to parent's #onRemove event to react removing themselves first when that happens.
 
 
 February 10, 2015 - Release 0.1.24

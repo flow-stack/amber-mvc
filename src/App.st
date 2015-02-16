@@ -323,7 +323,7 @@ newItemControllerFor: aModel for: aListController
 				on: aModel
 				in: aListController
 				addOn: [ aListController view ].
-				
+	
 	row
 		when: #removeThing do: [ self onRemove: aModel ];
 		when: #viewDetails do: [ self onDetails: aModel ];
@@ -335,10 +335,10 @@ newItemControllerFor: aModel for: aListController
 observeEvents
 
 	super observeEvents.
-
-	'#inspect-this' asJQuery 
-		on: #click
-		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
+	
+	self when: #onAfterView do: [ 
+		self things show.
+		self updateNotEmpty ]
 !
 
 removeThing
@@ -362,10 +362,6 @@ initialize
 	super initialize.
 	
 	self basicAt: #hasDetails put: false.
-	
-	self when: #onAfterView do: [ 
-		self things show.
-		self updateNotEmpty ]
 ! !
 
 !Example4Controller methodsFor: 'reactions'!
@@ -537,6 +533,20 @@ BindingController subclass: #ThingRowController
 removeThing
 console log: 'removeThing'.
 	self triggerEvent: #removeThing
+!
+
+renderOn: html
+
+	"(App main example4 things controllers values includes: self) ifFalse: [ self halt ]."
+
+	super renderOn: html
+!
+
+show
+
+	console info: self on: '>>show'.
+
+	^ super show
 !
 
 viewDetails
