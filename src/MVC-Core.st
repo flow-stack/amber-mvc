@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'MVC-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model view parent parentElement deferred'
+	instanceVariableNames: 'controllers model view parent parentElement deferred getParentElementBlock isAppending'
 	package: 'MVC-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -84,6 +84,19 @@ deferred
 	^ deferred ifNil: [ self initializeDeferred ]
 !
 
+getParentElementBlock
+
+	^ getParentElementBlock ifNil: [ self initializeGetParentElementBlock ]
+!
+
+getParentElementBlock: aBlock
+	"Sets the parent element getter and gets one."
+	
+	getParentElementBlock := aBlock.
+
+	self initializeParentElement
+!
+
 model
 	
 	^ model
@@ -111,7 +124,7 @@ parent: aParentControllerOrNil
 
 parentElement
 
-	^ parentElement
+	^ parentElement ifNil: [ self initializeParentElement ]
 !
 
 parentElement: aHtmlElement
@@ -124,9 +137,7 @@ parentElement: aHtmlElement
 silentView: aHtmlElement
 	"Sets the instance of the element considered the view of this controller."
 	view := aHtmlElement.
-	
-	aHtmlElement at: #controller put: self.
-	
+		
 	self hasDeferred ifTrue: [
 		deferred resolve: self ]
 !
@@ -144,6 +155,16 @@ view: aHtmlElement
 ! !
 
 !Controller methodsFor: 'actions'!
+
+beAppending
+
+	isAppending := true
+!
+
+bePrepending
+
+	isAppending := false
+!
 
 createControllers
 	"Create any children (sub)controllers for this controller.
@@ -211,7 +232,9 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 observeEvents
 	"Programs the observations of events happening in the controllers of this controller."
 	
-	"None by default"
+	console log: (self class name,'>>observeEvents').
+	
+	parent ifNotNil: [ parent when: #onAfterView do: [ self onParentViewChanged ] ].
 	
 	self triggerEvent: #controllersObserved
 !
@@ -249,6 +272,8 @@ removeControllerAt: aKey
 
 removeView
 	
+	deferred := nil.
+	
 	view ifNotNil:[ | exView |
 		exView := view.
 		exView asJQuery off.
@@ -266,6 +291,11 @@ render
 renderOn: html
 
 	self silentRenderOn: html
+!
+
+resetParentElement
+
+	parentElement := nil.
 !
 
 show
@@ -336,6 +366,10 @@ initialize
 
 	super initialize.
 	
+	"By default the controllers will append to render 
+	on the parentElement (as opposed to prepend)."
+	self beAppending.
+	
 	self when: #onAfterView do: [ 
 		"Afte the view is set, we are ready to create any
 		subcontroller and observe their interesting events."
@@ -353,6 +387,34 @@ initializeDeferred
 	http://api.jquery.com/category/deferred-object/"
 	
 	^ deferred := jQuery Deferred value
+!
+
+initializeGetParentElementBlock
+	"Returns the default parent element getter."
+
+	^ getParentElementBlock := [ 
+		console warn: (self class name, ' using default getParentElementBlock').
+		self class defaultHtmlElementId asJQuery ]
+!
+
+initializeParentElement
+
+	self parentElement: self getParentElementBlock value.
+
+	^ parentElement
+! !
+
+!Controller methodsFor: 'reactions'!
+
+onParentViewChanged
+	"The parent's view has changed, make sure we have one and refresh.
+	We refresh the parentElement because it probably got re-rendered
+	making a new one on the DOM probably using same id attribute 
+	but with different identity."
+	
+	console log: (self class name,'>>onParentViewChanged').
+	self initializeParentElement.
+	self refresh
 ! !
 
 !Controller methodsFor: 'testing'!
@@ -373,13 +435,27 @@ hasView
 	"Answers true if this controller has a view"
 	
 	^ view notNil
+!
+
+isAppending
+
+	^ isAppending
 ! !
 
 !Controller class methodsFor: 'accessing'!
 
 defaultHtmlElement
+	"Returns the element that is presumed to be wrapping this controller.
+	Ex: ThingDetailsController would expect '#thing-details-wrapper' asJQuery"
 
-	^ '#content' asJQuery
+	^ self defaultHtmlElementId asJQuery
+!
+
+defaultHtmlElementId
+	"Returns the id of the element that is presumed to be wrapping this controller.
+	Ex: ThingDetailsController would expect '#thing-details-wrapper' "
+
+	^ '#',self keyword asDashedNotation asLowercase,'-wrapper'
 !
 
 defaultModel
@@ -425,7 +501,7 @@ for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
 	#deprecated.
-	console warn: self name,'>>for:on:appendingTo: use #on:in:appendingTo:'.
+	console warn: self name,'>>for:on:appendingTo: use #on:in:addOn:'.
 	
 	^ self new
 		model: aModel;
@@ -448,9 +524,22 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 		yourself
 !
 
+in: aParentControllerOrNil addOn: aBlock
+	"Answers a new instance of this controller without model (nil),
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		getParentElementBlock: aBlock;
+		yourself
+!
+
 in: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller without model (nil),
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	#deprecated.
+	console warn: self name,'>>in:appendingTo: use #on:in:addOn: aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -460,16 +549,18 @@ in: aParentControllerOrNil appendingTo: aHtmlElement
 
 on: aModel 
 	"Answers a new instance of this controller dedicated to aModel,
-	with no parent and meant to be appended to the default html element,
-	expected to be <div id=#content></div>."
+	with no parent and meant to be appended to the default html element."
 	
-	^ self on: aModel in: nil appendingTo: self defaultHtmlElement
+	^ self on: aModel in: nil addOn: [ self defaultHtmlElement ]
 !
 
 on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller, child of aParentControllerOrNil 
 	and meant to be appended to aHtmlElement.
 	Using this contructor will make the model to stay nil."
+
+	#deprecated.
+	console warn: self name,'>>on:appendingTo: use #on:addOn:aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -480,19 +571,36 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 on: aModel in: aParentControllerOrNil
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to 
-	the default html element, expected to be <div id=#content></div>."
+	the default html element, expected to be <div id=#controller-keyword-wrapper></div>."
 	
-	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
+	^ self new 
+		parent: aParentControllerOrNil;
+		model: aModel;
+		yourself
+!
+
+on: aModel in: aParentControllerOrNil addOn: aBlock
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		getParentElementBlock: aBlock;
+		model: aModel;
+		yourself
 !
 
 on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
+	#deprecated.
+	console warn: self name,'>>on:in:appendingTo: use #on:in:addOn:aBlock where aBlock is the getter of the parent element'.
+
 	^ self new
-		model: aModel;
 		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;
+		model: aModel;
 		yourself
 !
 
@@ -508,7 +616,7 @@ on: aModel in: aParentControllerOrNil view: aHtmlElement
 ! !
 
 Controller subclass: #ListController
-	instanceVariableNames: 'getItemsBlock itemControllerClass newItemControllerBlock listView'
+	instanceVariableNames: 'getItemsBlock itemControllerClass newItemControllerBlock'
 	package: 'MVC-Core'!
 !ListController commentStamp!
 ## ListController
@@ -537,19 +645,6 @@ itemControllerClass: aBlock
 	itemControllerClass := aBlock
 !
 
-listView
-	"Answers the html element from where the item controllers are going to be appended.
-	Usually a <ul>"
-	^ listView
-!
-
-listView: aHtmlElement
-
-	self triggerEvent: #onBeforeListView.
-	listView := aHtmlElement.
-	self triggerEvent: #onAfterListView.
-!
-
 newItemControllerBlock
 
 	^ newItemControllerBlock
@@ -573,11 +668,11 @@ parentElement: anHtmlElement
 addNovelties
 	"Adds a new controller for the models that yet don't have one."
 	
-	self getItems do:[ :each | | added |
+	self getItems do: [ :each | | added |
 		self controllerAt: each ifAbsentPut:[ 
 			added := self newItemControllerFor: each ].
-		added ifNotNil:[ 
-			added render ] ]
+		added ifNotNil: [ 
+			added show ] ]
 !
 
 getItems
@@ -589,11 +684,11 @@ getItems
 newItemControllerFor: anItem
 
 	^ itemControllerClass isNil
-		ifFalse:[ itemControllerClass 
+		ifFalse: [ itemControllerClass 
 					on: anItem 
 					in: self 
-					appendingTo: self view ] 
-		ifTrue:[ self newItemControllerBlock value: anItem ]
+					addOn: [ self view ] ] 
+		ifTrue: [ self newItemControllerBlock value: anItem ]
 !
 
 observeList
@@ -606,7 +701,7 @@ refresh
 	"Makes sure all the items in the model have its own controller.
 	Nothing less and nothing more. So it will add lazily 
 	the missing controllers and remove those who's model isn't present."
-	
+
 	self removeAbsences.
 	self addNovelties.
 !
@@ -687,28 +782,32 @@ setTemplate: htmlString
 	"Receives the template's htmlString after requirejs 
 	have received it from the server (or cache)."
 
-	| appended |
+	| added |
 
 	"Make it to be the contents of this controllers parent element"
-	appended := self parentElement append: htmlString.
+	isAppending 
+		ifTrue: [ added := self parentElement append: htmlString ]
+		ifFalse: [ added := self parentElement prepend: htmlString ].
 	
 	"And follow the convention that all templates are wrapped
 	in one element which is the view of this controller."
-	self view: appended children last.
+	self view: added children last.
 !
 
 silentSetTemplate: htmlString
 	"Receives the template's htmlString after requirejs 
 	have received it from the server (or cache)."
 
-	| appended |
+	| added |
 
 	"Make it to be the contents of this controllers parent element"
-	appended := self parentElement append: htmlString.
+	isAppending 
+		ifTrue: [ added := self parentElement append: htmlString ]
+		ifFalse: [ added := self parentElement prepend: htmlString ].
 	
 	"And follow the convention that all templates are wrapped
 	in one element which is the view of this controller."
-	self silentView: appended children last.
+	self silentView: added children last.
 ! !
 
 !TemplateController methodsFor: 'initialization'!
@@ -766,6 +865,13 @@ TemplateController subclass: #BindingController
 The concrete subclasses of BindingController are users of the two-way data binding mechanism loaded by flow.
 
 Note that BindingController is a subclass of TemplateController so all subclasses of it follow the convention of loading a html template from the server using the keyword of the controller as the name of the template to be found at views/!
+
+!BindingController methodsFor: 'accessing'!
+
+boundView
+
+	^ boundView
+! !
 
 !BindingController methodsFor: 'actions'!
 
@@ -840,11 +946,17 @@ rebind
 	self unbind; configureAndBind
 !
 
-silentRefresh
-
-	self unbind.
+removeView
 	
-	super silentRefresh
+	self unbind.
+	boundView := nil.
+	
+	super removeView.
+!
+
+show
+
+	^ super show done: [ self configureAndBind ]
 !
 
 unbind
@@ -860,9 +972,7 @@ initialize
 	super initialize.
 	
 	self 
-		when: #onAfterView do: [ self configureAndBind ];
-		when: #onAfterModel do: [ self rebind ];
-		when: #onBeforeRemove do: [ self unbind ];
+		when: #onAfterModel do: [ self hasView ifTrue: [ self removeView ] ];
 		yourself
 ! !
 

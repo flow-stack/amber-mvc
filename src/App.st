@@ -59,7 +59,7 @@ initializeMain
 	^ main := MainController 
 					on: ExampleModel new
 					in: nil
-					appendingTo: '#main-wrapper' asJQuery
+					addOn: [ '#main-wrapper' asJQuery ]
 ! !
 
 ConfirmController subclass: #ConfirmNameController
@@ -95,6 +95,8 @@ The AppController is the main/root controller of your flow-based application.!
 
 observeEvents
 
+	super observeEvents.
+
 	(view asJQuery find: 'a#browse-example1') 
 		on: #click
 		do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
@@ -102,17 +104,6 @@ observeEvents
 	(view asJQuery find: 'a#browse-template') 
 		on: #click
 		do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
-! !
-
-!Example1Controller methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self 
-		when: #onAfterView do: [ self observeEvents ];
-		yourself
 ! !
 
 !Example1Controller class methodsFor: 'accessing'!
@@ -138,7 +129,7 @@ nameModal
 		(ConfirmNameController 
 			on: model
 			in: self
-			appendingTo: '#confirmName' asJQuery)
+			addOn: [ '#confirmName' asJQuery ])
 				acceptBlock: [ 
 					model isConfirmed: true.
 					self nameModal close ];
@@ -168,6 +159,8 @@ confirmAgain
 
 observeEvents
 
+	super observeEvents.
+
 	(view asJQuery find: 'a#inspect-example2') 
 		on: 'click' 
 		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
@@ -195,9 +188,7 @@ initialize
 	
 	self 
 		when: #onAfterView 
-		do: [ 
-			self updateCanConfirm.
-			self observeEvents ]
+		do: [ self updateCanConfirm ]
 ! !
 
 !Example2Controller methodsFor: 'reactions'!
@@ -234,13 +225,15 @@ example1
 	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
 			on: nil "We don't need to set any particular model for it"
-			in: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
-			appendingTo: '#subexample-wrapper' asJQuery ]
+			in: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:addOn:)"
+			addOn: [ '#subexample-wrapper' asJQuery ] ]
 ! !
 
 !Example3Controller methodsFor: 'actions'!
 
 observeEvents
+
+	super observeEvents.
 
 	(view asJQuery find: 'a#inspect-this') 
 		on: #click
@@ -260,9 +253,7 @@ initialize
 	
 	self 
 		when: #onAfterView 
-		do: [ 
-			self showSubController.
-			self observeEvents ]
+		do: [ self showSubController ]
 ! !
 
 !Example3Controller class methodsFor: 'accessing'!
@@ -304,7 +295,7 @@ things
 		(ListController 
 			on: self getListModel
 			in: self
-			appendingTo: '#things-wrapper' asJQuery)
+			addOn: [ '#things-wrapper' asJQuery ])
 				newItemControllerBlock: [ :item | 
 					self newItemControllerFor: item for: self things ];
 				yourself ]
@@ -324,7 +315,7 @@ details
 	^ self ifAbsentAt: #details put: [
 		ThingDetailsController
 			in: self
-			appendingTo: '#details-wrapper' asJQuery ]
+			addOn: [ '#details-wrapper' asJQuery ]]
 !
 
 getListModel
@@ -346,7 +337,7 @@ newItemControllerFor: aModel for: aListController
 	row := ThingRowController 
 				on: aModel
 				in: aListController
-				appendingTo: aListController view.
+				addOn: [ aListController view ].
 				
 	row
 		when: #removeThing do: [ self onRemove: aModel ];
@@ -357,6 +348,8 @@ newItemControllerFor: aModel for: aListController
 !
 
 observeEvents
+
+	super observeEvents.
 
 	'#inspect-this' asJQuery 
 		on: #click
@@ -387,8 +380,7 @@ initialize
 	
 	self when: #onAfterView do: [ 
 		self things show.
-		self updateNotEmpty.
-		self observeEvents ]
+		self updateNotEmpty ]
 ! !
 
 !Example4Controller methodsFor: 'reactions'!
@@ -446,7 +438,7 @@ example1
 		Example1Controller 
 			on: model
 			in: self
-			appendingTo: '#example1-wrapper' asJQuery ]
+			addOn: [ '#example1-wrapper' asJQuery ] ]
 !
 
 example2
@@ -460,7 +452,7 @@ example2
 					someStringNumericValue: '1776';
 					yourself)
 			in: self
-			appendingTo: '#example2-wrapper' asJQuery ]
+			addOn: [ '#example2-wrapper' asJQuery ] ]
 !
 
 example3
@@ -469,7 +461,7 @@ example3
 		Example3Controller 
 			on: model
 			in: self
-			appendingTo: '#example3-wrapper' asJQuery ]
+			addOn: [ '#example3-wrapper' asJQuery ] ]
 !
 
 example4
@@ -478,7 +470,7 @@ example4
 		Example4Controller 
 			on: ThingModel new
 			in: self
-			appendingTo: '#example4-wrapper' asJQuery ]
+			addOn: [ '#example4-wrapper' asJQuery ] ]
 ! !
 
 !MainController methodsFor: 'actions'!
