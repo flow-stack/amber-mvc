@@ -4,10 +4,48 @@ $core.addPackage('MVC-Core');
 $core.packages["MVC-Core"].innerEval = function (expr) { return eval(expr); };
 $core.packages["MVC-Core"].transport = {"type":"amd","amdNamespace":"amber-mvc"};
 
-$core.addClass('Controller', $globals.Widget, ['controllers', 'model', 'view', 'parent', 'parentElement', 'deferred'], 'MVC-Core');
+$core.addClass('Controller', $globals.Widget, ['controllers', 'model', 'view', 'parent', 'showPromise', 'parentElementGetter', 'isAppending'], 'MVC-Core');
 //>>excludeStart("ide", pragmas.excludeIdeData);
 $globals.Controller.comment="## This is an abstraction. \x0a\x0a*Concrete subclasses* are controllers with some degree of specialization. Here we concentrate in the commons and foundatinos for all of them.\x0a\x0aA typical controller might have:\x0a\x0a1. a model\x0a2. some (sub)controllers\x0a3. minimal common behavior";
 //>>excludeEnd("ide");
+$core.addMethod(
+$core.method({
+selector: "beAppending",
+protocol: 'actions',
+fn: function (){
+var self=this;
+self["@isAppending"]=true;
+return self;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "beAppending\x0a\x0a\x09isAppending := true",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "bePrepending",
+protocol: 'actions',
+fn: function (){
+var self=this;
+self["@isAppending"]=false;
+return self;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "bePrepending\x0a\x0a\x09isAppending := false",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.Controller);
+
 $core.addMethod(
 $core.method({
 selector: "controllerAt:",
@@ -306,13 +344,9 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$1,$receiver;
-$2=self["@deferred"];
-if(($receiver = $2) == null || $receiver.isNil){
-$1=self._initializeDeferred();
-} else {
-$1=$2;
-};
+var $1;
+self._deprecatedAPI_("use #showPromise");
+$1=self._showPromise();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"deferred",{},$globals.Controller)});
@@ -320,34 +354,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "deferred\x0a\x0a\x09^ deferred ifNil: [ self initializeDeferred ]",
+source: "deferred\x0a\x0a\x09self deprecatedAPI: 'use #showPromise'.\x0a\x0a\x09^ self showPromise",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifNil:", "initializeDeferred"]
-}),
-$globals.Controller);
-
-$core.addMethod(
-$core.method({
-selector: "destroy",
-protocol: 'actions',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-self._remove();
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"destroy",{},$globals.Controller)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "destroy\x0a\x0a\x09self remove",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["remove"]
+messageSends: ["deprecatedAPI:", "showPromise"]
 }),
 $globals.Controller);
 
@@ -361,7 +371,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=$recv(self["@deferred"])._notNil();
+self._deprecatedAPI_("use #hasShowPromise");
+$1=self._hasShowPomise();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"hasDeferred",{},$globals.Controller)});
@@ -369,10 +380,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "hasDeferred\x0a\x09\x22Answers true if this controller has a deferred object.\x22\x0a\x09\x0a\x09^ deferred notNil",
+source: "hasDeferred\x0a\x09\x22Answers true if this controller has a deferred object.\x22\x0a\x0a\x09self deprecatedAPI: 'use #hasShowPromise'.\x0a\x09\x0a\x09^ self hasShowPomise",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["notNil"]
+messageSends: ["deprecatedAPI:", "hasShowPomise"]
 }),
 $globals.Controller);
 
@@ -395,6 +406,31 @@ return $1;
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
 source: "hasModel\x0a\x09\x22Answers true if this controller has a model\x22\x0a\x09\x0a\x09^ model notNil",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["notNil"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "hasShowPromise",
+protocol: 'testing',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=$recv(self["@showPromise"])._notNil();
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"hasShowPromise",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "hasShowPromise\x0a\x09\x22Answers true if this controller has a show promise object.\x22\x0a\x09\x0a\x09^ showPromise notNil",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["notNil"]
@@ -655,11 +691,11 @@ $globals.Controller.superclass.fn.prototype._initialize.apply($recv(self), []));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
+self._beAppending();
+$recv(self._showPromise())._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-self._createControllers();
 return self._observeEvents();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
@@ -672,10 +708,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09\x22Afte the view is set, we are ready to create any\x0a\x09\x09subcontroller and observe their interesting events.\x22\x0a\x09\x09self createControllers.\x0a\x09\x09self observeEvents ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09\x22By default the controllers will append to render \x0a\x09on the parentElement (as opposed to prepend).\x22\x0a\x09self beAppending.\x0a\x09\x0a\x09self showPromise done: [ self observeEvents ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "createControllers", "observeEvents"]
+messageSends: ["initialize", "beAppending", "done:", "showPromise", "observeEvents"]
 }),
 $globals.Controller);
 
@@ -708,7 +744,7 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
-selector: "initializeDeferred",
+selector: "initializeParentElementGetter",
 protocol: 'initialization',
 fn: function (){
 var self=this;
@@ -716,19 +752,73 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-self["@deferred"]=$recv($recv(jQuery)._Deferred())._value();
-$1=self["@deferred"];
+self["@parentElementGetter"]=(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv($recv(self._class())._defaultHtmlElementId())._asJQuery();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+});
+$1=self["@parentElementGetter"];
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"initializeDeferred",{},$globals.Controller)});
+}, function($ctx1) {$ctx1.fill(self,"initializeParentElementGetter",{},$globals.Controller)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initializeDeferred\x0a\x09\x22Sets the promise used by this controller.\x0a\x09http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ deferred := jQuery Deferred value",
+source: "initializeParentElementGetter\x0a\x09\x22Returns the default parent element getter.\x22\x0a\x0a\x09^ parentElementGetter := [ self class defaultHtmlElementId asJQuery ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["asJQuery", "defaultHtmlElementId", "class"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "initializeShowPromise",
+protocol: 'initialization',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+self["@showPromise"]=$recv($recv(jQuery)._Deferred())._value();
+$1=self["@showPromise"];
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"initializeShowPromise",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "initializeShowPromise\x0a\x09\x22Sets the promise used by this controller when it shows (resolves when the view is set).\x0a\x09For the full promise API check here: http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ showPromise := jQuery Deferred value",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["value", "Deferred"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "isAppending",
+protocol: 'testing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@isAppending"];
+return $1;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "isAppending\x0a\x0a\x09^ isAppending",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
 }),
 $globals.Controller);
 
@@ -787,18 +877,90 @@ selector: "observeEvents",
 protocol: 'actions',
 fn: function (){
 var self=this;
+return self;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "observeEvents\x0a\x09\x22Program the observations of events that are important for this controller.\x22\x0a\x09",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "onAfterRefresh",
+protocol: 'reactions',
+fn: function (){
+var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._triggerEvent_("controllersObserved");
+self._refreshAll();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"observeEvents",{},$globals.Controller)});
+}, function($ctx1) {$ctx1.fill(self,"onAfterRefresh",{},$globals.Controller)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x09\x22Programs the observations of events happening in the controllers of this controller.\x22\x0a\x09\x0a\x09\x22None by default\x22\x0a\x09\x0a\x09self triggerEvent: #controllersObserved",
+source: "onAfterRefresh\x0a\x09\x22This controller has just finished refreshing.\x0a\x09Tell all subcontrollers to refresh so the action propagates deep.\x22\x0a\x09\x0a\x09self refreshAll\x0a\x09\x0a\x09",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["refreshAll"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "onAfterView",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+self._createControllers();
+$1=self._hasShowPromise();
+if($core.assert($1)){
+$recv(self["@showPromise"])._resolve_(self);
+};
+self._triggerEvent_("onAfterView");
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"onAfterView",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "onAfterView\x0a\x09\x22Hook used when the view of this controller was just set.\x0a\x09Create subcontrollers and resolve the show promise \x0a\x09in case there is one.\x22\x0a\x0a\x09\x22After the view is set, we are ready to create subcontrollers...\x22 \x0a\x09self createControllers.\x0a\x0a\x09self hasShowPromise ifTrue: [\x0a\x09\x09showPromise resolve: self ].\x0a\x0a\x09self triggerEvent: #onAfterView.",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["createControllers", "ifTrue:", "hasShowPromise", "resolve:", "triggerEvent:"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "onBeforeView",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+self._triggerEvent_("onBeforeView");
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"onBeforeView",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "onBeforeView\x0a\x09\x22Hook used when the view of this controller is about to be set.\x22\x0a\x0a\x09self triggerEvent: #onBeforeView.\x0a\x0a\x09\x22Break promises that might be done for the about-to-be-removed view.\x22\x0a\x09\x22showPromise := nil.\x22\x0a\x09",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["triggerEvent:"]
@@ -860,46 +1022,71 @@ selector: "parentElement",
 protocol: 'accessing',
 fn: function (){
 var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
 var $1;
-$1=self["@parentElement"];
+$1=$recv(self._parentElementGetter())._value();
 return $1;
-
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"parentElement",{},$globals.Controller)});
+//>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "parentElement\x0a\x0a\x09^ parentElement",
+source: "parentElement\x0a\x0a\x09^ self parentElementGetter value",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: []
+messageSends: ["value", "parentElementGetter"]
 }),
 $globals.Controller);
 
 $core.addMethod(
 $core.method({
-selector: "parentElement:",
+selector: "parentElementGetter",
 protocol: 'accessing',
-fn: function (aHtmlElement){
+fn: function (){
 var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._triggerEvent_("onBeforeParentElement");
+var $2,$1,$receiver;
+$2=self["@parentElementGetter"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeParentElementGetter();
+} else {
+$1=$2;
+};
+return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["triggerEvent:"]=1;
-//>>excludeEnd("ctx");
-self["@parentElement"]=aHtmlElement;
-self._triggerEvent_("onAfterParentElement");
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"parentElement:",{aHtmlElement:aHtmlElement},$globals.Controller)});
+}, function($ctx1) {$ctx1.fill(self,"parentElementGetter",{},$globals.Controller)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aHtmlElement"],
-source: "parentElement: aHtmlElement\x0a\x0a\x09self triggerEvent: #onBeforeParentElement.\x0a\x09parentElement := aHtmlElement.\x0a\x09self triggerEvent: #onAfterParentElement.",
+args: [],
+source: "parentElementGetter\x0a\x0a\x09^ parentElementGetter ifNil: [ self initializeParentElementGetter ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["triggerEvent:"]
+messageSends: ["ifNil:", "initializeParentElementGetter"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "parentElementGetter:",
+protocol: 'accessing',
+fn: function (aBlock){
+var self=this;
+self["@parentElementGetter"]=aBlock;
+return self;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aBlock"],
+source: "parentElementGetter: aBlock\x0a\x09\x0a\x09parentElementGetter := aBlock",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
 }),
 $globals.Controller);
 
@@ -912,10 +1099,17 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$1;
+var $1;
 self._removeView();
-$2=self._show();
-$1=$2;
+$1=$recv(self._show())._done_((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._onAfterRefresh();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"refresh",{},$globals.Controller)});
@@ -923,10 +1117,42 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refresh\x0a\x0a\x09^ self removeView; show",
+source: "refresh\x0a\x09\x22Removes the view and shows a fresh view of this controller.\x22\x0a\x0a\x09self removeView.\x0a\x09\x0a\x09^ self show done: [ self onAfterRefresh ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["removeView", "show"]
+messageSends: ["removeView", "done:", "show", "onAfterRefresh"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "refreshAll",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv($recv(self._controllers())._values())._do_((function(each){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv(each)._refresh();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"refreshAll",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "refreshAll\x0a\x09\x22Tell all subcontrollers to refresh so it propagates deep.\x22\x0a\x09\x0a\x09self controllers values do: [ :each | each refresh ]\x0a\x09\x0a\x09\x0a\x09",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["do:", "values", "controllers", "refresh"]
 }),
 $globals.Controller);
 
@@ -939,12 +1165,9 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._triggerEvent_("onBeforeRemove");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["triggerEvent:"]=1;
-//>>excludeEnd("ctx");
-self._silentRemove();
-self._triggerEvent_("onAfterRemove");
+self._removeAll();
+self._silentRemoveView();
+self._unobserveEvents();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"remove",{},$globals.Controller)});
@@ -952,10 +1175,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "remove\x0a\x09\x0a\x09self triggerEvent: #onBeforeRemove.\x0a\x0a\x09self silentRemove.\x0a\x09\x0a\x09self triggerEvent: #onAfterRemove.",
+source: "remove\x0a\x09\x22Remove all children and then this controller.\x22\x0a\x0a\x09self removeAll.\x0a\x09self silentRemoveView.\x0a\x09self unobserveEvents.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["triggerEvent:", "silentRemove"]
+messageSends: ["removeAll", "silentRemoveView", "unobserveEvents"]
 }),
 $globals.Controller);
 
@@ -984,7 +1207,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeAll\x0a\x0a\x09self controllers keys do: [ :each | self removeControllerAt: each ]",
+source: "removeAll\x0a\x09\x22Removes all the subcontrollers children of this controller\x22\x0a\x09\x0a\x09self controllers keys do: [ :each | self removeControllerAt: each ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["do:", "keys", "controllers", "removeControllerAt:"]
@@ -1023,7 +1246,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aKey"],
-source: "removeControllerAt: aKey \x0a\x0a\x09| controller |\x0a\x09\x0a\x09controller := self controllerAt: aKey ifAbsent:[ nil ].\x0a\x09\x0a\x09controller ifNotNil:[\x0a\x09\x09controller remove ].\x0a\x09\x09\x0a\x09self controllers removeKey: aKey ifAbsent: [ nil ]",
+source: "removeControllerAt: aKey \x0a\x0a\x09| controller |\x0a\x09\x0a\x09controller := self controllerAt: aKey ifAbsent:[ nil ].\x0a\x09\x0a\x09controller ifNotNil: [ controller remove ].\x0a\x09\x09\x0a\x09self controllers removeKey: aKey ifAbsent: [ nil ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["controllerAt:ifAbsent:", "ifNotNil:", "remove", "removeKey:ifAbsent:", "controllers"]
@@ -1039,23 +1262,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1,$2,$receiver;
-$1=self["@view"];
-if(($receiver = $1) == null || $receiver.isNil){
-$1;
-} else {
-var exView;
-exView=self["@view"];
-exView;
-$2=$recv(exView)._asJQuery();
+self._triggerEvent_("onBeforeRemoveView");
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["asJQuery"]=1;
+$ctx1.sendIdx["triggerEvent:"]=1;
 //>>excludeEnd("ctx");
-$recv($2)._off();
-self["@view"]=nil;
-self["@view"];
-$recv($recv(exView)._asJQuery())._remove();
-};
+self._silentRemoveView();
+self._triggerEvent_("onAfterRemoveView");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"removeView",{},$globals.Controller)});
@@ -1063,10 +1275,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeView\x0a\x09\x0a\x09view ifNotNil:[ | exView |\x0a\x09\x09exView := view.\x0a\x09\x09exView asJQuery off.\x0a\x09\x09view := nil.\x0a\x09\x09exView asJQuery remove ].",
+source: "removeView\x0a\x09\x22Removes the view of this controller.\x22\x0a\x09\x0a\x09self triggerEvent: #onBeforeRemoveView.\x0a\x0a\x09self silentRemoveView.\x0a\x09\x0a\x09self triggerEvent: #onAfterRemoveView.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifNotNil:", "off", "asJQuery", "remove"]
+messageSends: ["triggerEvent:", "silentRemoveView"]
 }),
 $globals.Controller);
 
@@ -1093,7 +1305,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "render\x0a\x09\x0a\x09self triggerEvent: #onBeforeRender.\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement).\x0a\x09self triggerEvent: #onAfterRender.",
+source: "render\x0a\x0a\x09self triggerEvent: #onBeforeRender.\x0a\x09self renderOn: (HTMLCanvas onJQuery: self parentElement).\x0a\x09self triggerEvent: #onAfterRender.",
 referencedClasses: ["HTMLCanvas"],
 //>>excludeEnd("ide");
 messageSends: ["triggerEvent:", "renderOn:", "onJQuery:", "parentElement"]
@@ -1137,14 +1349,14 @@ var $1,$2,$3;
 $1=self._hasView();
 if(!$core.assert($1)){
 self._render();
-$2=self._deferred();
+$2=self._showPromise();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["deferred"]=1;
+$ctx1.sendIdx["showPromise"]=1;
 //>>excludeEnd("ctx");
 return $2;
 };
 $recv(self._view())._show();
-$3=self._deferred();
+$3=self._showPromise();
 return $3;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"show",{},$globals.Controller)});
@@ -1152,10 +1364,10 @@ return $3;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x09\x22Shows the receiver.\x0a\x09Rendes when there is no view.\x0a\x09Always returns a thenable (deferred).\x0a\x09The thenable will receive this controller as argument and \x0a\x09evaluates when the view is set.\x22\x0a\x0a\x09self hasView ifFalse: [ \x0a\x09\x09self render.\x0a\x09\x09^ self deferred ].\x0a\x09\x0a\x09self view show.\x0a\x0a\x09^ self deferred",
+source: "show\x0a\x09\x22Shows the receiver.\x0a\x09Rendes when there is no view.\x0a\x09Always returns the deferred showPromise.\x0a\x09The promise is a jQuery Deferred that will resolve receiving \x0a\x09this controller as argument when the view is set.\x22\x0a\x0a\x09self hasView ifFalse: [ \x0a\x09\x09self render.\x0a\x09\x09^ self showPromise ].\x0a\x09\x0a\x09self view show.\x0a\x0a\x09^ self showPromise",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifFalse:", "hasView", "render", "deferred", "show", "view"]
+messageSends: ["ifFalse:", "hasView", "render", "showPromise", "show", "view"]
 }),
 $globals.Controller);
 
@@ -1224,6 +1436,36 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
+selector: "showPromise",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$1,$receiver;
+$2=self["@showPromise"];
+if(($receiver = $2) == null || $receiver.isNil){
+$1=self._initializeShowPromise();
+} else {
+$1=$2;
+};
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"showPromise",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "showPromise\x0a\x0a\x09^ showPromise ifNil: [ self initializeShowPromise ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["ifNil:", "initializeShowPromise"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
 selector: "showThen:",
 protocol: 'actions',
 fn: function (aBlock){
@@ -1231,9 +1473,8 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("Controller>>showThen: is deprecated. Use `controller show then:` instead");
-$recv(self._deferred())._done_(aBlock);
-self._show();
+self._deprecatedAPI_("use `controller show done: [ do something ]` instead");
+$recv(self._show())._done_(aBlock);
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"showThen:",{aBlock:aBlock},$globals.Controller)});
@@ -1241,10 +1482,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aBlock"],
-source: "showThen: aBlock\x0a\x09\x22Shows this controller and get aBlock executed after its view is set.\x22\x0a\x09\x0a\x09console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.\x0a\x09\x0a\x09self deferred done: aBlock.\x0a\x09\x0a\x09self show",
+source: "showThen: aBlock\x0a\x09\x22Shows this controller and get aBlock executed after its view is set.\x22\x0a\x09\x0a\x09self deprecatedAPI: 'use `controller show done: [ do something ]` instead'.\x0a\x09\x0a\x09self show done: aBlock.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "done:", "deferred", "show"]
+messageSends: ["deprecatedAPI:", "done:", "show"]
 }),
 $globals.Controller);
 
@@ -1283,7 +1524,9 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._removeView();
+"deprecated";
+self._deprecatedAPI_("use #silentRemoveView");
+self._silentRemoveView();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"silentRemove",{},$globals.Controller)});
@@ -1291,10 +1534,50 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "silentRemove\x0a\x09\x0a\x09self removeView",
+source: "silentRemove\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #silentRemoveView'.\x0a\x09\x0a\x09self silentRemoveView",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["removeView"]
+messageSends: ["deprecatedAPI:", "silentRemoveView"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "silentRemoveView",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1,$2,$receiver;
+$1=self["@view"];
+if(($receiver = $1) == null || $receiver.isNil){
+$1;
+} else {
+var exView;
+exView=self["@view"];
+exView;
+$2=$recv(exView)._asJQuery();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["asJQuery"]=1;
+//>>excludeEnd("ctx");
+$recv($2)._off();
+self["@view"]=nil;
+self["@view"];
+$recv($recv(exView)._asJQuery())._remove();
+};
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"silentRemoveView",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "silentRemoveView\x0a\x09\x0a\x09view ifNotNil:[ | exView |\x0a\x09\x09exView := view.\x0a\x09\x09exView asJQuery off.\x0a\x09\x09view := nil.\x0a\x09\x09exView asJQuery remove ].",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["ifNotNil:", "off", "asJQuery", "remove"]
 }),
 $globals.Controller);
 
@@ -1356,13 +1639,9 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1;
+self._onBeforeView();
 self["@view"]=aHtmlElement;
-$recv(aHtmlElement)._at_put_("controller",self);
-$1=self._hasDeferred();
-if($core.assert($1)){
-$recv(self["@deferred"])._resolve_(self);
-};
+self._onAfterView();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"silentView:",{aHtmlElement:aHtmlElement},$globals.Controller)});
@@ -1370,10 +1649,34 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aHtmlElement"],
-source: "silentView: aHtmlElement\x0a\x09\x22Sets the instance of the element considered the view of this controller.\x22\x0a\x09view := aHtmlElement.\x0a\x09\x0a\x09aHtmlElement at: #controller put: self.\x0a\x09\x0a\x09self hasDeferred ifTrue: [\x0a\x09\x09deferred resolve: self ]",
+source: "silentView: aHtmlElement\x0a\x09\x22Sets the instance of the element considered the view of this controller.\x22\x0a\x09\x0a\x09self onBeforeView.\x0a\x09view := aHtmlElement.\x0a\x09self onAfterView.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["at:put:", "ifTrue:", "hasDeferred", "resolve:"]
+messageSends: ["onBeforeView", "onAfterView"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "unobserveEvents",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+self._releaseActionMap();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"unobserveEvents",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "unobserveEvents\x0a\x09\x22Stops any pre-programed reaction based on events coming from this controller.\x22\x0a\x09\x0a\x09self releaseActionMap",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["releaseActionMap"]
 }),
 $globals.Controller);
 
@@ -1406,12 +1709,9 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._triggerEvent_("onBeforeView");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["triggerEvent:"]=1;
-//>>excludeEnd("ctx");
-self._silentView_(aHtmlElement);
-self._triggerEvent_("onAfterView");
+self._onBeforeView();
+self["@view"]=aHtmlElement;
+self._onAfterView();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"view:",{aHtmlElement:aHtmlElement},$globals.Controller)});
@@ -1419,10 +1719,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aHtmlElement"],
-source: "view: aHtmlElement\x0a\x0a\x09self triggerEvent: #onBeforeView.\x0a\x09self silentView: aHtmlElement.\x0a\x09self triggerEvent: #onAfterView.",
+source: "view: aHtmlElement\x0a\x09\x22Sets aHtmlElement as the view of this controller and \x0a\x09evaluate the hooks before and after the view gets set.\x22\x0a\x09\x0a\x09self onBeforeView.\x0a\x09view := aHtmlElement.\x0a\x09self onAfterView",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["triggerEvent:", "silentView:"]
+messageSends: ["onBeforeView", "onAfterView"]
 }),
 $globals.Controller);
 
@@ -1437,7 +1737,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1="#content"._asJQuery();
+$1=$recv(self._defaultHtmlElementId())._asJQuery();
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"defaultHtmlElement",{},$globals.Controller.klass)});
@@ -1445,10 +1745,38 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "defaultHtmlElement\x0a\x0a\x09^ '#content' asJQuery",
+source: "defaultHtmlElement\x0a\x09\x22Returns the element that is presumed to be wrapping this controller.\x0a\x09Ex: ThingDetailsController would expect '#thing-details-wrapper' asJQuery\x22\x0a\x0a\x09^ self defaultHtmlElementId asJQuery",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["asJQuery"]
+messageSends: ["asJQuery", "defaultHtmlElementId"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
+selector: "defaultHtmlElementId",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=$recv("#".__comma($recv($recv(self._keyword())._asDashedNotation())._asLowercase())).__comma("-wrapper");
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx[","]=1;
+//>>excludeEnd("ctx");
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"defaultHtmlElementId",{},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "defaultHtmlElementId\x0a\x09\x22Returns the id of the element that is presumed to be wrapping this controller.\x0a\x09Ex: ThingDetailsController would expect '#thing-details-wrapper' \x22\x0a\x0a\x09^ '#',self keyword asDashedNotation asLowercase,'-wrapper'",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: [",", "asLowercase", "asDashedNotation", "keyword"]
 }),
 $globals.Controller.klass);
 
@@ -1481,7 +1809,7 @@ return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
 "deprecated";
-$recv(console)._warn_($recv(self._name()).__comma(">>for: this will be removed in next version, use #on:"));
+self._deprecatedAPI_("use #on:");
 $1=self._for_on_appendingTo_(aModel,nil,self._defaultHtmlElement());
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1490,10 +1818,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel"],
-source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for: this will be removed in next version, use #on:'.\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
+source: "for: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #on:'.\x0a\x09\x0a\x09^ self for: aModel on: nil appendingTo: self defaultHtmlElement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", ",", "name", "for:on:appendingTo:", "defaultHtmlElement"]
+messageSends: ["deprecatedAPI:", "for:on:appendingTo:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1508,7 +1836,7 @@ return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
 "deprecated";
-$recv(console)._warn_($recv(self._name()).__comma(">>for:on: this will be removed in next version, use #on:in:"));
+self._deprecatedAPI_("use #on:in:");
 $1=self._on_in_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1517,10 +1845,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil"],
-source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for:on: this will be removed in next version, use #on:in:'.\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
+source: "for: aModel on: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #on:in:'.\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", ",", "name", "on:in:appendingTo:", "defaultHtmlElement"]
+messageSends: ["deprecatedAPI:", "on:in:appendingTo:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1535,7 +1863,7 @@ return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
 "deprecated";
-$recv(console)._warn_($recv(self._name()).__comma(">>for:on:appendingTo: use #on:in:appendingTo:"));
+self._deprecatedAPI_("use #on:in:addOn:");
 $2=self._new();
 $recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
@@ -1549,10 +1877,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for:on:appendingTo: use #on:in:appendingTo:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #on:in:addOn:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", ",", "name", "model:", "new", "parent:", "parentElement:", "yourself"]
+messageSends: ["deprecatedAPI:", "model:", "new", "parent:", "parentElement:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1567,7 +1895,7 @@ return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
 "deprecated";
-$recv(console)._warn_($recv(self._name()).__comma(">>for:on:view: this will be removed in next version, use #on:in:view:"));
+self._deprecatedAPI_("use #on:in:view:");
 $2=self._new();
 $recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
@@ -1581,10 +1909,39 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09#deprecated.\x0a\x09console warn: self name,'>>for:on:view: this will be removed in next version, use #on:in:view:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
+source: "for: aModel on: aParentControllerOrNil view: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and with the already created aHtmlElement as its view.\x22\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #on:in:view:'.\x0a\x09\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09view: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", ",", "name", "model:", "new", "parent:", "view:", "yourself"]
+messageSends: ["deprecatedAPI:", "model:", "new", "parent:", "view:", "yourself"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
+selector: "in:addOn:",
+protocol: 'actions',
+fn: function (aParentControllerOrNil,aBlock){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._parentElementGetter_(aBlock);
+$3=$recv($2)._yourself();
+$1=$3;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"in:addOn:",{aParentControllerOrNil:aParentControllerOrNil,aBlock:aBlock},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aParentControllerOrNil", "aBlock"],
+source: "in: aParentControllerOrNil addOn: aBlock\x0a\x09\x22Answers a new instance of this controller without model (nil),\x0a\x09child of aParentControllerOrNil and meant to be added \x0a\x09to the html element returned by aBlock.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElementGetter: aBlock;\x0a\x09\x09yourself",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["parent:", "new", "parentElementGetter:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1598,6 +1955,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
+"deprecated";
+self._deprecatedAPI_("use #in:addOn: aBlock where aBlock is the getter of the parent element");
 $2=self._new();
 $recv($2)._parent_(aParentControllerOrNil);
 $recv($2)._parentElement_(aHtmlElement);
@@ -1610,10 +1969,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aParentControllerOrNil", "aHtmlElement"],
-source: "in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller without model (nil),\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller without model (nil),\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #in:addOn: aBlock where aBlock is the getter of the parent element'.\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["parent:", "new", "parentElement:", "yourself"]
+messageSends: ["deprecatedAPI:", "parent:", "new", "parentElement:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1666,7 +2025,15 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-$1=self._on_in_appendingTo_(aModel,nil,self._defaultHtmlElement());
+$1=self._on_in_addOn_(aModel,nil,(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._defaultHtmlElement();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"on:",{aModel:aModel},$globals.Controller.klass)});
@@ -1674,10 +2041,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel"],
-source: "on: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element,\x0a\x09expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self on: aModel in: nil appendingTo: self defaultHtmlElement",
+source: "on: aModel \x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09with no parent and meant to be appended to the default html element.\x22\x0a\x09\x0a\x09^ self on: aModel in: nil addOn: [ self defaultHtmlElement ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["on:in:appendingTo:", "defaultHtmlElement"]
+messageSends: ["on:in:addOn:", "defaultHtmlElement"]
 }),
 $globals.Controller.klass);
 
@@ -1691,6 +2058,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
+"deprecated";
+self._deprecatedAPI_("use #on:addOn:aBlock where aBlock is the getter of the parent element");
 $2=self._new();
 $recv($2)._parent_(aParentControllerOrNil);
 $recv($2)._parentElement_(aHtmlElement);
@@ -1703,10 +2072,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aParentControllerOrNil", "aHtmlElement"],
-source: "on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller, child of aParentControllerOrNil \x0a\x09and meant to be appended to aHtmlElement.\x0a\x09Using this contructor will make the model to stay nil.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "on: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller, child of aParentControllerOrNil \x0a\x09and meant to be appended to aHtmlElement.\x0a\x09Using this contructor will make the model to stay nil.\x22\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #on:addOn:aBlock where aBlock is the getter of the parent element'.\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["parent:", "new", "parentElement:", "yourself"]
+messageSends: ["deprecatedAPI:", "parent:", "new", "parentElement:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1719,8 +2088,12 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1;
-$1=self._on_in_appendingTo_(aModel,aParentControllerOrNil,self._defaultHtmlElement());
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._model_(aModel);
+$3=$recv($2)._yourself();
+$1=$3;
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"on:in:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil},$globals.Controller.klass)});
@@ -1728,10 +2101,40 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil"],
-source: "on: aModel in: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#content></div>.\x22\x0a\x09\x0a\x09^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement",
+source: "on: aModel in: aParentControllerOrNil\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to \x0a\x09the default html element, expected to be <div id=#controller-keyword-wrapper></div>.\x22\x0a\x09\x0a\x09^ self new \x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09model: aModel;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["on:in:appendingTo:", "defaultHtmlElement"]
+messageSends: ["parent:", "new", "model:", "yourself"]
+}),
+$globals.Controller.klass);
+
+$core.addMethod(
+$core.method({
+selector: "on:in:addOn:",
+protocol: 'actions',
+fn: function (aModel,aParentControllerOrNil,aBlock){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$3,$1;
+$2=self._new();
+$recv($2)._parent_(aParentControllerOrNil);
+$recv($2)._parentElementGetter_(aBlock);
+$recv($2)._model_(aModel);
+$3=$recv($2)._yourself();
+$1=$3;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"on:in:addOn:",{aModel:aModel,aParentControllerOrNil:aParentControllerOrNil,aBlock:aBlock},$globals.Controller.klass)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: ["aModel", "aParentControllerOrNil", "aBlock"],
+source: "on: aModel in: aParentControllerOrNil addOn: aBlock\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be added \x0a\x09to the html element returned by aBlock.\x22\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElementGetter: aBlock;\x0a\x09\x09model: aModel;\x0a\x09\x09yourself",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["parent:", "new", "parentElementGetter:", "model:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1745,10 +2148,12 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $2,$3,$1;
+"deprecated";
+self._deprecatedAPI_("use #on:in:addOn:aBlock where aBlock is the getter of the parent element");
 $2=self._new();
-$recv($2)._model_(aModel);
 $recv($2)._parent_(aParentControllerOrNil);
 $recv($2)._parentElement_(aHtmlElement);
+$recv($2)._model_(aModel);
 $3=$recv($2)._yourself();
 $1=$3;
 return $1;
@@ -1758,10 +2163,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aModel", "aParentControllerOrNil", "aHtmlElement"],
-source: "on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09^ self new\x0a\x09\x09model: aModel;\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09yourself",
+source: "on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement\x0a\x09\x22Answers a new instance of this controller dedicated to aModel,\x0a\x09child of aParentControllerOrNil and meant to be appended to aHtmlElement.\x22\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #on:in:addOn:aBlock where aBlock is the getter of the parent element'.\x0a\x0a\x09^ self new\x0a\x09\x09parent: aParentControllerOrNil;\x0a\x09\x09parentElement: aHtmlElement;\x0a\x09\x09model: aModel;\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["model:", "new", "parent:", "parentElement:", "yourself"]
+messageSends: ["deprecatedAPI:", "parent:", "new", "parentElement:", "model:", "yourself"]
 }),
 $globals.Controller.klass);
 
@@ -1796,7 +2201,7 @@ messageSends: ["model:", "new", "parent:", "view:", "yourself"]
 $globals.Controller.klass);
 
 
-$core.addClass('ListController', $globals.Controller, ['getItemsBlock', 'itemControllerClass', 'newItemControllerBlock', 'listView'], 'MVC-Core');
+$core.addClass('ListController', $globals.Controller, ['getItemsBlock', 'itemControllerClass', 'newItemControllerBlock'], 'MVC-Core');
 //>>excludeStart("ide", pragmas.excludeIdeData);
 $globals.ListController.comment="## ListController\x0a\x0aListControllers know how to deal with lists of things. It needs to know how you want to create subcontrollers for its items and it needs to know how to get those items. It will also allow you to customize the subcontrollers with a callback when they are instantiated.";
 //>>excludeEnd("ide");
@@ -1829,7 +2234,7 @@ $1=added;
 if(($receiver = $1) == null || $receiver.isNil){
 return $1;
 } else {
-return $recv(added)._render();
+return $recv(added)._show();
 };
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({each:each,added:added},$ctx1,1)});
@@ -1842,10 +2247,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "addNovelties\x0a\x09\x22Adds a new controller for the models that yet don't have one.\x22\x0a\x09\x0a\x09self getItems do:[ :each | | added |\x0a\x09\x09self controllerAt: each ifAbsentPut:[ \x0a\x09\x09\x09added := self newItemControllerFor: each ].\x0a\x09\x09added ifNotNil:[ \x0a\x09\x09\x09added render ] ]",
+source: "addNovelties\x0a\x09\x22Adds a new controller for the models that yet don't have one.\x22\x0a\x09\x0a\x09self getItems do: [ :each | | added |\x0a\x09\x09self controllerAt: each ifAbsentPut:[ \x0a\x09\x09\x09added := self newItemControllerFor: each ].\x0a\x09\x09added ifNotNil: [ \x0a\x09\x09\x09added show ] ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["do:", "getItems", "controllerAt:ifAbsentPut:", "newItemControllerFor:", "ifNotNil:", "render"]
+messageSends: ["do:", "getItems", "controllerAt:ifAbsentPut:", "newItemControllerFor:", "ifNotNil:", "show"]
 }),
 $globals.ListController);
 
@@ -1994,7 +2399,7 @@ return $core.withContext(function($ctx2) {
 self._observeList();
 $1=self._canCreateControllers();
 if($core.assert($1)){
-return self._refresh();
+return self._refreshItems();
 };
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
@@ -2007,10 +2412,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterModel do: [ \x0a\x09\x09self observeList.\x0a\x09\x09self canCreateControllers ifTrue: [ self refresh ] ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterModel do: [ \x0a\x09\x09self observeList.\x0a\x09\x09self canCreateControllers ifTrue: [ self refreshItems ] ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "observeList", "ifTrue:", "canCreateControllers", "refresh"]
+messageSends: ["initialize", "when:do:", "observeList", "ifTrue:", "canCreateControllers", "refreshItems"]
 }),
 $globals.ListController);
 
@@ -2050,55 +2455,6 @@ source: "itemControllerClass: aBlock\x0a\x0a\x09itemControllerClass := aBlock",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: []
-}),
-$globals.ListController);
-
-$core.addMethod(
-$core.method({
-selector: "listView",
-protocol: 'accessing',
-fn: function (){
-var self=this;
-var $1;
-$1=self["@listView"];
-return $1;
-
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "listView\x0a\x09\x22Answers the html element from where the item controllers are going to be appended.\x0a\x09Usually a <ul>\x22\x0a\x09^ listView",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: []
-}),
-$globals.ListController);
-
-$core.addMethod(
-$core.method({
-selector: "listView:",
-protocol: 'accessing',
-fn: function (aHtmlElement){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-self._triggerEvent_("onBeforeListView");
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["triggerEvent:"]=1;
-//>>excludeEnd("ctx");
-self["@listView"]=aHtmlElement;
-self._triggerEvent_("onAfterListView");
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"listView:",{aHtmlElement:aHtmlElement},$globals.ListController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["aHtmlElement"],
-source: "listView: aHtmlElement\x0a\x0a\x09self triggerEvent: #onBeforeListView.\x0a\x09listView := aHtmlElement.\x0a\x09self triggerEvent: #onAfterListView.",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["triggerEvent:"]
 }),
 $globals.ListController);
 
@@ -2155,7 +2511,15 @@ $2=$recv(self["@itemControllerClass"])._isNil();
 if($core.assert($2)){
 $1=$recv(self._newItemControllerBlock())._value_(anItem);
 } else {
-$1=$recv(self["@itemControllerClass"])._on_in_appendingTo_(anItem,self,self._view());
+$1=$recv(self["@itemControllerClass"])._on_in_addOn_(anItem,self,(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._view();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
+//>>excludeEnd("ctx");
+}));
 };
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -2164,10 +2528,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["anItem"],
-source: "newItemControllerFor: anItem\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse:[ itemControllerClass \x0a\x09\x09\x09\x09\x09on: anItem \x0a\x09\x09\x09\x09\x09in: self \x0a\x09\x09\x09\x09\x09appendingTo: self view ] \x0a\x09\x09ifTrue:[ self newItemControllerBlock value: anItem ]",
+source: "newItemControllerFor: anItem\x0a\x0a\x09^ itemControllerClass isNil\x0a\x09\x09ifFalse: [ itemControllerClass \x0a\x09\x09\x09\x09\x09on: anItem \x0a\x09\x09\x09\x09\x09in: self \x0a\x09\x09\x09\x09\x09addOn: [ self view ] ] \x0a\x09\x09ifTrue: [ self newItemControllerBlock value: anItem ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifFalse:ifTrue:", "isNil", "on:in:appendingTo:", "view", "value:", "newItemControllerBlock"]
+messageSends: ["ifFalse:ifTrue:", "isNil", "on:in:addOn:", "view", "value:", "newItemControllerBlock"]
 }),
 $globals.ListController);
 
@@ -2184,7 +2548,7 @@ $recv(self._model())._when_do_("changed",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return self._refresh();
+return self._refreshItems();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -2196,48 +2560,16 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeList\x0a\x09\x22Observe the model for changes and react to them with a refresh.\x22\x0a\x0a\x09self model when: #changed do: [ self refresh ]",
+source: "observeList\x0a\x09\x22Observe the model for changes and react to them with a refresh.\x22\x0a\x0a\x09self model when: #changed do: [ self refreshItems ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["when:do:", "model", "refresh"]
+messageSends: ["when:do:", "model", "refreshItems"]
 }),
 $globals.ListController);
 
 $core.addMethod(
 $core.method({
-selector: "parentElement:",
-protocol: 'accessing',
-fn: function (anHtmlElement){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.ListController.superclass.fn.prototype._parentElement_.apply($recv(self), [anHtmlElement]));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-self._view_(anHtmlElement);
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"parentElement:",{anHtmlElement:anHtmlElement},$globals.ListController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["anHtmlElement"],
-source: "parentElement: anHtmlElement\x0a\x09\x22Sets the parent elment for the list.\x0a\x09It can be anything but, in the case of lists, the parent element usually is a <ul>\x0a\x09The 'normal' thing is to treat it like an <ul> full of <li> children.\x22\x0a\x09super parentElement: anHtmlElement.\x0a\x09self view: anHtmlElement",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["parentElement:", "view:"]
-}),
-$globals.ListController);
-
-$core.addMethod(
-$core.method({
-selector: "refresh",
+selector: "refreshItems",
 protocol: 'actions',
 fn: function (){
 var self=this;
@@ -2248,12 +2580,12 @@ self._removeAbsences();
 self._addNovelties();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"refresh",{},$globals.ListController)});
+}, function($ctx1) {$ctx1.fill(self,"refreshItems",{},$globals.ListController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x22\x0a\x09\x0a\x09self removeAbsences.\x0a\x09self addNovelties.",
+source: "refreshItems\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x0a\x09When finishes, it evaluates the hook.\x22\x0a\x0a\x09self removeAbsences.\x0a\x09self addNovelties.",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["removeAbsences", "addNovelties"]
@@ -2307,19 +2639,55 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._refresh();
+var $1;
+$recv((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
 $recv(self._view())._show();
-return self;
+self._refreshItems();
+return self._onAfterView();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}))._fork();
+$1=self._showPromise();
+return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"show",{},$globals.ListController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x0a\x09self refresh.\x0a\x09\x0a\x09self view show.",
+source: "show\x0a\x0a\x09[ \x22We show, refresh items to get them fresh and \x0a\x09rendered as needed and then we perform the post view hook.\x0a\x09We for here to artifically make it async so we maintain\x0a\x09the expected polymorphic behavior of show returning the show promise.\x22\x0a\x09self view show.\x0a\x09self refreshItems.\x0a\x09self onAfterView ] fork.\x0a\x0a\x09^ self showPromise",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["refresh", "show", "view"]
+messageSends: ["fork", "show", "view", "refreshItems", "onAfterView", "showPromise"]
+}),
+$globals.ListController);
+
+$core.addMethod(
+$core.method({
+selector: "view",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=self._parentElement();
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"view",{},$globals.ListController)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "view\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ self parentElement",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["parentElement"]
 }),
 $globals.ListController);
 
@@ -2427,23 +2795,40 @@ selector: "setTemplate:",
 protocol: 'actions',
 fn: function (htmlString){
 var self=this;
-var appended;
+var added;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-appended=$recv(self._parentElement())._append_(htmlString);
-self._view_($recv($recv(appended)._children())._last());
-return self;
+var $2,$3,$5,$4,$1;
+$2=self["@isAppending"];
+if($core.assert($2)){
+$3=self._parentElement();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"setTemplate:",{htmlString:htmlString,appended:appended},$globals.TemplateController)});
+$ctx1.sendIdx["parentElement"]=1;
+//>>excludeEnd("ctx");
+added=$recv($3)._append_(htmlString);
+added;
+$5=$recv(added)._children();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["children"]=1;
+//>>excludeEnd("ctx");
+$4=$recv($5)._last();
+$1=self._view_($4);
+} else {
+added=$recv(self._parentElement())._prepend_view_($recv(htmlString)._self(),$recv($recv(added)._children())._first());
+$1=added;
+};
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"setTemplate:",{htmlString:htmlString,added:added},$globals.TemplateController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["htmlString"],
-source: "setTemplate: htmlString\x0a\x09\x22Receives the template's htmlString after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| appended |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09appended := self parentElement append: htmlString.\x0a\x09\x0a\x09\x22And follow the convention that all templates are wrapped\x0a\x09in one element which is the view of this controller.\x22\x0a\x09self view: appended children last.",
+source: "setTemplate: htmlString\x0a\x09\x22Receives the template's htmlString after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| added |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09^ isAppending \x0a\x09\x09ifTrue: [ \x0a\x09\x09\x09added := self parentElement append: htmlString.\x0a\x09\x09\x09self view: added children last ]\x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09added := self parentElement prepend: htmlString \x0a\x09\x09\x09self view: added children first ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["append:", "parentElement", "view:", "last", "children"]
+messageSends: ["ifTrue:ifFalse:", "append:", "parentElement", "view:", "last", "children", "prepend:view:", "self", "first"]
 }),
 $globals.TemplateController);
 
@@ -2486,23 +2871,40 @@ selector: "silentSetTemplate:",
 protocol: 'actions',
 fn: function (htmlString){
 var self=this;
-var appended;
+var added;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-appended=$recv(self._parentElement())._append_(htmlString);
-self._silentView_($recv($recv(appended)._children())._last());
-return self;
+var $2,$3,$5,$4,$1;
+$2=self["@isAppending"];
+if($core.assert($2)){
+$3=self._parentElement();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"silentSetTemplate:",{htmlString:htmlString,appended:appended},$globals.TemplateController)});
+$ctx1.sendIdx["parentElement"]=1;
+//>>excludeEnd("ctx");
+added=$recv($3)._append_(htmlString);
+added;
+$5=$recv(added)._children();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["children"]=1;
+//>>excludeEnd("ctx");
+$4=$recv($5)._last();
+$1=self._silentView_($4);
+} else {
+added=$recv(self._parentElement())._prepend_silentView_($recv(htmlString)._self(),$recv($recv(added)._children())._first());
+$1=added;
+};
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"silentSetTemplate:",{htmlString:htmlString,added:added},$globals.TemplateController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["htmlString"],
-source: "silentSetTemplate: htmlString\x0a\x09\x22Receives the template's htmlString after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| appended |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09appended := self parentElement append: htmlString.\x0a\x09\x0a\x09\x22And follow the convention that all templates are wrapped\x0a\x09in one element which is the view of this controller.\x22\x0a\x09self silentView: appended children last.",
+source: "silentSetTemplate: htmlString\x0a\x09\x22Receives the template's htmlString after requirejs \x0a\x09have received it from the server (or cache).\x22\x0a\x0a\x09| added |\x0a\x0a\x09\x22Make it to be the contents of this controllers parent element\x22\x0a\x09^ isAppending \x0a\x09\x09ifTrue: [ \x0a\x09\x09\x09added := self parentElement append: htmlString.\x0a\x09\x09\x09self silentView: added children last ]\x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09added := self parentElement prepend: htmlString \x0a\x09\x09\x09self silentView: added children first ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["append:", "parentElement", "silentView:", "last", "children"]
+messageSends: ["ifTrue:ifFalse:", "append:", "parentElement", "silentView:", "last", "children", "prepend:silentView:", "self", "first"]
 }),
 $globals.TemplateController);
 
@@ -2730,6 +3132,26 @@ $globals.BindingController);
 
 $core.addMethod(
 $core.method({
+selector: "boundView",
+protocol: 'accessing',
+fn: function (){
+var self=this;
+var $1;
+$1=self["@boundView"];
+return $1;
+
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "boundView\x0a\x0a\x09^ boundView",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
+}),
+$globals.BindingController);
+
+$core.addMethod(
+$core.method({
 selector: "configure",
 protocol: 'actions',
 fn: function (){
@@ -2790,7 +3212,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "configureAndBind\x0a\x0a\x09(self hasModel not or: [\x0a\x09self hasView not ]) ifTrue: [ ^ self ].\x0a\x0a\x09self configure.\x0a\x09\x0a\x09self bind.",
+source: "configureAndBind\x0a\x0a\x09(self hasModel not or: [\x0a\x09self hasView not ]) ifTrue: [ ^ self ].\x0a\x0a\x09self configure.\x0a\x09\x0a\x09self bind",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["ifTrue:", "or:", "not", "hasModel", "hasView", "configure", "bind"]
@@ -2877,7 +3299,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1;
+var $1,$2;
 (
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
@@ -2886,40 +3308,19 @@ $globals.BindingController.superclass.fn.prototype._initialize.apply($recv(self)
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._configureAndBind();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["when:do:"]=1;
-//>>excludeEnd("ctx");
 self._when_do_("onAfterModel",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return self._rebind();
+$1=self._hasView();
+if($core.assert($1)){
+return self._removeView();
+};
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
 }));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["when:do:"]=2;
-//>>excludeEnd("ctx");
-self._when_do_("onBeforeRemove",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._unbind();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,3)});
-//>>excludeEnd("ctx");
-}));
-$1=self._yourself();
+$2=self._yourself();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.BindingController)});
@@ -2927,10 +3328,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self \x0a\x09\x09when: #onAfterView do: [ self configureAndBind ];\x0a\x09\x09when: #onAfterModel do: [ self rebind ];\x0a\x09\x09when: #onBeforeRemove do: [ self unbind ];\x0a\x09\x09yourself",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self \x0a\x09\x09when: #onAfterModel do: [ self hasView ifTrue: [ self removeView ] ];\x0a\x09\x09yourself",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "configureAndBind", "rebind", "unbind", "yourself"]
+messageSends: ["initialize", "when:do:", "ifTrue:", "hasView", "removeView", "yourself"]
 }),
 $globals.BindingController);
 
@@ -2972,6 +3373,38 @@ $globals.BindingController);
 
 $core.addMethod(
 $core.method({
+selector: "onAfterView",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.BindingController.superclass.fn.prototype._onAfterView.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+self._configureAndBind();
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"onAfterView",{},$globals.BindingController)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "onAfterView\x0a\x0a\x09super onAfterView.\x0a\x09\x09\x0a\x09self configureAndBind",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["onAfterView", "configureAndBind"]
+}),
+$globals.BindingController);
+
+$core.addMethod(
+$core.method({
 selector: "rebind",
 protocol: 'actions',
 fn: function (){
@@ -2979,9 +3412,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1;
-self._unbind();
-$1=self._configureAndBind();
+self._mustNotImplement();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"rebind",{},$globals.BindingController)});
@@ -2989,16 +3420,16 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "rebind\x0a\x0a\x09self unbind; configureAndBind",
+source: "rebind\x0a\x0a\x09\x22Reuse of a binded view is not exactly supported by RivetJS.\x0a\x09You might want to use a refresh that will remove, \x0a\x09re-render and fesh bind this controller and its model.\x22\x0a\x09self mustNotImplement",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["unbind", "configureAndBind"]
+messageSends: ["mustNotImplement"]
 }),
 $globals.BindingController);
 
 $core.addMethod(
 $core.method({
-selector: "silentRefresh",
+selector: "removeView",
 protocol: 'actions',
 fn: function (){
 var self=this;
@@ -3006,25 +3437,58 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 self._unbind();
+self["@boundView"]=nil;
 (
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
 //>>excludeEnd("ctx");
-$globals.BindingController.superclass.fn.prototype._silentRefresh.apply($recv(self), []));
+$globals.BindingController.superclass.fn.prototype._removeView.apply($recv(self), []));
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"silentRefresh",{},$globals.BindingController)});
+}, function($ctx1) {$ctx1.fill(self,"removeView",{},$globals.BindingController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "silentRefresh\x0a\x0a\x09self unbind.\x0a\x09\x0a\x09super silentRefresh",
+source: "removeView\x0a\x09\x0a\x09self unbind.\x0a\x09boundView := nil.\x0a\x09\x0a\x09super removeView.\x0a\x09\x0a\x0a\x09",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["unbind", "silentRefresh"]
+messageSends: ["unbind", "removeView"]
+}),
+$globals.BindingController);
+
+$core.addMethod(
+$core.method({
+selector: "show",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $1;
+$1=(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.BindingController.superclass.fn.prototype._show.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"show",{},$globals.BindingController)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "show\x0a\x0a\x09^ super show \x0a\x09\x09\x22done: [ self configureAndBind ]\x22",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["show"]
 }),
 $globals.BindingController);
 
@@ -3138,46 +3602,6 @@ $globals.ModalController);
 
 $core.addMethod(
 $core.method({
-selector: "initialize",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.ModalController.superclass.fn.prototype._initialize.apply($recv(self), []));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return self._createModal();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"initialize",{},$globals.ModalController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterView do: [ self createModal ]",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "createModal"]
-}),
-$globals.ModalController);
-
-$core.addMethod(
-$core.method({
 selector: "message:",
 protocol: 'accessing',
 fn: function (aString){
@@ -3222,6 +3646,46 @@ source: "modalOptions\x0a\x0a\x09^ self class defaultModalOptions",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["defaultModalOptions", "class"]
+}),
+$globals.ModalController);
+
+$core.addMethod(
+$core.method({
+selector: "observeEvents",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.ModalController.superclass.fn.prototype._observeEvents.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+self._when_do_("onAfterView",(function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._createModal();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"observeEvents",{},$globals.ModalController)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x09\x0a\x09self when: #onAfterView do: [ self createModal ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["observeEvents", "when:do:", "createModal"]
 }),
 $globals.ModalController);
 
@@ -3405,7 +3869,7 @@ $globals.AlertController);
 
 
 
-$core.addClass('ConfirmController', $globals.ModalController, [], 'MVC-Core');
+$core.addClass('ConfirmController', $globals.ModalController, ['acceptBlock', 'rejectBlock'], 'MVC-Core');
 //>>excludeStart("ide", pragmas.excludeIdeData);
 $globals.ConfirmController.comment="##ConfirmController\x0aThis controller asks the user for confirmation of a given action. It has a reject and accept customizable callback";
 //>>excludeEnd("ide");
@@ -3418,6 +3882,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+$recv(self["@acceptBlock"])._value();
 self._triggerEvent_("accepted");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -3426,10 +3891,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "accept\x0a\x0a\x09self triggerEvent: #accepted.",
+source: "accept\x0a\x0a\x09acceptBlock value.\x0a\x0a\x09self triggerEvent: #accepted.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["triggerEvent:"]
+messageSends: ["value", "triggerEvent:"]
 }),
 $globals.ConfirmController);
 
@@ -3439,21 +3904,16 @@ selector: "acceptBlock:",
 protocol: 'accessing',
 fn: function (aBlock){
 var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-self._when_do_("accepted",aBlock);
+self["@acceptBlock"]=aBlock;
 return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"acceptBlock:",{aBlock:aBlock},$globals.ConfirmController)});
-//>>excludeEnd("ctx");
+
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aBlock"],
-source: "acceptBlock: aBlock\x0a\x0a\x09self when: #accepted do: aBlock",
+source: "acceptBlock: aBlock\x0a\x0a\x09acceptBlock := aBlock",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["when:do:"]
+messageSends: []
 }),
 $globals.ConfirmController);
 
@@ -3490,6 +3950,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+$recv(self["@rejectBlock"])._value();
 self._triggerEvent_("rejected");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -3498,10 +3959,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "reject\x0a\x0a\x09self triggerEvent: #rejected.",
+source: "reject\x0a\x0a\x09rejectBlock value.\x0a\x0a\x09self triggerEvent: #rejected",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["triggerEvent:"]
+messageSends: ["value", "triggerEvent:"]
 }),
 $globals.ConfirmController);
 
@@ -3511,21 +3972,16 @@ selector: "rejectBlock:",
 protocol: 'accessing',
 fn: function (aBlock){
 var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-self._when_do_("rejected",aBlock);
+self["@rejectBlock"]=aBlock;
 return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"rejectBlock:",{aBlock:aBlock},$globals.ConfirmController)});
-//>>excludeEnd("ctx");
+
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["aBlock"],
-source: "rejectBlock: aBlock\x0a\x0a\x09self when: #rejected do: aBlock",
+source: "rejectBlock: aBlock\x0a\x0a\x09rejectBlock := aBlock",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["when:do:"]
+messageSends: []
 }),
 $globals.ConfirmController);
 
@@ -4925,6 +5381,30 @@ source: "changed\x0a\x0a\x09self triggerEvent: #changed",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["triggerEvent:"]
+}),
+$globals.Object);
+
+$core.addMethod(
+$core.method({
+selector: "debugger",
+protocol: '*MVC-Core',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+debugger;
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"debugger",{},$globals.Object)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "debugger\x0a\x0a\x09<debugger>",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: []
 }),
 $globals.Object);
 

@@ -59,7 +59,7 @@ initializeMain
 	^ main := MainController 
 					on: ExampleModel new
 					in: nil
-					appendingTo: '#main-wrapper' asJQuery
+					addOn: [ '#main-wrapper' asJQuery ]
 ! !
 
 ConfirmController subclass: #ConfirmNameController
@@ -95,6 +95,8 @@ The AppController is the main/root controller of your flow-based application.!
 
 observeEvents
 
+	super observeEvents.
+
 	(view asJQuery find: 'a#browse-example1') 
 		on: #click
 		do: [ [ Example1Controller browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
@@ -102,17 +104,6 @@ observeEvents
 	(view asJQuery find: 'a#browse-template') 
 		on: #click
 		do: [  [ TemplateController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
-! !
-
-!Example1Controller methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self 
-		when: #onAfterView do: [ self observeEvents ];
-		yourself
 ! !
 
 !Example1Controller class methodsFor: 'accessing'!
@@ -138,7 +129,7 @@ nameModal
 		(ConfirmNameController 
 			on: model
 			in: self
-			appendingTo: '#confirmName' asJQuery)
+			addOn: [ '#confirmName' asJQuery ])
 				acceptBlock: [ 
 					model isConfirmed: true.
 					self nameModal close ];
@@ -153,9 +144,9 @@ nameModal
 confirm
 	"Sets a fresh message and opens the modal"
 
-	(self nameModal
+	self nameModal
 		message: (model firstName asString,' are you sure you can handle this?');
-		show) done: [ :c | c open ]
+		open
 !
 
 confirmAgain
@@ -168,13 +159,11 @@ confirmAgain
 
 observeEvents
 
-	(view asJQuery find: 'a#inspect-example2') 
-		on: 'click' 
-		do: [  [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ].
-		
-	(view asJQuery find: 'a#browse-binding') 
-		on: 'click' 
-		do: [ [ BindingController browse ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
+	super observeEvents.
+	
+	self 
+		when: #onAfterView 
+		do: [ self updateCanConfirm ]
 !
 
 updateCanConfirm
@@ -185,19 +174,6 @@ updateCanConfirm
 		basicAt: #canConfirm
 		put: (model firstName notNil and: [
 				model firstName notEmpty ])
-! !
-
-!Example2Controller methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self 
-		when: #onAfterView 
-		do: [ 
-			self updateCanConfirm.
-			self observeEvents ]
 ! !
 
 !Example2Controller methodsFor: 'reactions'!
@@ -234,13 +210,15 @@ example1
 	^ self ifAbsentAt: #example1 put: [
 		Example1Controller 
 			on: nil "We don't need to set any particular model for it"
-			in: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:appendingTo:)"
-			appendingTo: '#subexample-wrapper' asJQuery ]
+			in: self  "with this we are saying 'self is going to be your parent controller' (check implementors of #for:on:addOn:)"
+			addOn: [ '#subexample-wrapper' asJQuery ] ]
 ! !
 
 !Example3Controller methodsFor: 'actions'!
 
 observeEvents
+
+	super observeEvents.
 
 	(view asJQuery find: 'a#inspect-this') 
 		on: #click
@@ -260,9 +238,7 @@ initialize
 	
 	self 
 		when: #onAfterView 
-		do: [ 
-			self showSubController.
-			self observeEvents ]
+		do: [ self showSubController ]
 ! !
 
 !Example3Controller class methodsFor: 'accessing'!
@@ -281,6 +257,14 @@ BindingController subclass: #Example4Controller
 The AppController is the main/root controller of your flow-based application.!
 
 !Example4Controller methodsFor: 'accessing'!
+
+details
+	
+	^ self ifAbsentAt: #details put: [
+		ThingDetailsController
+			in: self
+			addOn: [ '#details-wrapper' asJQuery ]]
+!
 
 potentialNames
 
@@ -304,7 +288,7 @@ things
 		(ListController 
 			on: self getListModel
 			in: self
-			appendingTo: '#things-wrapper' asJQuery)
+			addOn: [ '#things-wrapper' asJQuery ])
 				newItemControllerBlock: [ :item | 
 					self newItemControllerFor: item for: self things ];
 				yourself ]
@@ -317,14 +301,6 @@ addThing
 	self things model add: (ThingModel new name: #( Wave Particle Entanglement Superposition ) atRandom; yourself).
 	
 	self updateNotEmpty
-!
-
-details
-	
-	^ self ifAbsentAt: #details put: [
-		ThingDetailsController
-			in: self
-			appendingTo: '#details-wrapper' asJQuery ]
 !
 
 getListModel
@@ -346,8 +322,8 @@ newItemControllerFor: aModel for: aListController
 	row := ThingRowController 
 				on: aModel
 				in: aListController
-				appendingTo: aListController view.
-				
+				addOn: [ aListController view ].
+	
 	row
 		when: #removeThing do: [ self onRemove: aModel ];
 		when: #viewDetails do: [ self onDetails: aModel ];
@@ -358,9 +334,11 @@ newItemControllerFor: aModel for: aListController
 
 observeEvents
 
-	'#inspect-this' asJQuery 
-		on: #click
-		do: [ [ self inspect ] on: Error do: [ :x | window alert: 'Is the IDE open?' ] ]
+	super observeEvents.
+	
+	"self when: #onAfterView do: [ 
+		self things show.		
+		self updateNotEmpty ]"
 !
 
 removeThing
@@ -368,6 +346,13 @@ removeThing
 	self things model removeLast.
 	
 	self updateNotEmpty
+!
+
+show
+
+	^ super show done: [ 
+		self things show.		
+		self updateNotEmpty ]
 !
 
 updateNotEmpty
@@ -384,11 +369,6 @@ initialize
 	super initialize.
 	
 	self basicAt: #hasDetails put: false.
-	
-	self when: #onAfterView do: [ 
-		self things show.
-		self updateNotEmpty.
-		self observeEvents ]
 ! !
 
 !Example4Controller methodsFor: 'reactions'!
@@ -446,7 +426,7 @@ example1
 		Example1Controller 
 			on: model
 			in: self
-			appendingTo: '#example1-wrapper' asJQuery ]
+			addOn: [ '#example1-wrapper' asJQuery ] ]
 !
 
 example2
@@ -460,7 +440,7 @@ example2
 					someStringNumericValue: '1776';
 					yourself)
 			in: self
-			appendingTo: '#example2-wrapper' asJQuery ]
+			addOn: [ '#example2-wrapper' asJQuery ] ]
 !
 
 example3
@@ -469,7 +449,7 @@ example3
 		Example3Controller 
 			on: model
 			in: self
-			appendingTo: '#example3-wrapper' asJQuery ]
+			addOn: [ '#example3-wrapper' asJQuery ] ]
 !
 
 example4
@@ -478,7 +458,7 @@ example4
 		Example4Controller 
 			on: ThingModel new
 			in: self
-			appendingTo: '#example4-wrapper' asJQuery ]
+			addOn: [ '#example4-wrapper' asJQuery ] ]
 ! !
 
 !MainController methodsFor: 'actions'!
@@ -526,7 +506,7 @@ showExample3
 !
 
 showExample4
-	
+
 	self show done: [
 		self hideAll.
 		self example4 show ]
@@ -551,6 +531,15 @@ MaplessModel subclass: #ThingModel
 	instanceVariableNames: ''
 	package: 'App'!
 
+!ThingModel methodsFor: 'actions'!
+
+printOn: aStream
+
+	super printOn: aStream.
+	
+	aStream space; nextPutAll: self asJSONString
+! !
+
 BindingController subclass: #ThingRowController
 	instanceVariableNames: ''
 	package: 'App'!
@@ -562,8 +551,23 @@ removeThing
 	self triggerEvent: #removeThing
 !
 
+show
+
+	^ super show done: [  
+		"This example doesn't really use it but for illustrative pruposes
+		here you see how you can use the promise to do 
+		useful post render DOM manipulation."
+		view asJQuery attr: #id set: model cid ]
+!
+
 viewDetails
 
 	self triggerEvent: #viewDetails
+! !
+
+!ProtoObject methodsFor: '*App'!
+
+perform: aString withArguments: aCollection
+	<return $core.send(self, $core.st2js(aString), aCollection)>
 ! !
 

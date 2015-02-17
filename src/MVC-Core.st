@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'MVC-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model view parent parentElement deferred'
+	instanceVariableNames: 'controllers model view parent showPromise parentElementGetter isAppending'
 	package: 'MVC-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -81,7 +81,9 @@ controllers
 
 deferred
 
-	^ deferred ifNil: [ self initializeDeferred ]
+	self deprecatedAPI: 'use #showPromise'.
+
+	^ self showPromise
 !
 
 model
@@ -111,24 +113,30 @@ parent: aParentControllerOrNil
 
 parentElement
 
-	^ parentElement
+	^ self parentElementGetter value
 !
 
-parentElement: aHtmlElement
+parentElementGetter
 
-	self triggerEvent: #onBeforeParentElement.
-	parentElement := aHtmlElement.
-	self triggerEvent: #onAfterParentElement.
+	^ parentElementGetter ifNil: [ self initializeParentElementGetter ]
+!
+
+parentElementGetter: aBlock
+	
+	parentElementGetter := aBlock
+!
+
+showPromise
+
+	^ showPromise ifNil: [ self initializeShowPromise ]
 !
 
 silentView: aHtmlElement
 	"Sets the instance of the element considered the view of this controller."
+	
+	self onBeforeView.
 	view := aHtmlElement.
-	
-	aHtmlElement at: #controller put: self.
-	
-	self hasDeferred ifTrue: [
-		deferred resolve: self ]
+	self onAfterView.
 !
 
 view
@@ -137,13 +145,25 @@ view
 !
 
 view: aHtmlElement
-
-	self triggerEvent: #onBeforeView.
-	self silentView: aHtmlElement.
-	self triggerEvent: #onAfterView.
+	"Sets aHtmlElement as the view of this controller and 
+	evaluate the hooks before and after the view gets set."
+	
+	self onBeforeView.
+	view := aHtmlElement.
+	self onAfterView
 ! !
 
 !Controller methodsFor: 'actions'!
+
+beAppending
+
+	isAppending := true
+!
+
+bePrepending
+
+	isAppending := false
+!
 
 createControllers
 	"Create any children (sub)controllers for this controller.
@@ -152,11 +172,6 @@ createControllers
 	"None by default"
 	
 	self triggerEvent: #controllersCreated
-!
-
-destroy
-
-	self remove
 !
 
 hide 
@@ -209,29 +224,28 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 !
 
 observeEvents
-	"Programs the observations of events happening in the controllers of this controller."
-	
-	"None by default"
-	
-	self triggerEvent: #controllersObserved
+	"Program the observations of events that are important for this controller."
 !
 
 refresh
+	"Removes the view and shows a fresh view of this controller."
 
-	^ self removeView; show
+	self removeView.
+	
+	^ self show done: [ self onAfterRefresh ]
 !
 
 remove
-	
-	self triggerEvent: #onBeforeRemove.
+	"Remove all children and then this controller."
 
-	self silentRemove.
-	
-	self triggerEvent: #onAfterRemove.
+	self removeAll.
+	self silentRemoveView.
+	self unobserveEvents.
 !
 
 removeAll
-
+	"Removes all the subcontrollers children of this controller"
+	
 	self controllers keys do: [ :each | self removeControllerAt: each ]
 !
 
@@ -241,23 +255,23 @@ removeControllerAt: aKey
 	
 	controller := self controllerAt: aKey ifAbsent:[ nil ].
 	
-	controller ifNotNil:[
-		controller remove ].
+	controller ifNotNil: [ controller remove ].
 		
 	self controllers removeKey: aKey ifAbsent: [ nil ]
 !
 
 removeView
+	"Removes the view of this controller."
 	
-	view ifNotNil:[ | exView |
-		exView := view.
-		exView asJQuery off.
-		view := nil.
-		exView asJQuery remove ].
+	self triggerEvent: #onBeforeRemoveView.
+
+	self silentRemoveView.
+	
+	self triggerEvent: #onAfterRemoveView.
 !
 
 render
-	
+
 	self triggerEvent: #onBeforeRender.
 	self renderOn: (HTMLCanvas onJQuery: self parentElement).
 	self triggerEvent: #onAfterRender.
@@ -271,17 +285,17 @@ renderOn: html
 show
 	"Shows the receiver.
 	Rendes when there is no view.
-	Always returns a thenable (deferred).
-	The thenable will receive this controller as argument and 
-	evaluates when the view is set."
+	Always returns the deferred showPromise.
+	The promise is a jQuery Deferred that will resolve receiving 
+	this controller as argument when the view is set."
 
 	self hasView ifFalse: [ 
 		self render.
-		^ self deferred ].
+		^ self showPromise ].
 	
 	self view show.
 
-	^ self deferred
+	^ self showPromise
 !
 
 showAll
@@ -299,11 +313,9 @@ showAt: aKey
 showThen: aBlock
 	"Shows this controller and get aBlock executed after its view is set."
 	
-	console log: 'Controller>>showThen: is deprecated. Use `controller show then:` instead'.
+	self deprecatedAPI: 'use `controller show done: [ do something ]` instead'.
 	
-	self deferred done: aBlock.
-	
-	self show
+	self show done: aBlock.
 !
 
 silentRefresh
@@ -312,8 +324,20 @@ silentRefresh
 !
 
 silentRemove
+
+	#deprecated.
+	self deprecatedAPI: 'use #silentRemoveView'.
 	
-	self removeView
+	self silentRemoveView
+!
+
+silentRemoveView
+	
+	view ifNotNil:[ | exView |
+		exView := view.
+		exView asJQuery off.
+		view := nil.
+		exView asJQuery remove ].
 !
 
 silentRender
@@ -328,6 +352,12 @@ silentRenderOn: html
 	TemplateController or BindingController are good examples of this."
 	
 	self silentView: (html h1: self class name) asJQuery.
+!
+
+unobserveEvents
+	"Stops any pre-programed reaction based on events coming from this controller."
+	
+	self releaseActionMap
 ! !
 
 !Controller methodsFor: 'initialization'!
@@ -336,11 +366,11 @@ initialize
 
 	super initialize.
 	
-	self when: #onAfterView do: [ 
-		"Afte the view is set, we are ready to create any
-		subcontroller and observe their interesting events."
-		self createControllers.
-		self observeEvents ]
+	"By default the controllers will append to render 
+	on the parentElement (as opposed to prepend)."
+	self beAppending.
+	
+	self showPromise done: [ self observeEvents ]
 !
 
 initializeControllers
@@ -348,19 +378,65 @@ initializeControllers
 	^ controllers := Dictionary new
 !
 
-initializeDeferred
-	"Sets the promise used by this controller.
-	http://api.jquery.com/category/deferred-object/"
+initializeParentElementGetter
+	"Returns the default parent element getter."
+
+	^ parentElementGetter := [ self class defaultHtmlElementId asJQuery ]
+!
+
+initializeShowPromise
+	"Sets the promise used by this controller when it shows (resolves when the view is set).
+	For the full promise API check here: http://api.jquery.com/category/deferred-object/"
 	
-	^ deferred := jQuery Deferred value
+	^ showPromise := jQuery Deferred value
+! !
+
+!Controller methodsFor: 'reactions'!
+
+onAfterRefresh
+	"This controller has just finished refreshing.
+	Tell all subcontrollers to refresh so the action propagates deep."
+	
+	self refreshAll
+!
+
+onAfterView
+	"Hook used when the view of this controller was just set.
+	Create subcontrollers and resolve the show promise 
+	in case there is one."
+
+	"After the view is set, we are ready to create subcontrollers..." 
+	self createControllers.
+
+	self hasShowPromise ifTrue: [
+		showPromise resolve: self ].
+
+	self triggerEvent: #onAfterView.
+!
+
+onBeforeView
+	"Hook used when the view of this controller is about to be set."
+
+	self triggerEvent: #onBeforeView.
+
+	"Break promises that might be done for the about-to-be-removed view."
+	"showPromise := nil."
+!
+
+refreshAll
+	"Tell all subcontrollers to refresh so it propagates deep."
+	
+	self controllers values do: [ :each | each refresh ]
 ! !
 
 !Controller methodsFor: 'testing'!
 
 hasDeferred
 	"Answers true if this controller has a deferred object."
+
+	self deprecatedAPI: 'use #hasShowPromise'.
 	
-	^ deferred notNil
+	^ self hasShowPomise
 !
 
 hasModel
@@ -369,17 +445,37 @@ hasModel
 	^ model notNil
 !
 
+hasShowPromise
+	"Answers true if this controller has a show promise object."
+	
+	^ showPromise notNil
+!
+
 hasView
 	"Answers true if this controller has a view"
 	
 	^ view notNil
+!
+
+isAppending
+
+	^ isAppending
 ! !
 
 !Controller class methodsFor: 'accessing'!
 
 defaultHtmlElement
+	"Returns the element that is presumed to be wrapping this controller.
+	Ex: ThingDetailsController would expect '#thing-details-wrapper' asJQuery"
 
-	^ '#content' asJQuery
+	^ self defaultHtmlElementId asJQuery
+!
+
+defaultHtmlElementId
+	"Returns the id of the element that is presumed to be wrapping this controller.
+	Ex: ThingDetailsController would expect '#thing-details-wrapper' "
+
+	^ '#',self keyword asDashedNotation asLowercase,'-wrapper'
 !
 
 defaultModel
@@ -404,7 +500,7 @@ for: aModel
 	expected to be <div id=#content></div>."
 
 	#deprecated.
-	console warn: self name,'>>for: this will be removed in next version, use #on:'.
+	self deprecatedAPI: 'use #on:'.
 	
 	^ self for: aModel on: nil appendingTo: self defaultHtmlElement
 !
@@ -415,7 +511,7 @@ for: aModel on: aParentControllerOrNil
 	the default html element, expected to be <div id=#content></div>."
 	
 	#deprecated.
-	console warn: self name,'>>for:on: this will be removed in next version, use #on:in:'.
+	self deprecatedAPI: 'use #on:in:'.
 	
 	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
 !
@@ -425,7 +521,7 @@ for: aModel on: aParentControllerOrNil appendingTo: aHtmlElement
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
 	#deprecated.
-	console warn: self name,'>>for:on:appendingTo: use #on:in:appendingTo:'.
+	self deprecatedAPI: 'use #on:in:addOn:'.
 	
 	^ self new
 		model: aModel;
@@ -439,7 +535,7 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 	child of aParentControllerOrNil and with the already created aHtmlElement as its view."
 
 	#deprecated.
-	console warn: self name,'>>for:on:view: this will be removed in next version, use #on:in:view:'.
+	self deprecatedAPI: 'use #on:in:view:'.
 	
 	^ self new
 		model: aModel;
@@ -448,9 +544,23 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 		yourself
 !
 
+in: aParentControllerOrNil addOn: aBlock
+	"Answers a new instance of this controller without model (nil),
+	child of aParentControllerOrNil and meant to be added 
+	to the html element returned by aBlock."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		parentElementGetter: aBlock;
+		yourself
+!
+
 in: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller without model (nil),
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+
+	#deprecated.
+	self deprecatedAPI: 'use #in:addOn: aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -460,16 +570,18 @@ in: aParentControllerOrNil appendingTo: aHtmlElement
 
 on: aModel 
 	"Answers a new instance of this controller dedicated to aModel,
-	with no parent and meant to be appended to the default html element,
-	expected to be <div id=#content></div>."
+	with no parent and meant to be appended to the default html element."
 	
-	^ self on: aModel in: nil appendingTo: self defaultHtmlElement
+	^ self on: aModel in: nil addOn: [ self defaultHtmlElement ]
 !
 
 on: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller, child of aParentControllerOrNil 
 	and meant to be appended to aHtmlElement.
 	Using this contructor will make the model to stay nil."
+
+	#deprecated.
+	self deprecatedAPI: 'use #on:addOn:aBlock where aBlock is the getter of the parent element'.
 
 	^ self new
 		parent: aParentControllerOrNil;
@@ -480,19 +592,37 @@ on: aParentControllerOrNil appendingTo: aHtmlElement
 on: aModel in: aParentControllerOrNil
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to 
-	the default html element, expected to be <div id=#content></div>."
+	the default html element, expected to be <div id=#controller-keyword-wrapper></div>."
 	
-	^ self on: aModel in: aParentControllerOrNil appendingTo: self defaultHtmlElement
+	^ self new 
+		parent: aParentControllerOrNil;
+		model: aModel;
+		yourself
+!
+
+on: aModel in: aParentControllerOrNil addOn: aBlock
+	"Answers a new instance of this controller dedicated to aModel,
+	child of aParentControllerOrNil and meant to be added 
+	to the html element returned by aBlock."
+
+	^ self new
+		parent: aParentControllerOrNil;
+		parentElementGetter: aBlock;
+		model: aModel;
+		yourself
 !
 
 on: aModel in: aParentControllerOrNil appendingTo: aHtmlElement
 	"Answers a new instance of this controller dedicated to aModel,
 	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
 
+	#deprecated.
+	self deprecatedAPI: 'use #on:in:addOn:aBlock where aBlock is the getter of the parent element'.
+
 	^ self new
-		model: aModel;
 		parent: aParentControllerOrNil;
 		parentElement: aHtmlElement;
+		model: aModel;
 		yourself
 !
 
@@ -508,7 +638,7 @@ on: aModel in: aParentControllerOrNil view: aHtmlElement
 ! !
 
 Controller subclass: #ListController
-	instanceVariableNames: 'getItemsBlock itemControllerClass newItemControllerBlock listView'
+	instanceVariableNames: 'getItemsBlock itemControllerClass newItemControllerBlock'
 	package: 'MVC-Core'!
 !ListController commentStamp!
 ## ListController
@@ -537,19 +667,6 @@ itemControllerClass: aBlock
 	itemControllerClass := aBlock
 !
 
-listView
-	"Answers the html element from where the item controllers are going to be appended.
-	Usually a <ul>"
-	^ listView
-!
-
-listView: aHtmlElement
-
-	self triggerEvent: #onBeforeListView.
-	listView := aHtmlElement.
-	self triggerEvent: #onAfterListView.
-!
-
 newItemControllerBlock
 
 	^ newItemControllerBlock
@@ -560,12 +677,9 @@ newItemControllerBlock: aBlock
 	newItemControllerBlock := aBlock
 !
 
-parentElement: anHtmlElement
-	"Sets the parent elment for the list.
-	It can be anything but, in the case of lists, the parent element usually is a <ul>
-	The 'normal' thing is to treat it like an <ul> full of <li> children."
-	super parentElement: anHtmlElement.
-	self view: anHtmlElement
+view
+	"Answers the DOM element who is the root of this controller's view"
+	^ self parentElement
 ! !
 
 !ListController methodsFor: 'actions'!
@@ -573,11 +687,11 @@ parentElement: anHtmlElement
 addNovelties
 	"Adds a new controller for the models that yet don't have one."
 	
-	self getItems do:[ :each | | added |
+	self getItems do: [ :each | | added |
 		self controllerAt: each ifAbsentPut:[ 
 			added := self newItemControllerFor: each ].
-		added ifNotNil:[ 
-			added render ] ]
+		added ifNotNil: [ 
+			added show ] ]
 !
 
 getItems
@@ -589,24 +703,25 @@ getItems
 newItemControllerFor: anItem
 
 	^ itemControllerClass isNil
-		ifFalse:[ itemControllerClass 
+		ifFalse: [ itemControllerClass 
 					on: anItem 
 					in: self 
-					appendingTo: self view ] 
-		ifTrue:[ self newItemControllerBlock value: anItem ]
+					addOn: [ self view ] ] 
+		ifTrue: [ self newItemControllerBlock value: anItem ]
 !
 
 observeList
 	"Observe the model for changes and react to them with a refresh."
 
-	self model when: #changed do: [ self refresh ]
+	self model when: #changed do: [ self refreshItems ]
 !
 
-refresh
+refreshItems
 	"Makes sure all the items in the model have its own controller.
 	Nothing less and nothing more. So it will add lazily 
-	the missing controllers and remove those who's model isn't present."
-	
+	the missing controllers and remove those who's model isn't present.
+	When finishes, it evaluates the hook."
+
 	self removeAbsences.
 	self addNovelties.
 !
@@ -624,9 +739,15 @@ removeAbsences
 
 show
 
-	self refresh.
-	
+	[ "We show, refresh items to get them fresh and 
+	rendered as needed and then we perform the post view hook.
+	We for here to artifically make it async so we maintain
+	the expected polymorphic behavior of show returning the show promise."
 	self view show.
+	self refreshItems.
+	self onAfterView ] fork.
+
+	^ self showPromise
 ! !
 
 !ListController methodsFor: 'initialization'!
@@ -637,7 +758,7 @@ initialize
 	
 	self when: #onAfterModel do: [ 
 		self observeList.
-		self canCreateControllers ifTrue: [ self refresh ] ]
+		self canCreateControllers ifTrue: [ self refreshItems ] ]
 ! !
 
 !ListController methodsFor: 'testing'!
@@ -687,28 +808,32 @@ setTemplate: htmlString
 	"Receives the template's htmlString after requirejs 
 	have received it from the server (or cache)."
 
-	| appended |
+	| added |
 
 	"Make it to be the contents of this controllers parent element"
-	appended := self parentElement append: htmlString.
-	
-	"And follow the convention that all templates are wrapped
-	in one element which is the view of this controller."
-	self view: appended children last.
+	^ isAppending 
+		ifTrue: [ 
+			added := self parentElement append: htmlString.
+			self view: added children last ]
+		ifFalse: [ 
+			added := self parentElement prepend: htmlString 
+			self view: added children first ]
 !
 
 silentSetTemplate: htmlString
 	"Receives the template's htmlString after requirejs 
 	have received it from the server (or cache)."
 
-	| appended |
+	| added |
 
 	"Make it to be the contents of this controllers parent element"
-	appended := self parentElement append: htmlString.
-	
-	"And follow the convention that all templates are wrapped
-	in one element which is the view of this controller."
-	self silentView: appended children last.
+	^ isAppending 
+		ifTrue: [ 
+			added := self parentElement append: htmlString.
+			self silentView: added children last ]
+		ifFalse: [ 
+			added := self parentElement prepend: htmlString 
+			self silentView: added children first ]
 ! !
 
 !TemplateController methodsFor: 'initialization'!
@@ -767,6 +892,13 @@ The concrete subclasses of BindingController are users of the two-way data bindi
 
 Note that BindingController is a subclass of TemplateController so all subclasses of it follow the convention of loading a html template from the server using the keyword of the controller as the name of the template to be found at views/!
 
+!BindingController methodsFor: 'accessing'!
+
+boundView
+
+	^ boundView
+! !
+
 !BindingController methodsFor: 'actions'!
 
 asBindArgument
@@ -803,7 +935,7 @@ configureAndBind
 
 	self configure.
 	
-	self bind.
+	self bind
 !
 
 getBindableModel
@@ -837,14 +969,24 @@ getHandler
 
 rebind
 
-	self unbind; configureAndBind
+	"Reuse of a binded view is not exactly supported by RivetJS.
+	You might want to use a refresh that will remove, 
+	re-render and fesh bind this controller and its model."
+	self mustNotImplement
 !
 
-silentRefresh
-
-	self unbind.
+removeView
 	
-	super silentRefresh
+	self unbind.
+	boundView := nil.
+	
+	super removeView.
+!
+
+show
+
+	^ super show 
+		"done: [ self configureAndBind ]"
 !
 
 unbind
@@ -860,9 +1002,7 @@ initialize
 	super initialize.
 	
 	self 
-		when: #onAfterView do: [ self configureAndBind ];
-		when: #onAfterModel do: [ self rebind ];
-		when: #onBeforeRemove do: [ self unbind ];
+		when: #onAfterModel do: [ self hasView ifTrue: [ self removeView ] ];
 		yourself
 ! !
 
@@ -874,6 +1014,13 @@ onAfterBound: aRivetsBinding
 
 onAfterUnbound: aRivetsBinding
 	"Rivets has unbound aRivetsBinding"
+!
+
+onAfterView
+
+	super onAfterView.
+		
+	self configureAndBind
 ! !
 
 !BindingController class methodsFor: 'testing'!
@@ -920,6 +1067,13 @@ createModal
 	view asJQuery modal: self modalOptions
 !
 
+observeEvents
+
+	super observeEvents.
+	
+	self when: #onAfterView do: [ self createModal ]
+!
+
 open
 
 	self show done: [
@@ -932,15 +1086,6 @@ open
 toggle
 
 	self view modal: 'toggle'
-! !
-
-!ModalController methodsFor: 'initialization'!
-
-initialize
-
-	super initialize.
-	
-	self when: #onAfterView do: [ self createModal ]
 ! !
 
 !ModalController class methodsFor: 'accessing'!
@@ -982,7 +1127,7 @@ onConfirmBlock: aBlock
 ! !
 
 ModalController subclass: #ConfirmController
-	instanceVariableNames: ''
+	instanceVariableNames: 'acceptBlock rejectBlock'
 	package: 'MVC-Core'!
 !ConfirmController commentStamp!
 ##ConfirmController
@@ -992,12 +1137,14 @@ This controller asks the user for confirmation of a given action. It has a rejec
 
 accept
 
+	acceptBlock value.
+
 	self triggerEvent: #accepted.
 !
 
 acceptBlock: aBlock
 
-	self when: #accepted do: aBlock
+	acceptBlock := aBlock
 !
 
 acceptButtonLabel: aString
@@ -1007,12 +1154,14 @@ acceptButtonLabel: aString
 
 reject
 
-	self triggerEvent: #rejected.
+	rejectBlock value.
+
+	self triggerEvent: #rejected
 !
 
 rejectBlock: aBlock
 
-	self when: #rejected do: aBlock
+	rejectBlock := aBlock
 !
 
 rejectButtonLabel: aString
@@ -1410,6 +1559,11 @@ notNil
 changed
 
 	self triggerEvent: #changed
+!
+
+debugger
+
+	<debugger>
 !
 
 destroy

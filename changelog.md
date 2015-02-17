@@ -1,13 +1,16 @@
-February 10, 2015 - Release 0.1.26
+February 17, 2015 - Release 0.1.25
 ===================================
 
-* Upgrades to "minimapless": "^0.11.1"
-
-
-February 10, 2015 - Release 0.1.25
-===================================
-
-* Re-version fixes bower access issue
+* Deprecation of all constructor methods of Controller using appendingTo: in favor of addOn: aBlock where aBlock returns the parentElement that controllers can use on demand to get it fresh anytime they want.
+* Fixes #observeEvents on the examples, controllers now need to always send `super observeEvents` and no need to call it during their #initialize #onAfterView since that's being done for all in the Controller class.
+* Introducing #beAppending and #bePrepending controlled by #isAppending true or false. The default is appending.
+* To guarantee consistency, removes #parentElement instVar and making controllers to access it always via the block passed in the addOn: of the constructor and set into the new #parentElementGetter instVar.
+* Deprecated Controller>>deferred in favor of Controller>>showPromise
+* Introducing Controller>>removeView with events #onBeforeRemoveView and #onAfterRemoveView.
+* ConfirmController now using instVars acceptBlock and rejectBlock for the callbacks.
+* The message #remove will remove children's first and then the receiver.
+* Controllers listens to parent's #onRemove event to react removing themselves first when that happens.
+* ListController>>refreshItems is now what used to be #refresh and is used mostly atumatically. The new implementation of ListController>>refresh is now loyal to the superclass' intention.
 
 
 February 10, 2015 - Release 0.1.24
