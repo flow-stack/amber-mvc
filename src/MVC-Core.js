@@ -1028,6 +1028,38 @@ $globals.Controller);
 
 $core.addMethod(
 $core.method({
+selector: "onAfterRefresh",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv($recv(self._controllers())._values())._do_((function(cntrl){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv(cntrl)._refresh();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({cntrl:cntrl},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"onAfterRefresh",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "onAfterRefresh\x0a\x09\x22This controller has just finished refreshing.\x0a\x09Tell all subcontrollers to refresh so it propagates deep.\x22\x0a\x09\x0a\x09self controllers values do: [ :cntrl | cntrl refresh ]\x0a\x09\x0a\x09\x0a\x09",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["do:", "values", "controllers", "refresh"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
 selector: "onAfterView",
 protocol: 'reactions',
 fn: function (){
@@ -1098,7 +1130,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "onParentViewChanged\x0a\x09\x22The parent's view has changed, make sure we have one and refresh.\x0a\x09We refresh the parentElement because it probably got re-rendered\x0a\x09making a new one on the DOM probably using same id attribute \x0a\x09but with different identity.\x22\x0a\x09\x0a\x09self deprecatedAPI.\x0a\x09\x22console log: (self class name,'>>onParentViewChanged').\x22\x0a\x09self initializeParentElement.\x0a\x09\x22self refresh\x22",
+source: "onParentViewChanged\x0a\x09\x22The parent's view has changed, make sure we have one and refresh.\x0a\x09We refresh the parentElement because it probably got re-rendered\x0a\x09making a new one on the DOM probably using same id attribute \x0a\x09but with different identity.\x22\x0a\x09\x0a\x09self deprecatedAPI.\x0a\x09\x22console log: (self class name,'>>onParentViewChanged').\x22\x0a\x09self initializeParentElement.\x0a\x09",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["deprecatedAPI", "initializeParentElement"]
@@ -1222,10 +1254,18 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$1;
+var $1;
+self._initializeParentElement();
 self._removeView();
-$2=self._show();
-$1=$2;
+$1=$recv(self._show())._done_((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return self._onAfterRefresh();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"refresh",{},$globals.Controller)});
@@ -1233,10 +1273,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refresh\x0a\x09\x22Removes the view and shows a fresh view of this controller.\x22\x0a\x0a\x09^ self removeView; show",
+source: "refresh\x0a\x09\x22Removes the view and shows a fresh view of this controller.\x22\x0a\x0a\x09self initializeParentElement.\x0a\x0a\x09self removeView.\x0a\x09\x0a\x09^ self show done: [ self onAfterRefresh ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["removeView", "show"]
+messageSends: ["initializeParentElement", "removeView", "done:", "show", "onAfterRefresh"]
 }),
 $globals.Controller);
 

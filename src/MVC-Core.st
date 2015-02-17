@@ -251,7 +251,11 @@ observeEvents
 refresh
 	"Removes the view and shows a fresh view of this controller."
 
-	^ self removeView; show
+	self initializeParentElement.
+
+	self removeView.
+	
+	^ self show done: [ self onAfterRefresh ]
 !
 
 remove
@@ -426,6 +430,13 @@ initializeShowPromise
 
 !Controller methodsFor: 'reactions'!
 
+onAfterRefresh
+	"This controller has just finished refreshing.
+	Tell all subcontrollers to refresh so it propagates deep."
+	
+	self controllers values do: [ :cntrl | cntrl refresh ]
+!
+
 onAfterView
 	"Hook used when the view of this controller was just set.
 	Create subcontrollers and resolve the show promise 
@@ -461,7 +472,6 @@ onParentViewChanged
 	self deprecatedAPI.
 	"console log: (self class name,'>>onParentViewChanged')."
 	self initializeParentElement.
-	"self refresh"
 ! !
 
 !Controller methodsFor: 'testing'!
