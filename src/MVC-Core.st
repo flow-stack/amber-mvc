@@ -722,8 +722,8 @@ refresh
 	When finishes, it evaluates the hook."
 
 	self removeAbsences.
-	self addNovelties.
 	self onAfterRefresh.
+	self addNovelties.
 !
 
 removeAbsences
@@ -738,9 +738,7 @@ removeAbsences
 !
 
 show
-
 	self refresh.
-	
 	self view show.
 ! !
 
@@ -753,11 +751,6 @@ initialize
 	self when: #onAfterModel do: [ 
 		self observeList.
 		self canCreateControllers ifTrue: [ self refresh ] ]
-!
-
-initializeView
-	"Answers the DOM element who is the root of this controller's view"
-	^ view := self parentElement
 ! !
 
 !ListController methodsFor: 'testing'!

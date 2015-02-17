@@ -336,9 +336,9 @@ observeEvents
 
 	super observeEvents.
 	
-	self when: #onAfterView do: [ 
+	"self when: #onAfterView do: [ 
 		self things show.		
-		self updateNotEmpty ]
+		self updateNotEmpty ]"
 !
 
 removeThing
@@ -346,6 +346,13 @@ removeThing
 	self things model removeLast.
 	
 	self updateNotEmpty
+!
+
+show
+
+	^ super show done: [ 
+		self things show.		
+		self updateNotEmpty ]
 !
 
 updateNotEmpty
@@ -551,13 +558,13 @@ BindingController subclass: #ThingRowController
 !ThingRowController methodsFor: 'actions'!
 
 removeThing
-console log: 'removeThing'.
+
 	self triggerEvent: #removeThing
 !
 
 renderOn: html
 
-	"(App main example4 things controllers values includes: self) ifFalse: [ self halt ]."
+	('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].
 
 	super renderOn: html
 !
@@ -565,8 +572,9 @@ renderOn: html
 show
 
 	"console info: self on: '>>show'."
+	('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].
 
-	^ super show
+	^ super show done: [  view asJQuery attr: #id put: model cid ]
 !
 
 viewDetails

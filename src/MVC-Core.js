@@ -2405,32 +2405,6 @@ $globals.ListController);
 
 $core.addMethod(
 $core.method({
-selector: "initializeView",
-protocol: 'initialization',
-fn: function (){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-self["@view"]=self._parentElement();
-$1=self["@view"];
-return $1;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"initializeView",{},$globals.ListController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: [],
-source: "initializeView\x0a\x09\x22Answers the DOM element who is the root of this controller's view\x22\x0a\x09^ view := self parentElement",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["parentElement"]
-}),
-$globals.ListController);
-
-$core.addMethod(
-$core.method({
 selector: "itemControllerClass",
 protocol: 'accessing',
 fn: function (){
@@ -2587,8 +2561,8 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 self._removeAbsences();
-self._addNovelties();
 self._onAfterRefresh();
+self._addNovelties();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"refresh",{},$globals.ListController)});
@@ -2596,10 +2570,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x0a\x09When finishes, it evaluates the hook.\x22\x0a\x0a\x09self removeAbsences.\x0a\x09self addNovelties.\x0a\x09self onAfterRefresh.",
+source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x0a\x09When finishes, it evaluates the hook.\x22\x0a\x0a\x09self removeAbsences.\x0a\x09self onAfterRefresh.\x0a\x09self addNovelties.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["removeAbsences", "addNovelties", "onAfterRefresh"]
+messageSends: ["removeAbsences", "onAfterRefresh", "addNovelties"]
 }),
 $globals.ListController);
 
@@ -2659,7 +2633,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x0a\x09self refresh.\x0a\x09\x0a\x09self view show.",
+source: "show\x0a\x09self refresh.\x0a\x09self view show.",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["refresh", "show", "view"]

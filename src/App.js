@@ -1200,16 +1200,6 @@ $globals.Example4Controller.superclass.fn.prototype._observeEvents.apply($recv(s
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
-self._when_do_("onAfterView",(function(){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-$recv(self._things())._show();
-return self._updateNotEmpty();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"observeEvents",{},$globals.Example4Controller)});
@@ -1217,10 +1207,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x09\x0a\x09self when: #onAfterView do: [ \x0a\x09\x09self things show.\x09\x09\x0a\x09\x09self updateNotEmpty ]",
+source: "observeEvents\x0a\x0a\x09super observeEvents.\x0a\x09\x0a\x09\x22self when: #onAfterView do: [ \x0a\x09\x09self things show.\x09\x09\x0a\x09\x09self updateNotEmpty ]\x22",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["observeEvents", "when:do:", "show", "things", "updateNotEmpty"]
+messageSends: ["observeEvents"]
 }),
 $globals.Example4Controller);
 
@@ -1319,6 +1309,51 @@ source: "removeThing\x0a\x0a\x09self things model removeLast.\x0a\x09\x0a\x09sel
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["removeLast", "model", "things", "updateNotEmpty"]
+}),
+$globals.Example4Controller);
+
+$core.addMethod(
+$core.method({
+selector: "show",
+protocol: 'actions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+var $2,$1;
+$2=(
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = true, 
+//>>excludeEnd("ctx");
+$globals.Example4Controller.superclass.fn.prototype._show.apply($recv(self), []));
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.supercall = false;
+//>>excludeEnd("ctx");;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["show"]=1;
+//>>excludeEnd("ctx");
+$1=$recv($2)._done_((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+$recv(self._things())._show();
+return self._updateNotEmpty();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return $1;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"show",{},$globals.Example4Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "show\x0a\x0a\x09^ super show done: [ \x0a\x09\x09self things show.\x09\x09\x0a\x09\x09self updateNotEmpty ]",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["done:", "show", "things", "updateNotEmpty"]
 }),
 $globals.Example4Controller);
 
@@ -2045,7 +2080,6 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv(console)._log_("removeThing");
 self._triggerEvent_("removeThing");
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -2054,10 +2088,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeThing\x0aconsole log: 'removeThing'.\x0a\x09self triggerEvent: #removeThing",
+source: "removeThing\x0a\x0a\x09self triggerEvent: #removeThing",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["log:", "triggerEvent:"]
+messageSends: ["triggerEvent:"]
 }),
 $globals.ThingRowController);
 
@@ -2070,6 +2104,11 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
+var $1;
+$1=$recv($recv($recv("#".__comma($recv(self._model())._cid()))._asJQuery())._size()).__eq((1));
+if($core.assert($1)){
+self._halt();
+};
 (
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
@@ -2085,10 +2124,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x09\x22(App main example4 things controllers values includes: self) ifFalse: [ self halt ].\x22\x0a\x0a\x09super renderOn: html",
+source: "renderOn: html\x0a\x0a\x09('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].\x0a\x0a\x09super renderOn: html",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["renderOn:"]
+messageSends: ["ifTrue:", "=", "size", "asJQuery", ",", "cid", "model", "halt", "renderOn:"]
 }),
 $globals.ThingRowController);
 
@@ -2101,8 +2140,22 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $1;
-$1=(
+var $5,$4,$3,$2,$1,$7,$6;
+$5=$recv(self._model())._cid();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["cid"]=1;
+//>>excludeEnd("ctx");
+$4="#".__comma($5);
+$3=$recv($4)._asJQuery();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+$ctx1.sendIdx["asJQuery"]=1;
+//>>excludeEnd("ctx");
+$2=$recv($3)._size();
+$1=$recv($2).__eq((1));
+if($core.assert($1)){
+self._halt();
+};
+$7=(
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
 //>>excludeEnd("ctx");
@@ -2110,17 +2163,26 @@ $globals.ThingRowController.superclass.fn.prototype._show.apply($recv(self), [])
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
-return $1;
+$6=$recv($7)._done_((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv($recv(self["@view"])._asJQuery())._attr_put_("id",$recv(self["@model"])._cid());
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
+//>>excludeEnd("ctx");
+}));
+return $6;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"show",{},$globals.ThingRowController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x0a\x09\x22console info: self on: '>>show'.\x22\x0a\x0a\x09^ super show",
+source: "show\x0a\x0a\x09\x22console info: self on: '>>show'.\x22\x0a\x09('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].\x0a\x0a\x09^ super show done: [  view asJQuery attr: #id put: model cid ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["show"]
+messageSends: ["ifTrue:", "=", "size", "asJQuery", ",", "cid", "model", "halt", "done:", "show", "attr:put:"]
 }),
 $globals.ThingRowController);
 
