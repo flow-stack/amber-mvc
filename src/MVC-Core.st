@@ -1,6 +1,6 @@
 Smalltalk createPackage: 'MVC-Core'!
 Widget subclass: #Controller
-	instanceVariableNames: 'controllers model view parent parentElement showPromise getParentElementBlock isAppending'
+	instanceVariableNames: 'controllers model view parent showPromise parentElementGetter isAppending'
 	package: 'MVC-Core'!
 !Controller commentStamp!
 ## This is an abstraction. 
@@ -86,19 +86,6 @@ deferred
 	^ self showPromise
 !
 
-getParentElementBlock
-
-	^ getParentElementBlock ifNil: [ self initializeGetParentElementBlock ]
-!
-
-getParentElementBlock: aBlock
-	"Sets the parent element getter and gets one."
-	
-	getParentElementBlock := aBlock.
-
-	self initializeParentElement
-!
-
 model
 	
 	^ model
@@ -126,14 +113,17 @@ parent: aParentControllerOrNil
 
 parentElement
 
-	^ parentElement ifNil: [ self initializeParentElement ]
+	^ self parentElementGetter value
 !
 
-parentElement: aHtmlElement
+parentElementGetter
 
-	self triggerEvent: #onBeforeParentElement.
-	parentElement := aHtmlElement.
-	self triggerEvent: #onAfterParentElement.
+	^ parentElementGetter ifNil: [ self initializeParentElementGetter ]
+!
+
+parentElementGetter: aBlock
+	
+	parentElementGetter := aBlock
 !
 
 showPromise
@@ -235,23 +225,10 @@ ifAbsentAt: aKey put: aBlock andDo: aPostAddingBlock
 
 observeEvents
 	"Program the observations of events that are important for this controller."
-	
-	"console log: (self class name,'>>observeEvents')."
-	
-	parent ifNotNil: [ 
-		parent 
-			when: #onRemove do: [ self remove ];
-			when: #onAfterRemoveView do: [ self resetParentElement ];
-			when: #onAfterView do: [ self onParentViewChanged ];
-			yourself ].
-	
-	self triggerEvent: #controllersObserved
 !
 
 refresh
 	"Removes the view and shows a fresh view of this controller."
-
-	self initializeParentElement.
 
 	self removeView.
 	
@@ -259,13 +236,16 @@ refresh
 !
 
 remove
+	"Remove all children and then this controller."
 
+	self removeAll.
 	self silentRemoveView.
 	self unobserveEvents.
 !
 
 removeAll
 	"Removes all the subcontrollers children of this controller"
+	
 	self controllers keys do: [ :each | self removeControllerAt: each ]
 !
 
@@ -275,8 +255,7 @@ removeControllerAt: aKey
 	
 	controller := self controllerAt: aKey ifAbsent:[ nil ].
 	
-	controller ifNotNil:[
-		controller remove ].
+	controller ifNotNil: [ controller remove ].
 		
 	self controllers removeKey: aKey ifAbsent: [ nil ]
 !
@@ -303,19 +282,12 @@ renderOn: html
 	self silentRenderOn: html
 !
 
-resetParentElement
-
-	parentElement := nil.
-!
-
 show
 	"Shows the receiver.
 	Rendes when there is no view.
 	Always returns the deferred showPromise.
 	The promise is a jQuery Deferred that will resolve receiving 
 	this controller as argument when the view is set."
-	
-	"console log: (self class name,'>>show')."
 
 	self hasView ifFalse: [ 
 		self render.
@@ -406,19 +378,12 @@ initializeControllers
 	^ controllers := Dictionary new
 !
 
-initializeGetParentElementBlock
+initializeParentElementGetter
 	"Returns the default parent element getter."
 
-	^ getParentElementBlock := [ 
-		console warn: (self class name, ' using default getParentElementBlock').
+	^ parentElementGetter := [ 
+		console warn: (self class name, ' using default parentElementGetter').
 		self class defaultHtmlElementId asJQuery ]
-!
-
-initializeParentElement
-
-	self parentElement: self getParentElementBlock value.
-
-	^ parentElement
 !
 
 initializeShowPromise
@@ -434,7 +399,7 @@ onAfterRefresh
 	"This controller has just finished refreshing.
 	Tell all subcontrollers to refresh so it propagates deep."
 	
-	self controllers values do: [ :cntrl | cntrl refresh ]
+	self controllers values do: [ :each | each refresh ]
 !
 
 onAfterView
@@ -461,17 +426,6 @@ onBeforeView
 
 	"Break promises that might be done for the about-to-be-removed view."
 	"showPromise := nil."
-!
-
-onParentViewChanged
-	"The parent's view has changed, make sure we have one and refresh.
-	We refresh the parentElement because it probably got re-rendered
-	making a new one on the DOM probably using same id attribute 
-	but with different identity."
-	
-	self deprecatedAPI.
-	"console log: (self class name,'>>onParentViewChanged')."
-	self initializeParentElement.
 ! !
 
 !Controller methodsFor: 'testing'!
@@ -591,11 +545,12 @@ for: aModel on: aParentControllerOrNil view: aHtmlElement
 
 in: aParentControllerOrNil addOn: aBlock
 	"Answers a new instance of this controller without model (nil),
-	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+	child of aParentControllerOrNil and meant to be added 
+	to the html element returned by aBlock."
 
 	^ self new
 		parent: aParentControllerOrNil;
-		getParentElementBlock: aBlock;
+		parentElementGetter: aBlock;
 		yourself
 !
 
@@ -646,11 +601,12 @@ on: aModel in: aParentControllerOrNil
 
 on: aModel in: aParentControllerOrNil addOn: aBlock
 	"Answers a new instance of this controller dedicated to aModel,
-	child of aParentControllerOrNil and meant to be appended to aHtmlElement."
+	child of aParentControllerOrNil and meant to be added 
+	to the html element returned by aBlock."
 
 	^ self new
 		parent: aParentControllerOrNil;
-		getParentElementBlock: aBlock;
+		parentElementGetter: aBlock;
 		model: aModel;
 		yourself
 !
@@ -720,12 +676,9 @@ newItemControllerBlock: aBlock
 	newItemControllerBlock := aBlock
 !
 
-parentElement: anHtmlElement
-	"Sets the parent elment for the list.
-	It can be anything but, in the case of lists, the parent element usually is a <ul>
-	The 'normal' thing is to treat it like an <ul> full of <li> children."
-	super parentElement: anHtmlElement.
-	self view: anHtmlElement
+view
+	"Answers the DOM element who is the root of this controller's view"
+	^ self parentElement
 ! !
 
 !ListController methodsFor: 'actions'!
@@ -765,10 +718,12 @@ observeList
 refresh
 	"Makes sure all the items in the model have its own controller.
 	Nothing less and nothing more. So it will add lazily 
-	the missing controllers and remove those who's model isn't present."
+	the missing controllers and remove those who's model isn't present.
+	When finishes, it evaluates the hook."
 
 	self removeAbsences.
 	self addNovelties.
+	self onAfterRefresh.
 !
 
 removeAbsences
@@ -798,23 +753,11 @@ initialize
 	self when: #onAfterModel do: [ 
 		self observeList.
 		self canCreateControllers ifTrue: [ self refresh ] ]
-! !
+!
 
-!ListController methodsFor: 'reactions'!
-
-onParentViewChanged
-	"The parent's view has changed, make sure we have one and refresh.
-	We refresh the parentElement because it probably got re-rendered
-	making a new one on the DOM probably using same id attribute 
-	but with different identity."
-	
-	"If the parent element is changed, all the observed 
-	events become invalid and would need to re-observe,
-	the trivial way to do it is to just remove and 
-	let the refresh to rebuild all children properly."
-	self removeAll.
-
-	super onParentViewChanged
+initializeView
+	"Answers the DOM element who is the root of this controller's view"
+	^ view := self parentElement
 ! !
 
 !ListController methodsFor: 'testing'!
