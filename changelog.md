@@ -1,4 +1,4 @@
-February 16, 2015 - Release 0.1.25
+February 17, 2015 - Release 0.1.25
 ===================================
 
 * Deprecation of all constructor methods of Controller using appendingTo: in favor of addOn: aBlock where aBlock returns the parentElement that controllers can use on demand to get it fresh anytime they want.
@@ -10,6 +10,7 @@ February 16, 2015 - Release 0.1.25
 * ConfirmController now using instVars acceptBlock and rejectBlock for the callbacks.
 * The message #remove will remove children's first and then the receiver.
 * Controllers listens to parent's #onRemove event to react removing themselves first when that happens.
+* ListController>>refreshItems is now what used to be #refresh and is used mostly atumatically. The new implementation of ListController>>refresh is now loyal to the superclass' intention.
 
 
 February 10, 2015 - Release 0.1.24

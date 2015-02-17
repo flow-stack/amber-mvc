@@ -527,17 +527,6 @@ BindingController subclass: #ThingDetailsController
 	instanceVariableNames: ''
 	package: 'App'!
 
-!ThingDetailsController methodsFor: 'not yet classified'!
-
-renderOn: html
-
-	(App main example4 details = self) ifFalse: [ self halt ].
-self deprecatedAPI.
-
-
-	super renderOn: html
-! !
-
 MaplessModel subclass: #ThingModel
 	instanceVariableNames: ''
 	package: 'App'!
@@ -562,19 +551,13 @@ removeThing
 	self triggerEvent: #removeThing
 !
 
-renderOn: html
-
-	('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].
-
-	super renderOn: html
-!
-
 show
 
-	"console info: self on: '>>show'."
-	('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].
-
-	^ super show done: [  view asJQuery attr: #id put: model cid ]
+	^ super show done: [  
+		"This example doesn't really use it but for illustrative pruposes
+		here you see how you can use the promise to do 
+		useful post render DOM manipulation."
+		view asJQuery attr: #id set: model cid ]
 !
 
 viewDetails

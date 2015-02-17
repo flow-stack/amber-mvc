@@ -326,7 +326,7 @@ silentRefresh
 silentRemove
 
 	#deprecated.
-	console warn: self class name, '>>silentRemove deprecated, use #silentRemoveView'.
+	self deprecatedAPI: 'use #silentRemoveView'.
 	
 	self silentRemoveView
 !
@@ -381,9 +381,7 @@ initializeControllers
 initializeParentElementGetter
 	"Returns the default parent element getter."
 
-	^ parentElementGetter := [ 
-		console warn: (self class name, ' using default parentElementGetter').
-		self class defaultHtmlElementId asJQuery ]
+	^ parentElementGetter := [ self class defaultHtmlElementId asJQuery ]
 !
 
 initializeShowPromise
@@ -397,9 +395,9 @@ initializeShowPromise
 
 onAfterRefresh
 	"This controller has just finished refreshing.
-	Tell all subcontrollers to refresh so it propagates deep."
+	Tell all subcontrollers to refresh so the action propagates deep."
 	
-	self controllers values do: [ :each | each refresh ]
+	self refreshAll
 !
 
 onAfterView
@@ -407,13 +405,10 @@ onAfterView
 	Create subcontrollers and resolve the show promise 
 	in case there is one."
 
-	"console log: (self class name,'>>onAfterView')."
-
 	"After the view is set, we are ready to create subcontrollers..." 
 	self createControllers.
 
 	self hasShowPromise ifTrue: [
-		"console log: (self class name,'>>onAfterView fulfilling promise')."
 		showPromise resolve: self ].
 
 	self triggerEvent: #onAfterView.
@@ -426,6 +421,12 @@ onBeforeView
 
 	"Break promises that might be done for the about-to-be-removed view."
 	"showPromise := nil."
+!
+
+refreshAll
+	"Tell all subcontrollers to refresh so it propagates deep."
+	
+	self controllers values do: [ :each | each refresh ]
 ! !
 
 !Controller methodsFor: 'testing'!
@@ -712,17 +713,16 @@ newItemControllerFor: anItem
 observeList
 	"Observe the model for changes and react to them with a refresh."
 
-	self model when: #changed do: [ self refresh ]
+	self model when: #changed do: [ self refreshItems ]
 !
 
-refresh
+refreshItems
 	"Makes sure all the items in the model have its own controller.
 	Nothing less and nothing more. So it will add lazily 
 	the missing controllers and remove those who's model isn't present.
 	When finishes, it evaluates the hook."
 
 	self removeAbsences.
-	self onAfterRefresh.
 	self addNovelties.
 !
 
@@ -738,8 +738,16 @@ removeAbsences
 !
 
 show
-	self refresh.
+
+	[ "We show, refresh items to get them fresh and 
+	rendered as needed and then we perform the post view hook.
+	We for here to artifically make it async so we maintain
+	the expected polymorphic behavior of show returning the show promise."
 	self view show.
+	self refreshItems.
+	self onAfterView ] fork.
+
+	^ self showPromise
 ! !
 
 !ListController methodsFor: 'initialization'!
@@ -750,7 +758,7 @@ initialize
 	
 	self when: #onAfterModel do: [ 
 		self observeList.
-		self canCreateControllers ifTrue: [ self refresh ] ]
+		self canCreateControllers ifTrue: [ self refreshItems ] ]
 ! !
 
 !ListController methodsFor: 'testing'!
@@ -927,9 +935,7 @@ configureAndBind
 
 	self configure.
 	
-	self bind.
-	
-	"console log: (self class name,'>>configureAndBind')."
+	self bind
 !
 
 getBindableModel

@@ -1993,44 +1993,6 @@ $globals.MainController);
 
 
 $core.addClass('ThingDetailsController', $globals.BindingController, [], 'App');
-$core.addMethod(
-$core.method({
-selector: "renderOn:",
-protocol: 'not yet classified',
-fn: function (html){
-var self=this;
-function $App(){return $globals.App||(typeof App=="undefined"?nil:App)}
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-$1=$recv($recv($recv($recv($App())._main())._example4())._details()).__eq(self);
-if(!$core.assert($1)){
-self._halt();
-};
-self._deprecatedAPI();
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.ThingDetailsController.superclass.fn.prototype._renderOn_.apply($recv(self), [html]));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},$globals.ThingDetailsController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["html"],
-source: "renderOn: html\x0a\x0a\x09(App main example4 details = self) ifFalse: [ self halt ].\x0aself deprecatedAPI.\x0a\x0a\x0a\x09super renderOn: html",
-referencedClasses: ["App"],
-//>>excludeEnd("ide");
-messageSends: ["ifFalse:", "=", "details", "example4", "main", "halt", "deprecatedAPI", "renderOn:"]
-}),
-$globals.ThingDetailsController);
-
 
 
 $core.addClass('ThingModel', $globals.MaplessModel, [], 'App');
@@ -2097,42 +2059,6 @@ $globals.ThingRowController);
 
 $core.addMethod(
 $core.method({
-selector: "renderOn:",
-protocol: 'actions',
-fn: function (html){
-var self=this;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx1) {
-//>>excludeEnd("ctx");
-var $1;
-$1=$recv($recv($recv("#".__comma($recv(self._model())._cid()))._asJQuery())._size()).__eq((1));
-if($core.assert($1)){
-self._halt();
-};
-(
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = true, 
-//>>excludeEnd("ctx");
-$globals.ThingRowController.superclass.fn.prototype._renderOn_.apply($recv(self), [html]));
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.supercall = false;
-//>>excludeEnd("ctx");;
-return self;
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},$globals.ThingRowController)});
-//>>excludeEnd("ctx");
-},
-//>>excludeStart("ide", pragmas.excludeIdeData);
-args: ["html"],
-source: "renderOn: html\x0a\x0a\x09('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].\x0a\x0a\x09super renderOn: html",
-referencedClasses: [],
-//>>excludeEnd("ide");
-messageSends: ["ifTrue:", "=", "size", "asJQuery", ",", "cid", "model", "halt", "renderOn:"]
-}),
-$globals.ThingRowController);
-
-$core.addMethod(
-$core.method({
 selector: "show",
 protocol: 'actions',
 fn: function (){
@@ -2140,22 +2066,8 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $5,$4,$3,$2,$1,$7,$6;
-$5=$recv(self._model())._cid();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["cid"]=1;
-//>>excludeEnd("ctx");
-$4="#".__comma($5);
-$3=$recv($4)._asJQuery();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx1.sendIdx["asJQuery"]=1;
-//>>excludeEnd("ctx");
-$2=$recv($3)._size();
-$1=$recv($2).__eq((1));
-if($core.assert($1)){
-self._halt();
-};
-$7=(
+var $2,$1;
+$2=(
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = true, 
 //>>excludeEnd("ctx");
@@ -2163,26 +2075,26 @@ $globals.ThingRowController.superclass.fn.prototype._show.apply($recv(self), [])
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 $ctx1.supercall = false;
 //>>excludeEnd("ctx");;
-$6=$recv($7)._done_((function(){
+$1=$recv($2)._done_((function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return $recv($recv(self["@view"])._asJQuery())._attr_put_("id",$recv(self["@model"])._cid());
+return $recv($recv(self["@view"])._asJQuery())._attr_set_("id",$recv(self["@model"])._cid());
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1,2)});
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
 }));
-return $6;
+return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"show",{},$globals.ThingRowController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x0a\x09\x22console info: self on: '>>show'.\x22\x0a\x09('#', self model cid) asJQuery size = 1 ifTrue: [ self halt ].\x0a\x0a\x09^ super show done: [  view asJQuery attr: #id put: model cid ]",
+source: "show\x0a\x0a\x09^ super show done: [  \x0a\x09\x09\x22This example doesn't really use it but for illustrative pruposes\x0a\x09\x09here you see how you can use the promise to do \x0a\x09\x09useful post render DOM manipulation.\x22\x0a\x09\x09view asJQuery attr: #id set: model cid ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["ifTrue:", "=", "size", "asJQuery", ",", "cid", "model", "halt", "done:", "show", "attr:put:"]
+messageSends: ["done:", "show", "attr:set:", "asJQuery", "cid"]
 }),
 $globals.ThingRowController);
 

@@ -751,19 +751,11 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-var $2,$5,$4,$3,$1;
+var $1;
 self["@parentElementGetter"]=(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-$2=console;
-$5=self._class();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-$ctx2.sendIdx["class"]=1;
-//>>excludeEnd("ctx");
-$4=$recv($5)._name();
-$3=$recv($4).__comma(" using default parentElementGetter");
-$recv($2)._warn_($3);
 return $recv($recv(self._class())._defaultHtmlElementId())._asJQuery();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
@@ -777,10 +769,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initializeParentElementGetter\x0a\x09\x22Returns the default parent element getter.\x22\x0a\x0a\x09^ parentElementGetter := [ \x0a\x09\x09console warn: (self class name, ' using default parentElementGetter').\x0a\x09\x09self class defaultHtmlElementId asJQuery ]",
+source: "initializeParentElementGetter\x0a\x09\x22Returns the default parent element getter.\x22\x0a\x0a\x09^ parentElementGetter := [ self class defaultHtmlElementId asJQuery ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", ",", "name", "class", "asJQuery", "defaultHtmlElementId"]
+messageSends: ["asJQuery", "defaultHtmlElementId", "class"]
 }),
 $globals.Controller);
 
@@ -906,15 +898,7 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-$recv($recv(self._controllers())._values())._do_((function(each){
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-return $core.withContext(function($ctx2) {
-//>>excludeEnd("ctx");
-return $recv(each)._refresh();
-//>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)});
-//>>excludeEnd("ctx");
-}));
+self._refreshAll();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"onAfterRefresh",{},$globals.Controller)});
@@ -922,10 +906,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "onAfterRefresh\x0a\x09\x22This controller has just finished refreshing.\x0a\x09Tell all subcontrollers to refresh so it propagates deep.\x22\x0a\x09\x0a\x09self controllers values do: [ :each | each refresh ]\x0a\x09\x0a\x09\x0a\x09",
+source: "onAfterRefresh\x0a\x09\x22This controller has just finished refreshing.\x0a\x09Tell all subcontrollers to refresh so the action propagates deep.\x22\x0a\x09\x0a\x09self refreshAll\x0a\x09\x0a\x09",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["do:", "values", "controllers", "refresh"]
+messageSends: ["refreshAll"]
 }),
 $globals.Controller);
 
@@ -952,7 +936,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "onAfterView\x0a\x09\x22Hook used when the view of this controller was just set.\x0a\x09Create subcontrollers and resolve the show promise \x0a\x09in case there is one.\x22\x0a\x0a\x09\x22console log: (self class name,'>>onAfterView').\x22\x0a\x0a\x09\x22After the view is set, we are ready to create subcontrollers...\x22 \x0a\x09self createControllers.\x0a\x0a\x09self hasShowPromise ifTrue: [\x0a\x09\x09\x22console log: (self class name,'>>onAfterView fulfilling promise').\x22\x0a\x09\x09showPromise resolve: self ].\x0a\x0a\x09self triggerEvent: #onAfterView.",
+source: "onAfterView\x0a\x09\x22Hook used when the view of this controller was just set.\x0a\x09Create subcontrollers and resolve the show promise \x0a\x09in case there is one.\x22\x0a\x0a\x09\x22After the view is set, we are ready to create subcontrollers...\x22 \x0a\x09self createControllers.\x0a\x0a\x09self hasShowPromise ifTrue: [\x0a\x09\x09showPromise resolve: self ].\x0a\x0a\x09self triggerEvent: #onAfterView.",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["createControllers", "ifTrue:", "hasShowPromise", "resolve:", "triggerEvent:"]
@@ -1137,6 +1121,38 @@ source: "refresh\x0a\x09\x22Removes the view and shows a fresh view of this cont
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["removeView", "done:", "show", "onAfterRefresh"]
+}),
+$globals.Controller);
+
+$core.addMethod(
+$core.method({
+selector: "refreshAll",
+protocol: 'reactions',
+fn: function (){
+var self=this;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx1) {
+//>>excludeEnd("ctx");
+$recv($recv(self._controllers())._values())._do_((function(each){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
+return $recv(each)._refresh();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1,1)});
+//>>excludeEnd("ctx");
+}));
+return self;
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx1) {$ctx1.fill(self,"refreshAll",{},$globals.Controller)});
+//>>excludeEnd("ctx");
+},
+//>>excludeStart("ide", pragmas.excludeIdeData);
+args: [],
+source: "refreshAll\x0a\x09\x22Tell all subcontrollers to refresh so it propagates deep.\x22\x0a\x09\x0a\x09self controllers values do: [ :each | each refresh ]\x0a\x09\x0a\x09\x0a\x09",
+referencedClasses: [],
+//>>excludeEnd("ide");
+messageSends: ["do:", "values", "controllers", "refresh"]
 }),
 $globals.Controller);
 
@@ -1509,7 +1525,7 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 "deprecated";
-$recv(console)._warn_($recv($recv(self._class())._name()).__comma(">>silentRemove deprecated, use #silentRemoveView"));
+self._deprecatedAPI_("use #silentRemoveView");
 self._silentRemoveView();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -1518,10 +1534,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "silentRemove\x0a\x0a\x09#deprecated.\x0a\x09console warn: self class name, '>>silentRemove deprecated, use #silentRemoveView'.\x0a\x09\x0a\x09self silentRemoveView",
+source: "silentRemove\x0a\x0a\x09#deprecated.\x0a\x09self deprecatedAPI: 'use #silentRemoveView'.\x0a\x09\x0a\x09self silentRemoveView",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["warn:", ",", "name", "class", "silentRemoveView"]
+messageSends: ["deprecatedAPI:", "silentRemoveView"]
 }),
 $globals.Controller);
 
@@ -2383,7 +2399,7 @@ return $core.withContext(function($ctx2) {
 self._observeList();
 $1=self._canCreateControllers();
 if($core.assert($1)){
-return self._refresh();
+return self._refreshItems();
 };
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
@@ -2396,10 +2412,10 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterModel do: [ \x0a\x09\x09self observeList.\x0a\x09\x09self canCreateControllers ifTrue: [ self refresh ] ]",
+source: "initialize\x0a\x0a\x09super initialize.\x0a\x09\x0a\x09self when: #onAfterModel do: [ \x0a\x09\x09self observeList.\x0a\x09\x09self canCreateControllers ifTrue: [ self refreshItems ] ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["initialize", "when:do:", "observeList", "ifTrue:", "canCreateControllers", "refresh"]
+messageSends: ["initialize", "when:do:", "observeList", "ifTrue:", "canCreateControllers", "refreshItems"]
 }),
 $globals.ListController);
 
@@ -2532,7 +2548,7 @@ $recv(self._model())._when_do_("changed",(function(){
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx2) {
 //>>excludeEnd("ctx");
-return self._refresh();
+return self._refreshItems();
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
 //>>excludeEnd("ctx");
@@ -2544,16 +2560,16 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeList\x0a\x09\x22Observe the model for changes and react to them with a refresh.\x22\x0a\x0a\x09self model when: #changed do: [ self refresh ]",
+source: "observeList\x0a\x09\x22Observe the model for changes and react to them with a refresh.\x22\x0a\x0a\x09self model when: #changed do: [ self refreshItems ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["when:do:", "model", "refresh"]
+messageSends: ["when:do:", "model", "refreshItems"]
 }),
 $globals.ListController);
 
 $core.addMethod(
 $core.method({
-selector: "refresh",
+selector: "refreshItems",
 protocol: 'actions',
 fn: function (){
 var self=this;
@@ -2561,19 +2577,18 @@ var self=this;
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 self._removeAbsences();
-self._onAfterRefresh();
 self._addNovelties();
 return self;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
-}, function($ctx1) {$ctx1.fill(self,"refresh",{},$globals.ListController)});
+}, function($ctx1) {$ctx1.fill(self,"refreshItems",{},$globals.ListController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refresh\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x0a\x09When finishes, it evaluates the hook.\x22\x0a\x0a\x09self removeAbsences.\x0a\x09self onAfterRefresh.\x0a\x09self addNovelties.",
+source: "refreshItems\x0a\x09\x22Makes sure all the items in the model have its own controller.\x0a\x09Nothing less and nothing more. So it will add lazily \x0a\x09the missing controllers and remove those who's model isn't present.\x0a\x09When finishes, it evaluates the hook.\x22\x0a\x0a\x09self removeAbsences.\x0a\x09self addNovelties.",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["removeAbsences", "onAfterRefresh", "addNovelties"]
+messageSends: ["removeAbsences", "addNovelties"]
 }),
 $globals.ListController);
 
@@ -2624,19 +2639,30 @@ var self=this;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
-self._refresh();
+var $1;
+$recv((function(){
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+return $core.withContext(function($ctx2) {
+//>>excludeEnd("ctx");
 $recv(self._view())._show();
-return self;
+self._refreshItems();
+return self._onAfterView();
+//>>excludeStart("ctx", pragmas.excludeDebugContexts);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1,1)});
+//>>excludeEnd("ctx");
+}))._fork();
+$1=self._showPromise();
+return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 }, function($ctx1) {$ctx1.fill(self,"show",{},$globals.ListController)});
 //>>excludeEnd("ctx");
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "show\x0a\x09self refresh.\x0a\x09self view show.",
+source: "show\x0a\x0a\x09[ \x22We show, refresh items to get them fresh and \x0a\x09rendered as needed and then we perform the post view hook.\x0a\x09We for here to artifically make it async so we maintain\x0a\x09the expected polymorphic behavior of show returning the show promise.\x22\x0a\x09self view show.\x0a\x09self refreshItems.\x0a\x09self onAfterView ] fork.\x0a\x0a\x09^ self showPromise",
 referencedClasses: [],
 //>>excludeEnd("ide");
-messageSends: ["refresh", "show", "view"]
+messageSends: ["fork", "show", "view", "refreshItems", "onAfterView", "showPromise"]
 }),
 $globals.ListController);
 
@@ -3186,7 +3212,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "configureAndBind\x0a\x0a\x09(self hasModel not or: [\x0a\x09self hasView not ]) ifTrue: [ ^ self ].\x0a\x0a\x09self configure.\x0a\x09\x0a\x09self bind.\x0a\x09\x0a\x09\x22console log: (self class name,'>>configureAndBind').\x22",
+source: "configureAndBind\x0a\x0a\x09(self hasModel not or: [\x0a\x09self hasView not ]) ifTrue: [ ^ self ].\x0a\x0a\x09self configure.\x0a\x09\x0a\x09self bind",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["ifTrue:", "or:", "not", "hasModel", "hasView", "configure", "bind"]
