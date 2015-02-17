@@ -1,3 +1,15 @@
+February 10, 2015 - Release 0.1.26
+===================================
+
+* Upgrades to "minimapless": "^0.11.1"
+
+
+February 10, 2015 - Release 0.1.25
+===================================
+
+* Re-version fixes bower access issue
+
+
 February 10, 2015 - Release 0.1.24
 ===================================
 
