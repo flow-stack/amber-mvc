@@ -719,8 +719,7 @@ observeList
 refreshItems
 	"Makes sure all the items in the model have its own controller.
 	Nothing less and nothing more. So it will add lazily 
-	the missing controllers and remove those who's model isn't present.
-	When finishes, it evaluates the hook."
+	the missing controllers and remove those who's model isn't present."
 
 	self removeAbsences.
 	self addNovelties.
