@@ -1,4 +1,16 @@
-February 17, 2015 - Release 0.1.25
+February 18, 2015 - Release 0.1.29
+===================================
+
+* Upgrades Amber to 0.14.10
+
+
+February 17, 2015 - Release 0.1.28
+===================================
+
+* Upgrades amber-dev to 0.4.0 and MiniMapless to 0.11.1
+
+
+February 17, 2015 - Release 0.1.27
 ===================================
 
 * Deprecation of all constructor methods of Controller using appendingTo: in favor of addOn: aBlock where aBlock returns the parentElement that controllers can use on demand to get it fresh anytime they want.
