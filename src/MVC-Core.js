@@ -1,4 +1,4 @@
-define("amber-mvc/MVC-Core", ["amber/boot", "amber_core/Web", "minimapless/MiniMapless", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
+define("amber-mvc/MVC-Core", ["amber/boot", "amber-contrib-web/Web", "minimapless/MiniMapless", "amber_core/Kernel-Objects", "amber_core/Kernel-Collections", "amber_core/Kernel-Infrastructure"], function($boot){
 var $core=$boot.api,nil=$boot.nil,$recv=$boot.asReceiver,$globals=$boot.globals;
 $core.addPackage('MVC-Core');
 $core.packages["MVC-Core"].innerEval = function (expr) { return eval(expr); };
@@ -782,11 +782,12 @@ selector: "initializeShowPromise",
 protocol: 'initialization',
 fn: function (){
 var self=this;
+function $JQuery(){return $globals.JQuery||(typeof JQuery=="undefined"?nil:JQuery)}
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
 return $core.withContext(function($ctx1) {
 //>>excludeEnd("ctx");
 var $1;
-self["@showPromise"]=$recv($recv(jQuery)._Deferred())._value();
+self["@showPromise"]=$recv($recv($recv($JQuery())._current())._Deferred())._value();
 $1=self["@showPromise"];
 return $1;
 //>>excludeStart("ctx", pragmas.excludeDebugContexts);
@@ -795,10 +796,10 @@ return $1;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "initializeShowPromise\x0a\x09\x22Sets the promise used by this controller when it shows (resolves when the view is set).\x0a\x09For the full promise API check here: http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ showPromise := jQuery Deferred value",
-referencedClasses: [],
+source: "initializeShowPromise\x0a\x09\x22Sets the promise used by this controller when it shows (resolves when the view is set).\x0a\x09For the full promise API check here: http://api.jquery.com/category/deferred-object/\x22\x0a\x09\x0a\x09^ showPromise := JQuery current Deferred value",
+referencedClasses: ["JQuery"],
 //>>excludeEnd("ide");
-messageSends: ["value", "Deferred"]
+messageSends: ["value", "Deferred", "current"]
 }),
 $globals.Controller);
 
@@ -882,7 +883,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "observeEvents\x0a\x09\x22Program the observations of events that are important for this controller.\x22\x0a\x09",
+source: "observeEvents\x0a\x09\x22Program the observations of events that are important for this controller.\x22",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: []
@@ -906,7 +907,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "onAfterRefresh\x0a\x09\x22This controller has just finished refreshing.\x0a\x09Tell all subcontrollers to refresh so the action propagates deep.\x22\x0a\x09\x0a\x09self refreshAll\x0a\x09\x0a\x09",
+source: "onAfterRefresh\x0a\x09\x22This controller has just finished refreshing.\x0a\x09Tell all subcontrollers to refresh so the action propagates deep.\x22\x0a\x09\x0a\x09self refreshAll",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["refreshAll"]
@@ -960,7 +961,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "onBeforeView\x0a\x09\x22Hook used when the view of this controller is about to be set.\x22\x0a\x0a\x09self triggerEvent: #onBeforeView.\x0a\x0a\x09\x22Break promises that might be done for the about-to-be-removed view.\x22\x0a\x09\x22showPromise := nil.\x22\x0a\x09",
+source: "onBeforeView\x0a\x09\x22Hook used when the view of this controller is about to be set.\x22\x0a\x0a\x09self triggerEvent: #onBeforeView.\x0a\x0a\x09\x22Break promises that might be done for the about-to-be-removed view.\x22\x0a\x09\x22showPromise := nil.\x22",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["triggerEvent:"]
@@ -1149,7 +1150,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "refreshAll\x0a\x09\x22Tell all subcontrollers to refresh so it propagates deep.\x22\x0a\x09\x0a\x09self controllers values do: [ :each | each refresh ]\x0a\x09\x0a\x09\x0a\x09",
+source: "refreshAll\x0a\x09\x22Tell all subcontrollers to refresh so it propagates deep.\x22\x0a\x09\x0a\x09self controllers values do: [ :each | each refresh ]",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["do:", "values", "controllers", "refresh"]
@@ -3453,7 +3454,7 @@ return self;
 },
 //>>excludeStart("ide", pragmas.excludeIdeData);
 args: [],
-source: "removeView\x0a\x09\x0a\x09self unbind.\x0a\x09boundView := nil.\x0a\x09\x0a\x09super removeView.\x0a\x09\x0a\x0a\x09",
+source: "removeView\x0a\x09\x0a\x09self unbind.\x0a\x09boundView := nil.\x0a\x09\x0a\x09super removeView.",
 referencedClasses: [],
 //>>excludeEnd("ide");
 messageSends: ["unbind", "removeView"]

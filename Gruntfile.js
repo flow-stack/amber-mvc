@@ -28,7 +28,7 @@ module.exports = function (grunt) {
         amberc: {
             options: {
                 amber_dir: path.join(__dirname, "bower_components", "amber"),
-                library_dirs: ['src'],
+                library_dirs: ['src', 'bower_components/amber/contrib/src'],
                 closure_jar: ''
             },
             all: {
@@ -42,6 +42,8 @@ module.exports = function (grunt) {
                     'MiniMapless' ],
                 options: {
                    library_dirs: [
+                       'src', 
+                       'bower_components/amber/contrib/src',
                        'bower_components/amber-dom-events/src',
                         'bower_components/minimapless/src' ], 
                    verbose: true
@@ -51,8 +53,9 @@ module.exports = function (grunt) {
                 src: ['node_modules/amber-dev/lib/Test.st'],
                 libraries: [
                     /* add dependencies packages here */
-                    'MVC', /* add other code-to-test packages here */
-                    'SUnit'
+                    'App', /* add other code-to-test packages here */
+                    'SUnit',
+                    'App-Tests' /* add other test packages here */
                 ],
                 main_class: 'NodeTestRunner',
                 output_name: 'test_runner'

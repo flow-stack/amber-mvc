@@ -1,11 +1,13 @@
 {
   "name": "mvc",
   "description": "This is a MVC implementation for Amber",
-  "version": "0.1.27",
+  "version": "0.1.29",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
+    "/*.js",
+    "/*.html",    
     "/test_runner.js",
     "test",
     "tests"
@@ -27,16 +29,16 @@
   ],
   "private": false,
   "dependencies": {
-    "amber": "^0.14.4",
+    "amber": "^0.14.10",
     "text": "requirejs/text#~2.0.12",
     "rivets": "~0.7.2",
     "amber-dom-events": "~0.1.5",
     "bootstrap": "~3.3.1",
-    "minimapless": "^0.11.0",
+    "minimapless": "^0.11.1",
     "rlite": "~0.0.21"
   },
   "devDependencies": {
-    "amber-minimal-ide": "^0.1.0",
-    "helios": "^0.3.4"    
+    "amber-minimal-ide": "^0.1.1",
+    "helios": "^0.4.0"    
   }
 }

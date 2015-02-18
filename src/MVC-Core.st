@@ -388,7 +388,7 @@ initializeShowPromise
 	"Sets the promise used by this controller when it shows (resolves when the view is set).
 	For the full promise API check here: http://api.jquery.com/category/deferred-object/"
 	
-	^ showPromise := jQuery Deferred value
+	^ showPromise := JQuery current Deferred value
 ! !
 
 !Controller methodsFor: 'reactions'!
